@@ -1,0 +1,50 @@
+/* Секции VIP / FREE / UPDATES / TOP в Apps */
+.category-section {
+  margin-bottom: 16px;
+  padding: 0 12px;
+}
+
+.section-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.horizontal-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  padding-bottom: 6px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.icon-card {
+  flex: 0 0 auto;
+  width: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: #fff;
+  font-size: 13px;
+  font-family: 'Arial', sans-serif;
+  line-height: 1.2;
+}
+
+.icon-card img {
+  width: 64px;
+  height: 64px;
+  border-radius: 14px;
+  object-fit: cover;
+  margin-bottom: 6px;
+}
+
+.icon-card span {
+  max-width: 72px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
