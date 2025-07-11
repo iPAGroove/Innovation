@@ -1,1 +1,150 @@
+/* games-section.css */
 
+/* Стили для заголовков категорий */
+.category-section {
+    margin-bottom: 40px; /* Отступ между секциями NEW и VIP */
+}
+
+.full-screen-section h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.8em;
+    color: #FFD700; /* Золотой цвет для заголовка */
+    text-shadow: 0 0 7px rgba(255, 215, 0, 0.4);
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: left;
+    padding-left: 20px; /* Отступ слева для заголовка */
+}
+
+/* Контейнер для горизонтальной прокрутки карточек */
+.games-horizontal-scroll {
+    display: flex; /* Делаем элементы гибкими и располагаем их в ряд */
+    gap: 15px; /* Отступ между карточками */
+    overflow-x: auto; /* Горизонтальная прокрутка */
+    overflow-y: hidden; /* Скрываем вертикальную прокрутку */
+    white-space: nowrap; /* Запрещаем перенос строк */
+    padding-bottom: 20px; /* Дополнительный отступ снизу для видимости скроллбара */
+    padding-left: 20px; /* Отступ слева для первой карточки */
+    padding-right: 20px; /* Отступ справа для последней карточки */
+
+    /* Скрываем скроллбар по умолчанию для красоты */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+.games-horizontal-scroll::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+}
+
+/* Стили для каждой карточки игры (квадратные иконки с текстом под ними) */
+.game-card {
+    background: transparent; /* Прозрачный фон */
+    border-radius: 0; /* Без скругления, если нужно как на старых скриншотах */
+    padding: 0;
+    display: flex;
+    flex-direction: column; /* Элементы внутри карточки идут сверху вниз */
+    align-items: center; /* Центрируем по горизонтали */
+    justify-content: flex-start;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    box-shadow: none; /* Без тени */
+    width: 90px; /* Фиксированная ширина карточки (иконки + текст) */
+    flex-shrink: 0; /* Запрещаем сжимать карточки */
+}
+
+.game-card:hover {
+    transform: translateY(-5px) scale(1.02);
+}
+
+/* Заглушка для иконки игры */
+.game-icon-placeholder {
+    width: 70px; /* Размер иконки */
+    height: 70px;
+    background: linear-gradient(45deg, #FFD700, #FF69B4); /* Градиент как заглушка */
+    border-radius: 12px; /* Скругление углов иконки */
+    margin-bottom: 7px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 1.6em;
+    font-weight: bold;
+}
+
+/* Стили для названия игры под иконкой */
+.game-title {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.85em;
+    color: #e0f2f7;
+    margin: 0;
+    line-height: 1.2;
+    padding: 0 5px;
+    white-space: normal; /* Разрешаем перенос текста для длинных названий */
+    text-overflow: ellipsis; /* Добавляем многоточие для обрезки */
+    overflow: hidden; /* Скрываем выходящий текст */
+    display: -webkit-box; /* Для многострочного обрезания */
+    -webkit-line-clamp: 2; /* Ограничиваем двумя строками */
+    -webkit-box-orient: vertical;
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 768px) {
+    .category-section {
+        margin-bottom: 30px;
+    }
+    .full-screen-section h2 {
+        font-size: 1.6em;
+        margin-bottom: 15px;
+        padding-left: 15px;
+    }
+    .games-horizontal-scroll {
+        gap: 12px;
+        padding-left: 15px;
+        padding-right: 15px;
+        padding-bottom: 15px;
+    }
+    .game-card {
+        width: 80px; /* Чуть меньше на планшетах */
+    }
+    .game-icon-placeholder {
+        width: 60px;
+        height: 60px;
+        border-radius: 10px;
+        font-size: 1.4em;
+    }
+    .game-title {
+        font-size: 0.75em;
+    }
+}
+
+@media (max-width: 480px) {
+    .category-section {
+        margin-bottom: 25px;
+    }
+    .full-screen-section h2 {
+        font-size: 1.4em;
+        margin-bottom: 10px;
+        padding-left: 10px;
+    }
+    .games-horizontal-scroll {
+        gap: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-bottom: 10px;
+    }
+    .game-card {
+        width: 70px; /* Еще меньше на смартфонах */
+    }
+    .game-icon-placeholder {
+        width: 50px;
+        height: 50px;
+        border-radius: 8px;
+        font-size: 1.2em;
+    }
+    .game-title {
+        font-size: 0.7em;
+    }
+}
