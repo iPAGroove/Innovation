@@ -1,61 +1,28 @@
-// script.js
-
 document.addEventListener('DOMContentLoaded', () => {
-    const navButtons = document.querySelectorAll('.nav-button');
-    const fullScreenSection = document.getElementById('games-and-apps-modal'); 
+    // Получаем все элементы с классом games-horizontal-scroll
+    const scrollContainers = document.querySelectorAll('.games-horizontal-scroll');
 
-    // --- Логика для активной кнопки навигации ---
-    function setActiveButton(button) {
-        navButtons.forEach(btn => btn.classList.remove('active'));
-        if (button) {
-            button.classList.add('active');
+    scrollContainers.forEach(container => {
+        // Принудительно устанавливаем overflow-x: auto (если он вдруг где-то переопределяется)
+        container.style.overflowX = 'auto';
+
+        // Принудительно устанавливаем min-width (например, на 1000px, или больше, чем ширина viewport)
+        // Это должно заставить контейнер быть шире, чем экран
+        // Убедитесь, что эта ширина реально больше, чем ширина вашего мобильного экрана
+        if (window.innerWidth < 768) { // Если это мобильное устройство
+             container.style.minWidth = '700px'; // Или любое значение, которое точно больше ширины экрана
+        } else {
+             container.style.minWidth = '1000px';
         }
-    }
 
-    // --- Логика для открытия/закрытия разделов ---
-    navButtons.forEach(button => {
-        button.addEventListener('click', (e) => {
-            e.preventDefault();
+        // Дополнительный тест: можно попробовать принудительно установить ширину, чтобы вызвать прокрутку
+        // container.style.width = (container.scrollWidth + 50) + 'px'; // Добавить немного к расчетной ширине
 
-            const sectionId = button.dataset.section; // Получаем ID раздела из data-атрибута
-
-            // Если кликнутая кнопка должна открывать наш объединенный модал
-            if (sectionId === 'games-and-apps-modal') {
-                // Если модал уже активен, закрываем его
-                if (fullScreenSection.classList.contains('active')) {
-                    fullScreenSection.classList.remove('active');
-                    setActiveButton(null); // Сбрасываем активное состояние
-                } else { // Иначе, открываем его
-                    fullScreenSection.classList.add('active');
-                    setActiveButton(button); // Делаем текущую кнопку активной
-                }
-            } else { // Если кликнута другая кнопка (например, Mail или Menu)
-                // Закрываем наш объединенный модал, если он был открыт
-                fullScreenSection.classList.remove('active');
-                setActiveButton(button); // Делаем текущую кнопку активной (или сбрасываем, если она не должна быть активной)
-                // Здесь вы можете добавить логику для открытия других модалов, если они есть и имеют свои data-section
-            }
-        });
+        // Проверяем, есть ли прокрутка, после всех изменений
+        // console.log('Scroll width:', container.scrollWidth);
+        // console.log('Client width:', container.clientWidth);
+        // if (container.scrollWidth > container.clientWidth) {
+        //     console.log('Элемент должен быть прокручиваемым!');
+        // }
     });
-
-    // --- Логика для закрытия раздела по клику вне его (если это необходимо) ---
-    // Если вы хотите, чтобы раздел закрывался по клику на фон, раскомментируйте этот блок:
-    if (fullScreenSection) {
-        fullScreenSection.addEventListener('click', (e) => {
-            // Если клик был по самому разделу, а не по его дочерним элементам
-            if (e.target === fullScreenSection) {
-                fullScreenSection.classList.remove('active');
-                setActiveButton(null); // Сбрасываем активное состояние
-            }
-        });
-    }
-
-
-    // Опционально: Открыть раздел "Games" по умолчанию при загрузке.
-    // Закомментируйте, если не хотите, чтобы раздел открывался при старте.
-    // Если вы хотите, чтобы объединенный модал открывался при загрузке
-    // const gamesButton = document.querySelector('[data-section="games-and-apps-modal"]');
-    // if (gamesButton) {
-    //     gamesButton.click(); // Имитируем клик, чтобы открыть раздел и сделать кнопку активной
-    // }
 });
