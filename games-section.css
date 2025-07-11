@@ -1,12 +1,18 @@
 /* games-section.css */
 
-/* Стили для заголовка VIP */
+/* Новый стиль для контейнера каждой категории (VIP, FREE) */
+.category-section {
+    margin-bottom: 40px; /* Отступ между секциями VIP и FREE */
+    /* Дополнительные стили, если нужны для фона или границ категории */
+}
+
+/* Стили для заголовка VIP и FREE */
 .full-screen-section h2 {
     font-family: 'Montserrat', sans-serif;
     font-size: 1.8em;
     color: #FFD700;
     text-shadow: 0 0 7px rgba(255, 215, 0, 0.4);
-    margin-top: 0;
+    margin-top: 0; /* Убираем верхний отступ у H2, так как он внутри category-section */
     margin-bottom: 20px;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -93,6 +99,9 @@
     .section-inner-content {
         padding-top: 15px;
     }
+    .category-section { /* Отступ на мобильных */
+        margin-bottom: 30px;
+    }
     .full-screen-section h2 {
         font-size: 1.6em;
         margin-bottom: 15px;
@@ -121,6 +130,9 @@
 @media (max-width: 480px) {
     .section-inner-content {
         padding-top: 10px;
+    }
+    .category-section { /* Отступ на очень маленьких экранах */
+        margin-bottom: 25px;
     }
     .full-screen-section h2 {
         font-size: 1.4em;
