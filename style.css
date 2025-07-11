@@ -1,10 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Open+Sans:wght@400&display=swap');
+
 body, html {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden; /* Запрещаем скролл */
-    font-family: Arial, sans-serif;
+    overflow: hidden;
+    font-family: 'Open Sans', sans-serif; /* Основной шрифт */
+    color: #f0f0f0;
 }
 
 .video-background {
@@ -13,20 +16,21 @@ body, html {
     left: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden; /* Скрываем все, что выходит за границы контейнера */
-    z-index: -1; /* Помещаем видеофон на задний план */
+    overflow: hidden;
+    z-index: -1;
 }
 
 .video-background video {
-    display: block; /* Убираем возможное дополнительное пространство под видео */
-    width: 100vw; /* Ширина равна ширине viewport */
-    height: 100vh; /* Высота равна высоте viewport */
-    object-fit: cover; /* Видео будет заполнять контейнер, обрезаясь при необходимости */
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    filter: brightness(0.6); /* Немного затемним видео для лучшей читаемости текста */
 }
 
 .content {
     position: relative;
-    z-index: 1; /* Размещаем контент поверх видео */
+    z-index: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -34,61 +38,85 @@ body, html {
     width: 100%;
     height: 100%;
     text-align: center;
-    padding: 20px; /* Небольшой отступ для контента */
-    box-sizing: border-box; /* Учитываем padding в общей ширине/высоте */
-    background-color: rgba(0, 0, 0, 0.3); /* Добавим полупрозрачный фон для читаемости текста */
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: rgba(0, 0, 0, 0.4); /* Чуть более темный полупрозрачный фон */
 }
 
 .intro-text {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-.title, .subtitle {
-    opacity: 0; /* Начальная прозрачность */
-    color: #f0f0f0; /* Более мягкий белый */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Небольшая тень для объема */
+    position: relative; /* Для позиционирования эффектов */
 }
 
 .title {
-    font-size: 2.5em; /* Немного увеличим размер */
-    margin-bottom: 15px;
-    animation: swirlIn 2s ease-in-out forwards, hold 2s forwards 2s, swirlOut 2s ease-in-out forwards 4s;
+    font-family: 'Montserrat', sans-serif; /* Стильный шрифт для заголовка */
+    font-size: 4.5em; /* Увеличим размер */
+    margin-bottom: 20px;
+    font-weight: 700;
+    text-transform: uppercase; /* Все заглавные буквы */
+
+    /* Градиентный текст */
+    background: linear-gradient(45deg, #FFD700, #FF69B4, #8A2BE2); /* Золотой, ярко-розовый, сиреневый */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    /* Обводка текста */
+    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.7); /* Белая обводка */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.6), 0 0 20px rgba(255, 255, 255, 0.4); /* Свечение */
+
+    opacity: 0;
+    transform: translateY(-50px) scale(0.8);
+    animation: fadeInScaleUp 2s ease-out forwards;
+    animation-delay: 0.5s; /* Задержка для заголовка */
 }
 
 .subtitle {
-    font-size: 1.2em; /* Немного увеличим размер */
-    animation: swirlIn 2s ease-in-out 0.5s forwards, hold 2s forwards 2.5s, swirlOut 2s ease-in-out forwards 4.5s;
+    font-family: 'Open Sans', sans-serif; /* Классический шрифт для подзаголовка */
+    font-size: 1.8em; /* Увеличим размер */
+    font-weight: 400;
+    color: #b0e0e6; /* Более нежный голубой оттенок */
+    text-shadow: 0 0 5px rgba(176, 224, 230, 0.8); /* Свечение подзаголовка */
+    letter-spacing: 1px; /* Немного увеличим расстояние между буквами */
+
+    opacity: 0;
+    transform: translateY(50px) scale(0.8);
+    animation: fadeInScaleUp 2s ease-out forwards;
+    animation-delay: 1.5s; /* Задержка для подзаголовка */
 }
 
-@keyframes swirlIn {
+/* Анимация появления */
+@keyframes fadeInScaleUp {
     0% {
-        transform: rotate(90deg) scale(0);
         opacity: 0;
+        transform: translateY(0) scale(0.8);
     }
     100% {
-        transform: rotate(0) scale(1);
         opacity: 1;
+        transform: translateY(0) scale(1);
     }
 }
 
-@keyframes swirlOut {
-    0% {
-        transform: rotate(0) scale(1);
-        opacity: 1;
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .title {
+        font-size: 2.5em;
+        -webkit-text-stroke: 1px rgba(255, 255, 255, 0.7);
     }
-    100% {
-        transform: rotate(-90deg) scale(0);
-        opacity: 0;
+
+    .subtitle {
+        font-size: 1.2em;
     }
 }
 
-@keyframes hold {
-    0% {
-        opacity: 1;
+@media (max-width: 480px) {
+    .title {
+        font-size: 1.8em;
+        -webkit-text-stroke: 0.8px rgba(255, 255, 255, 0.7);
     }
-    100% {
-        opacity: 1;
+
+    .subtitle {
+        font-size: 1em;
     }
 }
