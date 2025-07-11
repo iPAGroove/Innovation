@@ -1,35 +1,46 @@
-/* Общие стили для body - для мобильных iOS */
-html, body {
+body, html {
     margin: 0;
     padding: 0;
-    overflow: hidden; /* Убираем прокрутку */
-    height: 100vh;    /* Высота 100% от высоты окна просмотра */
-    width: 100vw;     /* Ширина 100% от ширины окна просмотра */
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; /* Шрифты, подходящие для iOS */
-    -webkit-overflow-scrolling: touch; /* Улучшенная прокрутка на iOS */
-    background-color: black; /* На случай, если видео вообще не загрузится */
-    color: white; /* Цвет текста, если он появится */
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Запрещаем скролл */
+    font-family: Arial, sans-serif;
+    color: white; /* Цвет текста для примера */
 }
 
-/* Стили для контейнера видеофона (можно оставить, если нужен дополнительный слой) */
-.video-background-container {
-    position: fixed; /* Фиксируем на заднем плане */
+.video-background {
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1; /* Отправляем видео на задний план */
-    overflow: hidden; /* Скрываем части видео, которые выходят за экран */
-    background-color: black; /* Цвет фона, если видео не загрузилось */
+    overflow: hidden; /* Скрываем все, что выходит за границы контейнера */
+    z-index: -1; /* Помещаем видеофон на задний план */
 }
 
-/* Стили для самого видео */
-.video-background {
+.video-background video {
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    object-fit: cover; /* Гарантируем, что видео заполнит весь контейнер, обрезая при необходимости */
+}
+
+.content {
+    position: relative;
+    z-index: 1; /* Размещаем контент поверх видео */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Гарантируем, что видео покроет всю область без искажений */
-    display: block; /* Убираем лишние отступы */
+    text-align: center;
+    padding: 20px; /* Небольшой отступ для контента */
+    box-sizing: border-box; /* Учитываем padding в общей ширине/высоте */
+    background-color: rgba(0, 0, 0, 0.3); /* Добавим полупрозрачный фон для читаемости текста */
 }
-
-/* Медиа-запрос для мобильных устройств теперь отсутствует,
-   чтобы видео попыталось проиграться и на них. */
