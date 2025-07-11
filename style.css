@@ -1,39 +1,38 @@
-body, html {
-    margin: 0;
-    padding: 0;
-    overflow: hidden; /* Скрываем полосы прокрутки, если видео выходит за границы */
-    height: 100%;
-    width: 100%;
-    font-family: Arial, sans-serif; /* Просто для примера, можно удалить */
-    color: white; /* Цвет текста, если он появится позже */
+/* Обнуление отступов */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.video-background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1; /* Помещаем видео на задний план */
-    overflow: hidden;
+html, body {
+  height: 100%;
+  overflow: hidden;
 }
 
-.video-background video {
-    min-width: 100%;
-    min-height: 100%;
+/* Стили для фонового видео */
+.video-bg {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -1;
+}
+
+/* Адаптация под портрет и альбомные ориентации */
+@media (orientation: portrait) {
+  .video-bg {
     width: auto;
-    height: auto;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    object-fit: cover; /* Гарантирует, что видео покроет весь контейнер */
+    height: 100vh;
+  }
 }
 
-/* Стили для контента (пока закомментированы) */
-.content {
-    position: relative; /* Позволяет контенту находиться поверх видео */
-    z-index: 1;
-    text-align: center;
-    padding-top: 20%; /* Просто для примера, можно удалить */
+@media (orientation: landscape) {
+  .video-bg {
+    width: 100vw;
+    height: auto;
+  }
 }
