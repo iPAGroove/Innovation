@@ -1,25 +1,29 @@
+/* Секции VIP / FREE / UPDATES / TOP */
 .category-section {
-  margin-bottom: 40px;
-  padding: 0 16px;
+  margin-bottom: 16px; /* Меньше расстояние между секциями */
+  padding: 0 12px;      /* Уменьшили боковой отступ */
 }
 
+/* Заголовки секций */
 .section-title {
   font-family: 'Montserrat', sans-serif;
   font-size: 18px;
   font-weight: 600;
   color: #fff;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   text-align: left;
 }
 
+/* Контейнер с горизонтальной прокруткой */
 .horizontal-scroll {
   display: flex;
   overflow-x: auto;
-  gap: 12px;
+  gap: 10px;
   padding-bottom: 6px;
   -webkit-overflow-scrolling: touch;
 }
 
+/* Карточка игры */
 .icon-card {
   flex: 0 0 auto;
   width: 64px;
@@ -33,6 +37,7 @@
   line-height: 1.2;
 }
 
+/* Иконка игры */
 .icon-card img {
   width: 64px;
   height: 64px;
@@ -41,6 +46,7 @@
   margin-bottom: 6px;
 }
 
+/* Название под иконкой */
 .icon-card span {
   max-width: 72px;
   overflow: hidden;
