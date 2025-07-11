@@ -39,3 +39,46 @@ body, html {
     box-sizing: border-box; /* Учитываем padding в общей ширине/высоте */
     background-color: rgba(0, 0, 0, 0.3); /* Добавим полупрозрачный фон для читаемости текста */
 }
+
+.intro-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title, .subtitle {
+    opacity: 0; /* Начальная прозрачность */
+}
+
+.title {
+    font-size: 2em;
+    margin-bottom: 10px;
+    animation: swirlIn 1s ease-in-out forwards, swirlOut 1s ease-in-out forwards 2s; /* 1s появление, 2s задержка, 1s исчезновение */
+}
+
+.subtitle {
+    font-size: 1em;
+    animation: swirlIn 1s ease-in-out 0.3s forwards, swirlOut 1s ease-in-out forwards 2.3s; /* Задержка появления и исчезновения */
+}
+
+@keyframes swirlIn {
+    0% {
+        transform: rotate(90deg) scale(0);
+        opacity: 0;
+    }
+    100% {
+        transform: rotate(0) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes swirlOut {
+    0% {
+        transform: rotate(0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: rotate(-90deg) scale(0);
+        opacity: 0;
+    }
+}
