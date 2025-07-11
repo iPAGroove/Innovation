@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="sections.css">
   <link rel="stylesheet" href="games.css">
   <link rel="stylesheet" href="apps.css">
+  <link rel="stylesheet" href="menu.css"> <!-- ✅ Добавлено -->
 </head>
 <body>
 
@@ -24,26 +25,10 @@
       <input type="search" placeholder="Search games..." />
     </div>
 
-    <!-- VIP -->
-    <div class="category-section">
-      <h2 class="section-title">VIP</h2>
-      <div class="horizontal-scroll" id="games-vip"></div>
-    </div>
-    <!-- FREE -->
-    <div class="category-section">
-      <h2 class="section-title">FREE</h2>
-      <div class="horizontal-scroll" id="games-free"></div>
-    </div>
-    <!-- UPDATES -->
-    <div class="category-section">
-      <h2 class="section-title">UPDATES</h2>
-      <div class="horizontal-scroll" id="games-updates"></div>
-    </div>
-    <!-- TOP -->
-    <div class="category-section">
-      <h2 class="section-title">TOP</h2>
-      <div class="horizontal-scroll" id="games-top"></div>
-    </div>
+    <div class="category-section"><h2 class="section-title">VIP</h2><div class="horizontal-scroll" id="games-vip"></div></div>
+    <div class="category-section"><h2 class="section-title">FREE</h2><div class="horizontal-scroll" id="games-free"></div></div>
+    <div class="category-section"><h2 class="section-title">UPDATES</h2><div class="horizontal-scroll" id="games-updates"></div></div>
+    <div class="category-section"><h2 class="section-title">TOP</h2><div class="horizontal-scroll" id="games-top"></div></div>
   </div>
 
   <!-- Apps Section -->
@@ -52,29 +37,25 @@
       <input type="search" placeholder="Search apps..." />
     </div>
 
-    <!-- VIP -->
-    <div class="category-section">
-      <h2 class="section-title">VIP</h2>
-      <div class="horizontal-scroll" id="apps-vip"></div>
-    </div>
-    <!-- FREE -->
-    <div class="category-section">
-      <h2 class="section-title">FREE</h2>
-      <div class="horizontal-scroll" id="apps-free"></div>
-    </div>
-    <!-- UPDATES -->
-    <div class="category-section">
-      <h2 class="section-title">UPDATES</h2>
-      <div class="horizontal-scroll" id="apps-updates"></div>
-    </div>
-    <!-- TOP -->
-    <div class="category-section">
-      <h2 class="section-title">TOP</h2>
-      <div class="horizontal-scroll" id="apps-top"></div>
+    <div class="category-section"><h2 class="section-title">VIP</h2><div class="horizontal-scroll" id="apps-vip"></div></div>
+    <div class="category-section"><h2 class="section-title">FREE</h2><div class="horizontal-scroll" id="apps-free"></div></div>
+    <div class="category-section"><h2 class="section-title">UPDATES</h2><div class="horizontal-scroll" id="apps-updates"></div></div>
+    <div class="category-section"><h2 class="section-title">TOP</h2><div class="horizontal-scroll" id="apps-top"></div></div>
+  </div>
+
+  <!-- ✅ Боковая панель меню -->
+  <div id="menuPanel" class="menu-panel">
+    <div class="menu-content">
+      <h2>iPA Groove Menu</h2>
+      <ul class="menu-links">
+        <li><a href="#">📂 Add App/Game</a></li>
+        <li><a href="#">📄 Install Guide</a></li>
+        <li><a href="#">🧑‍💻 Contact Us</a></li>
+      </ul>
     </div>
   </div>
 
-  <!-- Нижняя панель навигации -->
+  <!-- Навигация -->
   <nav class="bottom-nav">
     <a href="#" class="nav-item" id="openGames" title="Games">
       <svg viewBox="0 0 24 24" fill="none">
@@ -98,7 +79,7 @@
     </a>
   </nav>
 
-  <!-- Firebase и логика подгрузки -->
+  <!-- Firebase -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
     import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
@@ -118,7 +99,6 @@
     const analytics = getAnalytics(app);
     const db = getFirestore(app);
 
-    // Рендер карточки
     function renderCard(data) {
       return `
         <div class="icon-card">
@@ -127,7 +107,6 @@
         </div>`;
     }
 
-    // Загрузить все данные из коллекции и вставить по type
     async function loadCollection(collName, prefix) {
       const querySnapshot = await getDocs(collection(db, collName));
       const containers = {
@@ -142,12 +121,12 @@
       });
     }
 
-    // Инициализация
     await loadCollection('games', 'games');
     await loadCollection('apps', 'apps');
     console.log('✅ Данные загружены из Firebase');
   </script>
 
   <script src="script.js"></script>
+  <script src="menu.js"></script> <!-- ✅ Подключено -->
 </body>
 </html>
