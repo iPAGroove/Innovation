@@ -38,7 +38,7 @@ html, body {
     display: block; /* Убираем лишние отступы, которые иногда бывают у inline-элементов */
 }
 
-/* !!! ВРЕМЕННО УБЕРИ ВЕСЬ ЭТОТ БЛОК ДЛЯ ТЕСТА !!! */
+/* !!! УБЕДИСЬ, ЧТО ЭТОТ БЛОК ОТСУТСТВУЕТ В ТВОЕМ CSS ДЛЯ ТЕКУЩЕГО ТЕСТА !!! */
 /*
 @media (max-width: 768px), (max-height: 768px) {
     .video-background {
@@ -46,7 +46,7 @@ html, body {
     }
 
     body {
-        background-image: url('https://github.com/iPAGroove/Innovation/raw/main/static-bg-fallback.jpg'); 
+        background-image: url('https://github.com/iPAGroove/Innovation/raw/main/static-bg-fallback.jpg'); // !!! ВСТАВЬ ССЫЛКУ НА ТВОЮ КАРТИНКУ-ЗАГЛУШКУ С ГИТХАБА ЗДЕСЬ !!!
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
