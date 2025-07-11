@@ -1,0 +1,70 @@
+/* navigation.css */
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70px; /* Высота навигационной панели */
+    background-color: rgba(30, 30, 30, 0.9); /* Темный полупрозрачный фон */
+    display: flex;
+    justify-content: space-around; /* Распределяет кнопки равномерно */
+    align-items: center;
+    padding: 0 10px;
+    box-sizing: border-box;
+    z-index: 1000; /* Убедитесь, что панель поверх всего остального */
+    border-top: 1px solid rgba(255, 255, 255, 0.1); /* Слегка видимая граница сверху */
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3); /* Тень сверху */
+}
+
+.nav-button {
+    display: flex;
+    flex-direction: column; /* Иконка и текст будут располагаться по вертикали */
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #f0f0f0; /* Цвет по умолчанию */
+    font-size: 0.8em; /* Размер текста */
+    transition: color 0.3s ease, transform 0.2s ease; /* Плавный переход для цвета и трансформации */
+    flex: 1; /* Чтобы кнопки занимали равное пространство */
+    padding: 5px; /* Внутренний отступ для кнопок */
+}
+
+.nav-icon {
+    width: 30px; /* Размер иконки */
+    height: 30px;
+    margin-bottom: 5px; /* Отступ между иконкой и текстом */
+    color: #b0e0e6; /* Цвет иконок */
+    transition: color 0.3s ease, transform 0.2s ease; /* Плавный переход для иконки */
+}
+
+.nav-text {
+    display: none; /* Скрываем текст по умолчанию, как вы и просили */
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    opacity: 0; /* Начальная прозрачность для анимации */
+    transition: opacity 0.3s ease;
+}
+
+/* Эффект при наведении */
+.nav-button:hover {
+    color: #FFD700; /* Изменяем цвет текста при наведении */
+    transform: translateY(-3px); /* Немного приподнимаем кнопку */
+}
+
+.nav-button:hover .nav-icon {
+    color: #FFD700; /* Изменяем цвет иконки при наведении */
+    transform: scale(1.1); /* Немного увеличиваем иконку */
+}
+
+.nav-button:hover .nav-text {
+    display: block; /* Показываем текст при наведении */
+    opacity: 1; /* Делаем текст полностью видимым */
+}
+
+/* Адаптивность для мобильных устройств - можно убрать текст полностью, если места мало */
+@media (max-width: 600px) {
+    .nav-text {
+        font-size: 0.7em; /* Чуть меньше текст на маленьких экранах */
+    }
+}
