@@ -19,15 +19,10 @@ body, html {
 }
 
 .video-background video {
-    min-width: 100%;
-    min-height: 100%;
-    width: auto;
-    height: auto;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    object-fit: cover; /* Гарантируем, что видео заполнит весь контейнер, обрезая при необходимости */
+    display: block; /* Убираем возможное дополнительное пространство под видео */
+    width: 100vw; /* Ширина равна ширине viewport */
+    height: 100vh; /* Высота равна высоте viewport */
+    object-fit: cover; /* Видео будет заполнять контейнер, обрезаясь при необходимости */
 }
 
 .content {
