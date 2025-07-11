@@ -2,12 +2,13 @@
 
 .full-screen-section {
     position: fixed;
-    top: 0; /* ВОССТАНОВЛЕНО: Окно начинается от самого верха экрана */
+    top: 0;
     left: 0;
     width: 100%;
-    bottom: 70px; /* Окно заканчивается ровно над панелью навигации */
+    /* ИЗМЕНЕНО: Используем calc() для высоты, чтобы она точно доходила до панели */
+    height: calc(100vh - 70px); /* 100% высоты viewport минус высота nav-панели */
+    /* bottom: 70px; */ /* Теперь это свойство не нужно, так как height задает размер */
 
-    /* Фон окна: чуть темнее и прозрачнее, чем общий фон, с блюром */
     background: rgba(30, 30, 30, 0.3);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
@@ -15,7 +16,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 999; /* Ниже навигационной панели (1000), но выше основного контента */
+    z-index: 999;
     padding: 20px;
     box-sizing: border-box;
 
@@ -51,21 +52,19 @@
 }
 */
 
-/* Адаптивность для мобильных (отступы, если контент есть) */
+/* Адаптивность для мобильных */
 @media (max-width: 768px) {
     .full-screen-section {
+        /* ИЗМЕНЕНО: Корректируем высоту для мобильных, если высота nav-панели меняется */
+        height: calc(100vh - 60px); /* Если высота nav-панели на мобильных 60px */
         padding: 15px;
     }
-    /* .full-screen-section h2 {
-        font-size: 2.2em;
-    } */
 }
 
 @media (max-width: 480px) {
     .full-screen-section {
+        /* Если на очень маленьких экранах nav-панель еще меньше */
+        /* height: calc(100vh - 50px); */ /* Пример */
         padding: 10px;
     }
-    /* .full-screen-section h2 {
-        font-size: 1.8em;
-    } */
 }
