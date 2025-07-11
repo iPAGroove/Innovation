@@ -2,79 +2,72 @@
 
 /* Стили для заголовков категорий */
 .category-section {
-    margin-bottom: 40px; /* Отступ между секциями NEW и VIP */
+    margin-bottom: 40px;
 }
 
 .full-screen-section h2 {
     font-family: 'Montserrat', sans-serif;
     font-size: 1.8em;
-    color: #FFD700; /* Золотой цвет для заголовка */
+    color: #FFD700;
     text-shadow: 0 0 7px rgba(255, 215, 0, 0.4);
     margin-top: 0;
     margin-bottom: 20px;
     text-transform: uppercase;
     letter-spacing: 1px;
     text-align: left;
-    padding-left: 20px; /* Отступ слева для заголовка */
+    padding-left: 20px;
 }
 
 /* Контейнер для горизонтальной прокрутки карточек */
 .games-horizontal-scroll {
-    display: flex; /* Делаем элементы гибкими и располагаем их в ряд */
-    gap: 15px; /* Отступ между карточками */
-    overflow-x: auto; /* ВАЖНО: Горизонтальная прокрутка */
-    overflow-y: hidden; /* Скрываем вертикальную прокрутку внутри этого блока */
-    flex-wrap: nowrap; /* ВАЖНО: Запрещаем перенос строк, чтобы элементы оставались в одном ряду */
-    padding-bottom: 20px; /* Дополнительный отступ снизу для видимости скроллбара (если отображается) */
-    padding-left: 20px; /* Отступ слева для первой карточки */
-    padding-right: 20px; /* Отступ справа для последней карточки */
-    box-sizing: border-box; /* Учитываем padding в общей ширине */
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 15px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
 
-    /* ВАЖНО: Явно задаем минимальную ширину, чтобы гарантировать переполнение */
-    min-width: 1000px; /* Установите достаточно большое значение, чтобы оно превышало ширину экрана */
-    /* width: auto; */ /* Можно явно указать auto, чтобы не конфликтовать с min-width */
-
-
-    /* ВРЕМЕННО: Добавляем красную границу для визуальной отладки */
-    border: 2px solid red;
-
-    /* Скрываем скроллбар по умолчанию для красоты */
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    /* Скрываем скроллбар */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 .games-horizontal-scroll::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera*/
+    display: none;
 }
 
-/* Стили для каждой карточки игры (квадратные иконки с текстом под ними) */
+/* Карточки игр */
 .game-card {
-    background: transparent; /* Прозрачный фон */
+    flex-shrink: 0;
+    flex-grow: 0;
+    width: 90px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background: transparent;
     border-radius: 0;
     padding: 0;
-    display: flex;
-    flex-direction: column; /* Элементы внутри карточки идут сверху вниз */
-    align-items: center; /* Центрируем по горизонтали */
-    justify-content: flex-start;
     text-align: center;
     cursor: pointer;
     transition: transform 0.2s ease;
-    box-shadow: none; /* Без тени */
-    width: 90px; /* Фиксированная ширина карточки (иконки + текст) */
-    flex-shrink: 0; /* ВАЖНО: Запрещаем сжимать карточки, чтобы они выходили за пределы и вызывали прокрутку */
-    flex-grow: 0; /* Убеждаемся, что не растет */
+    box-shadow: none;
 }
 
 .game-card:hover {
     transform: translateY(-5px) scale(1.02);
 }
 
-/* Заглушка для иконки игры */
+/* Заглушка для иконки */
 .game-icon-placeholder {
-    width: 70px; /* Размер иконки */
+    width: 70px;
     height: 70px;
-    background: linear-gradient(45deg, #FFD700, #FF69B4); /* Градиент как заглушка */
-    border-radius: 12px; /* Скругление углов иконки */
+    background: linear-gradient(45deg, #FFD700, #FF69B4);
+    border-radius: 12px;
     margin-bottom: 7px;
     display: flex;
     justify-content: center;
@@ -84,7 +77,7 @@
     font-weight: bold;
 }
 
-/* Стили для названия игры под иконкой */
+/* Название игры */
 .game-title {
     font-family: 'Open Sans', sans-serif;
     font-size: 0.85em;
@@ -92,40 +85,44 @@
     margin: 0;
     line-height: 1.2;
     padding: 0 5px;
-    white-space: normal; /* Разрешаем перенос текста для длинных названий */
-    text-overflow: ellipsis; /* Добавляем многоточие для обрезки */
-    overflow: hidden; /* Скрываем выходящий текст */
-    display: -webkit-box; /* Для многострочного обрезания */
-    -webkit-line-clamp: 2; /* Ограничиваем двумя строками */
+    white-space: normal;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
 }
 
-/* Адаптивность для мобильных */
+/* Мобильная адаптация */
 @media (max-width: 768px) {
     .category-section {
         margin-bottom: 30px;
     }
+
     .full-screen-section h2 {
         font-size: 1.6em;
         margin-bottom: 15px;
         padding-left: 15px;
     }
+
     .games-horizontal-scroll {
         gap: 12px;
         padding-left: 15px;
         padding-right: 15px;
         padding-bottom: 15px;
-        min-width: 760px; /* Уменьшаем min-width для планшетов */
     }
+
     .game-card {
-        width: 80px; /* Чуть меньше на планшетах */
+        width: 80px;
     }
+
     .game-icon-placeholder {
         width: 60px;
         height: 60px;
         border-radius: 10px;
         font-size: 1.4em;
     }
+
     .game-title {
         font-size: 0.75em;
     }
@@ -135,27 +132,31 @@
     .category-section {
         margin-bottom: 25px;
     }
+
     .full-screen-section h2 {
         font-size: 1.4em;
         margin-bottom: 10px;
         padding-left: 10px;
     }
+
     .games-horizontal-scroll {
         gap: 10px;
         padding-left: 10px;
         padding-right: 10px;
         padding-bottom: 10px;
-        min-width: 450px; /* Уменьшаем min-width для смартфонов */
     }
+
     .game-card {
-        width: 70px; /* Еще меньше на смартфонах */
+        width: 70px;
     }
+
     .game-icon-placeholder {
         width: 50px;
         height: 50px;
         border-radius: 8px;
         font-size: 1.2em;
     }
+
     .game-title {
         font-size: 0.7em;
     }
