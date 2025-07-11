@@ -3,19 +3,12 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: calc(100vh - 64px); /* Высота минус нижняя панель */
-  background: rgba(0, 0, 0, 0.85);
+  height: calc(100vh - 64px); /* Высота экрана минус панель */
+  background: rgba(0, 0, 0, 0.35); /* Чуть прозрачный фон */
   backdrop-filter: blur(12px);
   z-index: 9;
   display: none;
-  color: white;
-  padding: 20px;
   overflow-y: auto;
   transition: opacity 0.3s ease;
-}
-
-.screen h1 {
-  font-size: 24px;
-  text-align: center;
-  margin-top: 40px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
