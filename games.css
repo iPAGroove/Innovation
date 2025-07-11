@@ -1,5 +1,3 @@
-/* Секции VIP и FREE в Games */
-
 .category-section {
   margin-bottom: 40px;
   padding: 0 16px;
@@ -24,17 +22,28 @@
 
 .icon-card {
   flex: 0 0 auto;
-  width: 80px;
-  height: 80px;
-  border-radius: 12px;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(4px);
+  width: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: #fff;
+  font-size: 13px;
+  font-family: 'Arial', sans-serif;
+  line-height: 1.2;
 }
 
 .icon-card img {
-  width: 100%;
-  height: 100%;
+  width: 64px;
+  height: 64px;
+  border-radius: 14px;
   object-fit: cover;
-  display: block;
+  margin-bottom: 6px;
+}
+
+.icon-card span {
+  max-width: 72px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
