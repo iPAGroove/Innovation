@@ -1,0 +1,148 @@
+/* games-section.css */
+
+/* Стили для заголовка VIP */
+.full-screen-section h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.8em;
+    color: #FFD700;
+    text-shadow: 0 0 7px rgba(255, 215, 0, 0.4);
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: left;
+    padding-left: 20px;
+}
+
+/* Стили для сетки игр */
+.games-grid {
+    display: grid;
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+    grid-auto-flow: column;
+    gap: 15px;
+    justify-content: flex-start;
+
+    height: 310px; /* Примерная высота для 3 карточек + отступы. Требует точной подгонки! */
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+
+    max-width: 90%;
+    margin: 0 20px;
+    padding-bottom: 20px;
+    padding-right: 20px;
+
+    /* Убираем скроллбар по умолчанию для красоты */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+.games-grid::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+}
+
+/* Стили для каждой карточки игры */
+.game-card {
+    background: transparent;
+    border-radius: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    box-shadow: none;
+    width: 100px; /* Ширина одной карточки */
+    flex-shrink: 0;
+}
+
+.game-card:hover {
+    transform: translateY(-5px) scale(1.02);
+}
+
+/* Заглушка для иконки игры */
+.game-icon-placeholder {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(45deg, #FFD700, #FF69B4);
+    border-radius: 12px;
+    margin-bottom: 7px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 1.6em;
+    font-weight: bold;
+}
+
+/* Стили для названия игры */
+.game-title {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.85em;
+    color: #e0f2f7;
+    margin: 0;
+    line-height: 1.2;
+    padding: 0 5px;
+    white-space: normal;
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 768px) {
+    .section-inner-content {
+        padding-top: 15px;
+    }
+    .full-screen-section h2 {
+        font-size: 1.6em;
+        margin-bottom: 15px;
+        padding-left: 15px;
+    }
+    .games-grid {
+        gap: 10px;
+        height: 280px;
+        margin: 0 15px;
+        padding-right: 15px;
+    }
+    .game-card {
+        width: 90px;
+    }
+    .game-icon-placeholder {
+        width: 50px;
+        height: 50px;
+        border-radius: 10px;
+        font-size: 1.4em;
+    }
+    .game-title {
+        font-size: 0.75em;
+    }
+}
+
+@media (max-width: 480px) {
+    .section-inner-content {
+        padding-top: 10px;
+    }
+    .full-screen-section h2 {
+        font-size: 1.4em;
+        margin-bottom: 10px;
+        padding-left: 10px;
+    }
+    .games-grid {
+        gap: 8px;
+        height: 250px;
+        margin: 0 10px;
+        padding-right: 10px;
+    }
+    .game-card {
+        width: 80px;
+    }
+    .game-icon-placeholder {
+        width: 45px;
+        height: 45px;
+        border-radius: 8px;
+        font-size: 1.2em;
+    }
+    .game-title {
+        font-size: 0.7em;
+    }
+}
