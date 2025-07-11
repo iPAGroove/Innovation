@@ -1,25 +1,23 @@
 /* modal.css - Стиль для полноэкранных разделов */
 
 .full-screen-section {
-    position: fixed; /* Остается fixed */
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: calc(100vh - 70px); /* Высота до навигационной панели */
+    height: calc(100vh - 70px);
 
     background: rgba(30, 30, 30, 0.3);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
 
-    /* Возвращаем flex, так как убрали section-inner-content и h2 теперь прямой потомок */
     display: flex;
-    flex-direction: column; /* Теперь это колонка, чтобы h2 был над скроллом */
-    justify-content: flex-start; /* Начинаем сверху */
-    align-items: flex-start; /* Выравнивание по левому краю */
+    justify-content: center;
+    align-items: flex-start;
     padding: 20px;
     box-sizing: border-box;
     overflow-y: auto;
-    overflow-x: hidden; /* Оставляем на родительском модале */
+    /* overflow-x: hidden; */ /* УДАЛЯЕМ ЭТО! */
 
 
     opacity: 0;
@@ -37,12 +35,14 @@
     pointer-events: auto;
 }
 
-/* section-inner-content временно не используется в HTML, но оставим правила на случай, если вернем */
+/* Контейнер для внутреннего содержимого раздела */
 .section-inner-content {
     width: 100%;
     max-width: 960px;
     padding-top: 30px;
     padding-bottom: 30px;
+    /* Убедимся, что здесь нет overflow-x: hidden или других жестких ограничений */
+    /* Если это flex-контейнер, то flex-shrink: 0 для его дочерних элементов может помочь */
 }
 
 /* Адаптивность для мобильных */
