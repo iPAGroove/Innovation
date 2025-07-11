@@ -5,20 +5,18 @@
     top: 0;
     left: 0;
     width: 100%;
-    /* ИЗМЕНЕНО: Используем calc() для высоты, чтобы она точно доходила до панели */
-    height: calc(100vh - 70px); /* 100% высоты viewport минус высота nav-панели */
-    /* bottom: 70px; */ /* Теперь это свойство не нужно, так как height задает размер */
+    height: calc(100vh - 70px); /* Высота до навигационной панели */
 
     background: rgba(30, 30, 30, 0.3);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
 
     display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
+    justify-content: center; /* Центрируем содержимое по горизонтали */
+    align-items: flex-start; /* ВЫРАВНИВАНИЕ: контент будет начинаться сверху */
     padding: 20px;
     box-sizing: border-box;
+    overflow-y: auto; /* Добавляем скролл, если контента будет много */
 
     opacity: 0;
     visibility: hidden;
@@ -35,36 +33,129 @@
     pointer-events: auto;
 }
 
-/* Примеры стилей для контента, который вы добавите внутрь full-screen-section */
-/*
-.full-screen-section h2 {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 3em;
-    color: #FFD700;
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
-    margin-bottom: 20px;
+/* Новый контейнер для внутреннего содержимого раздела */
+.section-inner-content {
+    width: 100%;
+    max-width: 960px; /* Максимальная ширина для контента */
+    padding-top: 30px; /* Отступ сверху внутри раздела */
+    text-align: center; /* Центрируем заголовок и сетку */
 }
 
-.full-screen-section p {
-    font-size: 1.2em;
-    max-width: 600px;
-    text-align: center;
+/* Стили для заголовка VIP */
+.full-screen-section h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 3.5em; /* Увеличенный размер для VIP */
+    color: #FFD700; /* Золотой цвет */
+    text-shadow: 0 0 15px rgba(255, 215, 0, 0.7); /* Более выраженная тень */
+    margin-top: 0;
+    margin-bottom: 40px; /* Отступ от заголовка до карточек */
+    text-transform: uppercase; /* Все заглавные буквы */
+    letter-spacing: 2px;
 }
-*/
+
+/* Стили для сетки игр */
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* Адаптивная сетка */
+    gap: 20px; /* Расстояние между карточками */
+    justify-content: center; /* Центрируем карточки в сетке */
+    max-width: 800px; /* Ограничиваем ширину сетки */
+    margin: 0 auto; /* Центрируем саму сетку */
+}
+
+/* Стили для каждой карточки игры */
+.game-card {
+    background: rgba(60, 60, 60, 0.7); /* Темный полупрозрачный фон карточки */
+    border-radius: 15px; /* Скругленные углы */
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4); /* Тень для глубины */
+}
+
+.game-card:hover {
+    transform: translateY(-5px) scale(1.02); /* Эффект подъема и небольшого увеличения */
+    background-color: rgba(90, 90, 90, 0.8); /* Чуть светлее при наведении */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+}
+
+/* Заглушка для иконки игры */
+.game-icon-placeholder {
+    width: 80px; /* Размер иконки */
+    height: 80px;
+    background: linear-gradient(45deg, #FFD700, #FF69B4); /* Градиентный фон для заглушки */
+    border-radius: 10px; /* Скругленные углы заглушки */
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white; /* Цвет текста/символа в заглушке */
+    font-size: 2em; /* Размер символа */
+    font-weight: bold;
+    /* Можно добавить сюда иконку SVG или FontAwesome */
+    /* content: '🎮'; */ /* Пример символа, можно добавить через JS или CSS content */
+}
+
+/* Стили для названия игры */
+.game-title {
+    font-family: 'Montserrat', sans-serif; /* Более смелый шрифт для названия */
+    font-size: 1.1em;
+    color: #e0f2f7; /* Светлый цвет текста */
+    margin: 0;
+    line-height: 1.2;
+}
 
 /* Адаптивность для мобильных */
 @media (max-width: 768px) {
     .full-screen-section {
-        /* ИЗМЕНЕНО: Корректируем высоту для мобильных, если высота nav-панели меняется */
-        height: calc(100vh - 60px); /* Если высота nav-панели на мобильных 60px */
         padding: 15px;
+        height: calc(100vh - 60px); /* Коррекция высоты на мобильных, если nav-панель 60px */
+    }
+    .section-inner-content {
+        padding-top: 20px;
+    }
+    .full-screen-section h2 {
+        font-size: 2.5em;
+        margin-bottom: 30px;
+    }
+    .games-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Меньше карточек в ряду */
+        gap: 15px;
+    }
+    .game-icon-placeholder {
+        width: 70px;
+        height: 70px;
+    }
+    .game-title {
+        font-size: 1em;
     }
 }
 
 @media (max-width: 480px) {
     .full-screen-section {
-        /* Если на очень маленьких экранах nav-панель еще меньше */
-        /* height: calc(100vh - 50px); */ /* Пример */
         padding: 10px;
+    }
+    .section-inner-content {
+        padding-top: 15px;
+    }
+    .full-screen-section h2 {
+        font-size: 2em;
+        margin-bottom: 25px;
+    }
+    .games-grid {
+        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+        gap: 10px;
+    }
+    .game-icon-placeholder {
+        width: 60px;
+        height: 60px;
+    }
+    .game-title {
+        font-size: 0.9em;
     }
 }
