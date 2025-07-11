@@ -1,0 +1,99 @@
+/* modal.css */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    bottom: 70px; /* Высота навигационной панели, чтобы окно было до нее */
+    background: rgba(0, 0, 0, 0.7); /* Темный полупрозрачный фон */
+    backdrop-filter: blur(15px); /* Эффект блюра для фона модального окна */
+    -webkit-backdrop-filter: blur(15px); /* Для Safari */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999; /* Ниже навигационной панели (1000), но выше контента */
+
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease; /* Плавное появление/исчезновение */
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background: rgba(40, 40, 40, 0.9); /* Более темный, но тоже полупрозрачный фон для содержимого */
+    padding: 30px;
+    border-radius: 15px; /* Скругленные углы */
+    width: 90%; /* Ширина модального окна */
+    max-width: 800px; /* Максимальная ширина */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Большая тень */
+    color: #f0f0f0;
+    position: relative; /* Для позиционирования кнопки закрытия */
+    transform: scale(0.9); /* Начальный размер для анимации */
+    transition: transform 0.3s ease; /* Анимация масштабирования */
+}
+
+.modal-overlay.active .modal-content {
+    transform: scale(1); /* Возвращаем к нормальному размеру при активации */
+}
+
+.close-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 2.5em; /* Большой размер для символа 'x' */
+    color: #f0f0f0;
+    cursor: pointer;
+    line-height: 1; /* Убираем лишний отступ */
+    transition: color 0.2s ease;
+}
+
+.close-button:hover {
+    color: #FF69B4; /* Розовый при наведении */
+}
+
+/* Стилизация заголовков внутри модальных окон */
+.modal-content h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.2em;
+    color: #FFD700; /* Золотой цвет для заголовков */
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+}
+
+.modal-content p {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.1em;
+    line-height: 1.6;
+    color: #b0e0e6;
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 768px) {
+    .modal-content {
+        padding: 20px;
+        width: 95%;
+    }
+    .modal-content h2 {
+        font-size: 1.8em;
+    }
+    .close-button {
+        font-size: 2em;
+        top: 10px;
+        right: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-content {
+        padding: 15px;
+    }
+    .modal-content h2 {
+        font-size: 1.5em;
+    }
+}
