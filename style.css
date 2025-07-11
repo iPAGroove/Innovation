@@ -3,7 +3,7 @@ body, html {
     padding: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    /* УДАЛЕНО: overflow: hidden; */ /* Это было причиной! */
     font-family: 'Open Sans', sans-serif; /* Основной шрифт */
     color: #f0f0f0;
 }
@@ -14,7 +14,7 @@ body, html {
     left: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    overflow: hidden; /* Скрываем overflow только для видеофона */
     z-index: -1;
 }
 
@@ -23,14 +23,12 @@ body, html {
     width: 100vw;
     height: 100vh;
     object-fit: cover;
-    /* ИЗМЕНЕНО: уменьшаем или убираем затемнение видео */
-    filter: brightness(0.8); /* Сделаем видео менее темным (было 0.6) */
-    /* Если хотите совсем без затемнения, используйте: filter: none; */
+    filter: brightness(0.8);
 }
 
 .content {
     position: relative;
-    z-index: 1; /* Размещаем контент поверх видео */
+    z-index: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -38,18 +36,16 @@ body, html {
     width: 100%;
     height: 100%;
     text-align: center;
-    padding: 20px; /* Небольшой отступ для контента */
-    box-sizing: border-box; /* Учитываем padding в общей ширине/высоте */
-    /* ИЗМЕНЕНО: уменьшаем или убираем полупрозрачный фон */
-    background-color: rgba(0, 0, 0, 0.1); /* Сделаем фон почти прозрачным (было 0.4) */
-    /* Если хотите совсем без фона, используйте: background-color: transparent; */
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 .intro-text {
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: relative; /* Для позиционирования эффектов */
+    position: relative;
 }
 
 .title {
