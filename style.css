@@ -2,16 +2,17 @@
 html, body {
     margin: 0;
     padding: 0;
-    overflow: hidden; /* ГЛАВНОЕ: Убираем прокрутку */
+    overflow: hidden; /* Убираем прокрутку */
     height: 100vh;    /* Высота 100% от высоты окна просмотра */
     width: 100vw;     /* Ширина 100% от ширины окна просмотра */
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; /* Шрифты, подходящие для iOS */
-    -webkit-overflow-scrolling: touch; /* Улучшенная прокрутка на iOS (хотя у нас ее не будет) */
-    background-color: #333 !important; /* ВРЕМЕННО: Чтобы видеть хоть что-то, если видео не работает. !!! УБЕРИ ПОТОМ !!! */
+    -webkit-overflow-scrolling: touch; /* Улучшенная прокрутка на iOS */
+    background-color: black; /* На случай, если видео вообще не загрузится */
+    color: white; /* Цвет текста, если он появится */
 }
 
-/* Стили для контейнера видеофона */
-.video-background {
+/* Стили для контейнера видеофона (можно оставить, если нужен дополнительный слой) */
+.video-background-container {
     position: fixed; /* Фиксируем на заднем плане */
     top: 0;
     left: 0;
@@ -19,40 +20,16 @@ html, body {
     height: 100%;
     z-index: -1; /* Отправляем видео на задний план */
     overflow: hidden; /* Скрываем части видео, которые выходят за экран */
-    background-color: #000; /* Цвет фона, если видео не загрузилось */
+    background-color: black; /* Цвет фона, если видео не загрузилось */
 }
 
 /* Стили для самого видео */
-.video-background video {
-    min-width: 100%;
-    min-height: 100%;
-    width: auto;
-    height: auto;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); /* Центрируем видео */
+.video-background {
+    width: 100%;
+    height: 100%;
     object-fit: cover; /* Гарантируем, что видео покроет всю область без искажений */
-    /* Фильтры: слегка затемняем и размываем, чтобы потом можно было разместить текст/элементы */
-    filter: brightness(0.6) blur(2px); 
-    display: block; /* Убираем лишние отступы, которые иногда бывают у inline-элементов */
+    display: block; /* Убираем лишние отступы */
 }
 
-/* !!! УБЕДИСЬ, ЧТО ЭТОТ БЛОК ОТСУТСТВУЕТ В ТВОЕМ CSS ДЛЯ ТЕКУЩЕГО ТЕСТА !!! */
-/*
-@media (max-width: 768px), (max-height: 768px) {
-    .video-background {
-        display: none; 
-    }
-
-    body {
-        background-image: url('https://github.com/iPAGroove/Innovation/raw/main/static-bg-fallback.jpg'); // !!! ВСТАВЬ ССЫЛКУ НА ТВОЮ КАРТИНКУ-ЗАГЛУШКУ С ГИТХАБА ЗДЕСЬ !!!
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        height: 100vh;
-        width: 100vw;
-        background-color: #1a1a1a; 
-    }
-}
-*/
+/* Медиа-запрос для мобильных устройств теперь отсутствует,
+   чтобы видео попыталось проиграться и на них. */
