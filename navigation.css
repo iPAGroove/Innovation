@@ -1,95 +1,33 @@
-/* navigation.css */
-
 .bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 70px; /* Высота навигационной панели */
-    /* Убираем обычный background-color и border-top */
-
-    background: rgba(30, 30, 30, 0.5); /* Полупрозрачный фон */
-    backdrop-filter: blur(10px) saturate(180%); /* Эффект блюра и насыщенности для стекла */
-    -webkit-backdrop-filter: blur(10px) saturate(180%); /* Для Safari */
-
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 0 10px;
-    box-sizing: border-box;
-    z-index: 1000;
-    /* Убираем box-shadow, чтобы сделать дизайн легче, но можно добавить для глубины */
-    /* box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2); */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 56px;
+  background: rgba(0, 0, 0, 0.4); /* полупрозрачный фон */
+  backdrop-filter: blur(10px); /* стеклянный эффект */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 10;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.nav-button {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    color: #b0e0e6; /* Более мягкий цвет иконок по умолчанию */
-    transition: color 0.3s ease, transform 0.2s ease, background-color 0.3s ease; /* Добавляем transition для background-color */
-    flex: 1;
-    height: 100%; /* Чтобы кнопка занимала всю высоту панели для удобного нажатия */
-    /* border-radius: 10px; /* Слегка скругляем углы кнопок */
-    position: relative; /* Для эффекта выделения */
+.nav-item {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+  transition: transform 0.2s ease;
 }
 
-.nav-icon {
-    width: 28px; /* Чуть меньше иконки */
-    height: 28px;
-    /* Убираем margin-bottom, так как текста нет */
-    color: inherit; /* Иконка будет наследовать цвет от родительской кнопки */
-    transition: color 0.3s ease, transform 0.2s ease;
+.nav-item svg {
+  width: 26px;
+  height: 26px;
+  fill: white;
 }
 
-/* Эффект при наведении */
-.nav-button:hover {
-    color: #FFD700; /* Цвет иконки при наведении */
-    /* transform: translateY(-3px); /* Убираем, чтобы не было смещения */
-    background-color: rgba(255, 255, 255, 0.1); /* Легкий фон при наведении */
-}
-
-.nav-button:hover .nav-icon {
-    transform: scale(1.15); /* Увеличиваем иконку сильнее */
-}
-
-/* Эффект активной/выбранной кнопки (можно использовать JavaScript для добавления класса 'active') */
-.nav-button.active {
-    color: #FFD700; /* Золотой цвет для активной иконки */
-    transform: scale(1.05); /* Немного увеличиваем активную иконку */
-}
-
-.nav-button.active::after {
-    content: '';
-    position: absolute;
-    bottom: 5px; /* Расположение индикатора снизу */
-    width: 6px; /* Размер точки */
-    height: 6px;
-    background-color: #FFD700; /* Цвет точки */
-    border-radius: 50%;
-    box-shadow: 0 0 5px #FFD700;
-    animation: bounceIndicator 0.6s ease-in-out infinite alternate; /* Анимация пульсации */
-}
-
-@keyframes bounceIndicator {
-    from {
-        transform: translateY(0);
-    }
-    to {
-        transform: translateY(-3px); /* Пульсация вверх */
-    }
-}
-
-
-/* Адаптивность для мобильных устройств - обычно не требуется для таких панелей */
-@media (max-width: 600px) {
-    .nav-icon {
-        width: 26px;
-        height: 26px;
-    }
-    .bottom-nav {
-        height: 60px; /* Чуть меньше высота на мобильных */
-    }
+.nav-item:active {
+  transform: scale(1.1);
 }
