@@ -3,8 +3,8 @@ body, html {
     padding: 0;
     width: 100%;
     height: 100%;
-    /* УДАЛЕНО: overflow: hidden; */ /* Это было причиной! */
-    font-family: 'Open Sans', sans-serif; /* Основной шрифт */
+    /* УДАЛЕНО: overflow: hidden; */
+    font-family: 'Open Sans', sans-serif;
     color: #f0f0f0;
 }
 
@@ -14,7 +14,7 @@ body, html {
     left: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden; /* Скрываем overflow только для видеофона */
+    overflow: hidden;
     z-index: -1;
 }
 
