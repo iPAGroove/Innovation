@@ -2,7 +2,6 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     const navButtons = document.querySelectorAll('.nav-button');
-    // Обновляем селектор, чтобы он выбирал только новый объединенный модал
     const fullScreenSection = document.getElementById('games-and-apps-modal'); 
 
     // --- Логика для активной кнопки навигации ---
