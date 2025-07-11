@@ -4,12 +4,15 @@
   <meta charset="UTF-8">
   <title>iPA Groove</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Стили -->
   <link rel="stylesheet" href="background.css">
   <link rel="stylesheet" href="navigation.css">
   <link rel="stylesheet" href="sections.css">
   <link rel="stylesheet" href="games.css">
   <link rel="stylesheet" href="apps.css">
-  <link rel="stylesheet" href="menu.css"> <!-- ✅ Добавлено -->
+  <link rel="stylesheet" href="menu.css">
+  <link rel="stylesheet" href="mail.css"> <!-- ✅ Новый стиль для окна почты -->
 </head>
 <body>
 
@@ -43,7 +46,7 @@
     <div class="category-section"><h2 class="section-title">TOP</h2><div class="horizontal-scroll" id="apps-top"></div></div>
   </div>
 
-  <!-- ✅ Боковая панель меню -->
+  <!-- Боковая панель меню -->
   <div id="menuPanel" class="menu-panel">
     <div class="menu-content">
       <h2>iPA Groove Menu</h2>
@@ -52,6 +55,15 @@
         <li><a href="#">📄 Install Guide</a></li>
         <li><a href="#">🧑‍💻 Contact Us</a></li>
       </ul>
+    </div>
+  </div>
+
+  <!-- ✅ Модальное окно почты -->
+  <div id="mailModal" class="mail-modal">
+    <div class="mail-content">
+      <button class="close-btn" id="closeMail">×</button>
+      <h2>Связаться с iPA Groove</h2>
+      <p>Окно для формы связи или других элементов почты</p>
     </div>
   </div>
 
@@ -126,7 +138,9 @@
     console.log('✅ Данные загружены из Firebase');
   </script>
 
+  <!-- Скрипты -->
   <script src="script.js"></script>
-  <script src="menu.js"></script> <!-- ✅ Подключено -->
+  <script src="menu.js"></script>
+  <script src="mail.js"></script> <!-- ✅ Новый скрипт для почты -->
 </body>
 </html>
