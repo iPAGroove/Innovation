@@ -1,4 +1,4 @@
-/* games-section.css */
+/* games-section.css - АГРЕССИВНЫЙ ТЕСТ: ОБЯЗАН ПОКАЗАТЬ СКРОЛЛБАР */
 
 /* Стили для заголовков категорий */
 .category-section {
@@ -20,27 +20,36 @@
 
 /* Контейнер для горизонтальной прокрутки карточек */
 .games-horizontal-scroll {
-    display: flex; /* Делаем элементы гибкими и располагаем их в ряд */
+    display: flex !important; /* Убеждаемся, что это flex */
+    flex-direction: row !important; /* Убеждаемся, что это строка */
+    flex-wrap: nowrap !important; /* Убеждаемся, что нет переноса */
+
+    /* ВАЖНО: Принудительно включаем прокрутку и ПОКАЗЫВАЕМ скроллбар */
+    overflow-x: scroll !important;
+    overflow-y: hidden !important;
+
+    /* Добавлено для лучшей прокрутки на тач-устройствах */
+    -webkit-overflow-scrolling: touch !important;
+
     gap: 15px; /* Отступ между карточками */
-    overflow-x: auto; /* ВАЖНО: Горизонтальная прокрутка */
-    overflow-y: hidden; /* Скрываем вертикальную прокрутку внутри этого блока */
-    flex-wrap: nowrap; /* ВАЖНО: Запрещаем перенос строк, чтобы элементы оставались в одном ряду */
-    padding-bottom: 20px; /* Дополнительный отступ снизу для видимости скроллбара (если отображается) */
+    padding-bottom: 20px; /* Дополнительный отступ снизу для видимости скроллбара */
     padding-left: 20px; /* Отступ слева для первой карточки */
     padding-right: 20px; /* Отступ справа для последней карточки */
     box-sizing: border-box; /* Учитываем padding в общей ширине */
 
-    /* ДОБАВЛЕНО/ПЕРЕПРОВЕРЕНО: Иногда помогает для корректного overflow в flex-контейнерах */
-    min-width: 0;
+    min-width: 0 !important; /* Убеждаемся, что min-width не мешает */
+    width: 100%; /* Убеждаемся, что занимает всю доступную ширину */
 
-    /* Скрываем скроллбар по умолчанию для красоты */
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    /* УБРАНЫ: Свойства для скрытия скроллбара, чтобы он был виден для диагностики */
+    /* -ms-overflow-style: none; */
+    /* scrollbar-width: none; */
 }
 
-.games-horizontal-scroll::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera*/
-}
+/* УБРАНЫ: Правила для скрытия вебкит-скроллбара */
+/* .games-horizontal-scroll::-webkit-scrollbar {
+    display: none;
+} */
+
 
 /* Стили для каждой карточки игры (квадратные иконки с текстом под ними) */
 .game-card {
@@ -55,8 +64,9 @@
     cursor: pointer;
     transition: transform 0.2s ease;
     box-shadow: none; /* Без тени */
-    width: 90px; /* Фиксированная ширина карточки (иконки + текст) */
-    flex-shrink: 0; /* ВАЖНО: Запрещаем сжимать карточки, чтобы они выходили за пределы и вызывали прокрутку */
+    width: 90px !important; /* Фиксированная ширина карточки (иконки + текст) */
+    flex-shrink: 0 !important; /* ВАЖНО: Запрещаем сжимать карточки, чтобы они выходили за пределы и вызывали прокрутку */
+    flex-grow: 0 !important; /* Убеждаемся, что не растет */
 }
 
 .game-card:hover {
@@ -111,7 +121,7 @@
         padding-bottom: 15px;
     }
     .game-card {
-        width: 80px; /* Чуть меньше на планшетах */
+        width: 80px !important; /* Чуть меньше на планшетах */
     }
     .game-icon-placeholder {
         width: 60px;
@@ -140,7 +150,7 @@
         padding-bottom: 10px;
     }
     .game-card {
-        width: 70px; /* Еще меньше на смартфонах */
+        width: 70px !important; /* Еще меньше на смартфонах */
     }
     .game-icon-placeholder {
         width: 50px;
