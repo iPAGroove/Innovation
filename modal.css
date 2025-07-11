@@ -1,59 +1,38 @@
-/* modal.css - Теперь это стили для полноэкранных разделов */
+/* modal.css - Стиль для полноэкранных разделов */
 
 .full-screen-section {
     position: fixed;
-    /* ИЗМЕНЕНО: Отступ сверху, чтобы окно начиналось ниже */
-    top: 60px; /* Например, 60px от верха, можно настроить */
+    top: 0; /* ВОССТАНОВЛЕНО: Окно начинается от самого верха экрана */
     left: 0;
     width: 100%;
-    bottom: 70px; /* Высота навигационной панели, чтобы окно было до нее */
+    bottom: 70px; /* Окно заканчивается ровно над панелью навигации */
 
-    /* ИЗМЕНЕНО: Фон окна сделан светлее и прозрачнее */
-    background: rgba(30, 30, 30, 0.3); /* Было rgba(0, 0, 0, 0.7) */
-    /* Уменьшаем blur, чтобы фон был чуть четче, но все равно размыт */
-    backdrop-filter: blur(10px); /* Было 15px */
-    -webkit-backdrop-filter: blur(10px); /* Для Safari */
+    /* Фон окна: чуть темнее и прозрачнее, чем общий фон, с блюром */
+    background: rgba(30, 30, 30, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 
-    display: flex; /* Используем flex для центрирования контента, если он появится */
-    justify-content: center; /* Центрируем по горизонтали */
-    align-items: center; /* Центрируем по вертикали */
+    display: flex;
+    justify-content: center;
+    align-items: center;
     z-index: 999; /* Ниже навигационной панели (1000), но выше основного контента */
-    padding: 20px; /* Добавим небольшой отступ */
-    box-sizing: border-box; /* Учитываем padding */
+    padding: 20px;
+    box-sizing: border-box;
 
     opacity: 0;
     visibility: hidden;
-    pointer-events: none; /* Раздел не будет реагировать на события мыши, когда скрыт */
-    transition: opacity 0.3s ease, visibility 0.3s ease; /* Плавное появление/исчезновение */
+    pointer-events: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 
-    color: #f0f0f0; /* Цвет текста по умолчанию внутри раздела */
-    font-family: 'Open Sans', sans-serif; /* Шрифт по умолчанию */
+    color: #f0f0f0;
+    font-family: 'Open Sans', sans-serif;
 }
 
 .full-screen-section.active {
     opacity: 1;
     visibility: visible;
-    pointer-events: auto; /* Раздел будет реагировать на события мыши, когда активен */
+    pointer-events: auto;
 }
-
-/* Если вы захотите добавить кнопку закрытия внутри секции, можно стилизовать ее так: */
-/*
-.section-close-button {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    font-size: 2.5em;
-    color: #f0f0f0;
-    cursor: pointer;
-    line-height: 1;
-    transition: color 0.2s ease;
-    z-index: 1001;
-}
-
-.section-close-button:hover {
-    color: #FF69B4;
-}
-*/
 
 /* Примеры стилей для контента, который вы добавите внутрь full-screen-section */
 /*
@@ -72,13 +51,11 @@
 }
 */
 
-/* Адаптивность для мобильных */
+/* Адаптивность для мобильных (отступы, если контент есть) */
 @media (max-width: 768px) {
     .full-screen-section {
-        top: 50px; /* Меньше отступ сверху на мобильных */
         padding: 15px;
     }
-    /* Если будут заголовки внутри */
     /* .full-screen-section h2 {
         font-size: 2.2em;
     } */
@@ -86,10 +63,8 @@
 
 @media (max-width: 480px) {
     .full-screen-section {
-        top: 40px; /* Еще меньше отступ сверху на очень маленьких экранах */
         padding: 10px;
     }
-    /* Если будут заголовки внутри */
     /* .full-screen-section h2 {
         font-size: 1.8em;
     } */
