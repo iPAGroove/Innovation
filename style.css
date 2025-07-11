@@ -1,12 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Open+Sans:wght@400&display=swap');
-
 body, html {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
     overflow: hidden;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Open Sans', sans-serif; /* Основной шрифт */
     color: #f0f0f0;
 }
 
@@ -25,12 +23,14 @@ body, html {
     width: 100vw;
     height: 100vh;
     object-fit: cover;
-    filter: brightness(0.6);
+    /* ИЗМЕНЕНО: уменьшаем или убираем затемнение видео */
+    filter: brightness(0.8); /* Сделаем видео менее темным (было 0.6) */
+    /* Если хотите совсем без затемнения, используйте: filter: none; */
 }
 
 .content {
     position: relative;
-    z-index: 1;
+    z-index: 1; /* Размещаем контент поверх видео */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -38,16 +38,18 @@ body, html {
     width: 100%;
     height: 100%;
     text-align: center;
-    padding: 20px;
-    box-sizing: border-box;
-    background-color: rgba(0, 0, 0, 0.4);
+    padding: 20px; /* Небольшой отступ для контента */
+    box-sizing: border-box; /* Учитываем padding в общей ширине/высоте */
+    /* ИЗМЕНЕНО: уменьшаем или убираем полупрозрачный фон */
+    background-color: rgba(0, 0, 0, 0.1); /* Сделаем фон почти прозрачным (было 0.4) */
+    /* Если хотите совсем без фона, используйте: background-color: transparent; */
 }
 
 .intro-text {
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: relative;
+    position: relative; /* Для позиционирования эффектов */
 }
 
 .title {
@@ -65,9 +67,9 @@ body, html {
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.6), 0 0 20px rgba(255, 255, 255, 0.4);
 
     opacity: 0;
-    transform: translateY(-20px) scale(0.9); /* Начальное состояние для анимации */
-    animation: introAnimation 4s ease-in-out forwards; /* Общая анимация 4 секунды */
-    animation-delay: 0.5s; /* Задержка перед стартом анимации для заголовка */
+    transform: translateY(-20px) scale(0.9);
+    animation: introAnimation 4s ease-in-out forwards;
+    animation-delay: 0.5s;
 }
 
 .subtitle {
@@ -79,44 +81,35 @@ body, html {
     letter-spacing: 1px;
 
     opacity: 0;
-    transform: translateY(20px) scale(0.9); /* Начальное состояние для анимации */
-    animation: introAnimation 4s ease-in-out forwards; /* Общая анимация 4 секунды */
-    animation-delay: 1s; /* Задержка перед стартом анимации для подзаголовка */
+    transform: translateY(20px) scale(0.9);
+    animation: introAnimation 4s ease-in-out forwards;
+    animation-delay: 1s;
 }
 
-/* Общая анимация для появления, удержания и исчезновения */
 @keyframes introAnimation {
-    /* Появление (первые ~25% времени) */
     0% {
         opacity: 0;
-        transform: translateY(20px) scale(0.9); /* Начинаем чуть ниже/выше и меньше */
+        transform: translateY(20px) scale(0.9);
     }
     25% {
         opacity: 1;
-        transform: translateY(0) scale(1); /* Полностью появился */
+        transform: translateY(0) scale(1);
     }
-
-    /* Удержание (от 25% до ~75% времени) */
     75% {
         opacity: 1;
-        transform: translateY(0) scale(1); /* Удерживаем в том же состоянии */
+        transform: translateY(0) scale(1);
     }
-
-    /* Исчезновение (последние ~25% времени) */
     100% {
         opacity: 0;
-        transform: translateY(-20px) scale(0.9); /* Исчезаем, уходя вверх/вниз и уменьшаясь */
+        transform: translateY(-20px) scale(0.9);
     }
 }
 
-
-/* Адаптивность для мобильных устройств */
 @media (max-width: 768px) {
     .title {
         font-size: 2.5em;
         -webkit-text-stroke: 1px rgba(255, 255, 255, 0.7);
     }
-
     .subtitle {
         font-size: 1.2em;
     }
@@ -127,7 +120,6 @@ body, html {
         font-size: 1.8em;
         -webkit-text-stroke: 0.8px rgba(255, 255, 255, 0.7);
     }
-
     .subtitle {
         font-size: 1em;
     }
