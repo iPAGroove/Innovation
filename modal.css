@@ -16,8 +16,8 @@
     align-items: flex-start; /* Контент начинается сверху */
     padding: 20px; /* Отступы вокруг section-inner-content */
     box-sizing: border-box;
-    overflow-y: hidden; /* ИЗМЕНЕНО: Скролл будет на .games-grid, а не здесь */
-    overflow-x: hidden; /* Пока скрываем горизонтальный скролл на главном контейнере */
+    overflow-y: hidden;
+    overflow-x: hidden;
 
 
     opacity: 0;
@@ -40,101 +40,6 @@
     width: 100%;
     max-width: 960px; /* Максимальная ширина для контента */
     padding-top: 20px;
-    /* text-align: left; */ /* Убрано, так как h2 имеет свое выравнивание */
-}
-
-/* Стили для заголовка VIP */
-.full-screen-section h2 {
-    font-family: 'Montserrat', sans-serif;
-    /* ИЗМЕНЕНО: Еще больше уменьшаем размер заголовка VIP */
-    font-size: 1.8em; /* Был 2em */
-    color: #FFD700;
-    text-shadow: 0 0 7px rgba(255, 215, 0, 0.4); /* Еще меньше тень */
-    margin-top: 0;
-    margin-bottom: 20px; /* Уменьшен отступ от заголовка до карточек */
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    text-align: left;
-    padding-left: 20px; /* Отступ слева */
-}
-
-/* Стили для сетки игр */
-.games-grid {
-    display: grid;
-    /* ИЗМЕНЕНО: 3 строки (для вертикального заполнения), автоматические колонки */
-    grid-template-rows: repeat(3, minmax(0, 1fr)); /* 3 строки, равномерное распределение высоты */
-    grid-auto-flow: column; /* ЭЛЕМЕНТЫ ЗАПОЛНЯЮТСЯ ПО КОЛОНКАМ, ЗАТЕМ ПЕРЕХОДЯТ В СЛЕДУЮЩИЙ РЯД */
-    gap: 15px; /* Расстояние между карточками */
-    justify-content: flex-start; /* Выравниваем карточки по левому краю */
-
-    /* ИЗМЕНЕНО: Ограничиваем высоту контейнера для горизонтального скролла */
-    height: 310px; /* Примерная высота для 3 карточек + отступы. Требует точной подгонки! */
-    overflow-x: auto; /* ГОРИЗОНТАЛЬНЫЙ СКРОЛЛ */
-    overflow-y: hidden; /* Скрываем вертикальный скролл для этой сетки */
-    white-space: nowrap; /* Предотвращаем перенос строк, чтобы скролл работал */
-
-    max-width: 90%; /* Ограничиваем ширину сетки, чтобы она не выходила за края */
-    margin: 0 20px; /* Отступы по бокам */
-    padding-bottom: 20px; /* Отступ снизу для скроллбара */
-    padding-right: 20px; /* Отступ справа для удобства прокрутки */
-
-    /* Убираем скроллбар по умолчанию для красоты (только если нужно) */
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-}
-
-.games-grid::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera*/
-}
-
-
-/* Стили для каждой карточки игры */
-.game-card {
-    background: transparent;
-    border-radius: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    text-align: center;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-    box-shadow: none;
-    /* ИЗМЕНЕНО: Задаем фиксированную ширину, чтобы grid-auto-flow работал корректно */
-    width: 100px; /* Ширина одной карточки */
-    flex-shrink: 0; /* Не сжимать карточки в flex-контейнере (если games-grid был бы flex) */
-}
-
-.game-card:hover {
-    transform: translateY(-5px) scale(1.02);
-}
-
-/* Заглушка для иконки игры */
-.game-icon-placeholder {
-    /* ИЗМЕНЕНО: Еще уменьшен размер иконки */
-    width: 60px; /* Был 70px */
-    height: 60px; /* Был 70px */
-    background: linear-gradient(45deg, #FFD700, #FF69B4);
-    border-radius: 12px; /* Чуть меньше скругление */
-    margin-bottom: 7px; /* Еще уменьшен отступ до названия */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    font-size: 1.6em; /* Уменьшен размер символа */
-    font-weight: bold;
-}
-
-/* Стили для названия игры */
-.game-title {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 0.85em; /* Чуть меньше размер текста */
-    color: #e0f2f7;
-    margin: 0;
-    line-height: 1.2;
-    padding: 0 5px;
-    white-space: normal; /* Разрешаем перенос текста для названия */
 }
 
 /* Адаптивность для мобильных */
@@ -143,62 +48,10 @@
         padding: 15px;
         height: calc(100vh - 60px); /* Коррекция высоты на мобильных, если nav-панель 60px */
     }
-    .section-inner-content {
-        padding-top: 15px;
-    }
-    .full-screen-section h2 {
-        font-size: 1.6em; /* Еще меньше на мобильных */
-        margin-bottom: 15px;
-        padding-left: 15px;
-    }
-    .games-grid {
-        gap: 10px;
-        height: 280px; /* Корректируем высоту сетки на мобильных */
-        margin: 0 15px;
-        padding-right: 15px;
-    }
-    .game-card {
-        width: 90px; /* Чуть меньше ширина карточки на мобильных */
-    }
-    .game-icon-placeholder {
-        width: 50px; /* Еще меньше иконка */
-        height: 50px;
-        border-radius: 10px;
-        font-size: 1.4em;
-    }
-    .game-title {
-        font-size: 0.75em;
-    }
 }
 
 @media (max-width: 480px) {
     .full-screen-section {
         padding: 10px;
-    }
-    .section-inner-content {
-        padding-top: 10px;
-    }
-    .full-screen-section h2 {
-        font-size: 1.4em;
-        margin-bottom: 10px;
-        padding-left: 10px;
-    }
-    .games-grid {
-        gap: 8px;
-        height: 250px; /* Корректируем высоту сетки на очень маленьких экранах */
-        margin: 0 10px;
-        padding-right: 10px;
-    }
-    .game-card {
-        width: 80px; /* Еще меньше ширина карточки */
-    }
-    .game-icon-placeholder {
-        width: 45px;
-        height: 45px;
-        border-radius: 8px;
-        font-size: 1.2em;
-    }
-    .game-title {
-        font-size: 0.7em;
     }
 }
