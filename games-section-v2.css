@@ -1,6 +1,10 @@
 /* games-section-v2.css */
 
-/* Стили для заголовков категорий - теперь h2 прямой потомок full-screen-section */
+/* Стили для заголовков категорий */
+.category-section {
+    margin-bottom: 40px;
+}
+
 .full-screen-section h2 {
     font-family: 'Montserrat', sans-serif;
     font-size: 1.8em;
@@ -11,40 +15,29 @@
     text-transform: uppercase;
     letter-spacing: 1px;
     text-align: left;
-    padding-left: 0; /* Убираем padding-left, так как full-screen-section уже имеет padding */
-    width: 100%; /* Заголовок должен занимать всю доступную ширину */
-    box-sizing: border-box; /* Учитываем padding родителя */
+    padding-left: 20px;
 }
 
 /* Контейнер для горизонтальной прокрутки карточек */
 .games-horizontal-scroll {
-    /* АГРЕССИВНОЕ ПОЗИЦИОНИРОВАНИЕ ДЛЯ ТЕСТА */
-    position: absolute; /* Делаем абсолютно позиционированным */
-    top: 60px; /* Отступ от верха full-screen-section (под заголовком) */
-    left: 20px; /* Отступ слева (как был padding-left) */
-    right: 20px; /* Отступ справа (как был padding-right) */
-    /* width: calc(100% - 40px); */ /* Ширина, чтобы учесть left/right */
-    /* УБИРАЕМ: min-width: 1000px; */ /* Сейчас это неважно, важнее width */
-
     display: flex;
     gap: 15px;
-    overflow-x: auto;
+    overflow-x: auto; /* ВАЖНО: Горизонтальная прокрутка */
     overflow-y: hidden;
     flex-wrap: nowrap;
     padding-bottom: 20px;
-    /* padding-left: 20px; */ /* Убраны, так как Left уже задан */
-    /* padding-right: 20px; */ /* Убраны, так как Right уже задан */
+    padding-left: 20px;
+    padding-right: 20px;
     box-sizing: border-box;
 
+    /* Возвращаем min-width как основное свойство для расширения */
+    min-width: 1000px;
+    /* Убираем width: 200vw !important;, т.к. это был только тест */
 
-    /* ПРИНУДИТЕЛЬНАЯ ШИРИНА */
-    width: max-content; /* Позволяем ширине быть такой, какой требуют дочерние элементы */
-    /* ИЛИ: width: 200vw; - можно попробовать это, если max-content не сработает */
-
-
-    /* ВРЕМЕННО: Добавляем красную границу для визуальной отладки */
+    /* ВРЕМЕННО: Оставляем красную границу для визуальной отладки */
     border: 2px solid red;
 
+    /* Скрываем скроллбар по умолчанию для красоты */
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
@@ -108,17 +101,20 @@
 
 /* Адаптивность для мобильных */
 @media (max-width: 768px) {
+    .category-section {
+        margin-bottom: 30px;
+    }
     .full-screen-section h2 {
         font-size: 1.6em;
         margin-bottom: 15px;
-        padding-left: 0;
+        padding-left: 15px;
     }
     .games-horizontal-scroll {
         gap: 12px;
-        left: 15px;
-        right: 15px;
+        padding-left: 15px;
+        padding-right: 15px;
         padding-bottom: 15px;
-        top: 50px; /* Отступ для мобильных */
+        min-width: 760px; /* Уменьшаем min-width для планшетов */
     }
     .game-card {
         width: 80px;
@@ -135,17 +131,20 @@
 }
 
 @media (max-width: 480px) {
+    .category-section {
+        margin-bottom: 25px;
+    }
     .full-screen-section h2 {
         font-size: 1.4em;
         margin-bottom: 10px;
-        padding-left: 0;
+        padding-left: 10px;
     }
     .games-horizontal-scroll {
         gap: 10px;
-        left: 10px;
-        right: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
         padding-bottom: 10px;
-        top: 40px; /* Отступ для мобильных */
+        min-width: 450px; /* Уменьшаем min-width для телефонов */
     }
     .game-card {
         width: 70px;
