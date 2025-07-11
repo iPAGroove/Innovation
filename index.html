@@ -24,25 +24,12 @@
         </div>
     </div>
 
-    <div id="games-modal" class="modal-overlay">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2>Games Section</h2>
-            <p>Content for Games will go here...</p>
-        </div>
-    </div>
+    <div id="games-section" class="full-screen-section"> </div>
 
-    <div id="apps-modal" class="modal-overlay">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2>Apps Section</h2>
-            <p>Content for Apps will go here...</p>
-        </div>
-    </div>
+    <div id="apps-section" class="full-screen-section"> </div>
 
     <nav class="bottom-nav">
-        <a href="#" class="nav-button" data-modal="games-modal">
-            <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <a href="#" class="nav-button" data-section="games-section"> <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M11 5H6a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h5v4c0 1.1-.9 2-2 2H8a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2h-1c-1.1 0-2-.9-2-2v-4h5a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-5z"/>
                 <path d="M7 15h2"/>
                 <path d="M8 14v2"/>
@@ -51,8 +38,7 @@
                 <path d="M16 7v2"/>
             </svg>
         </a>
-        <a href="#" class="nav-button" data-modal="apps-modal">
-            <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <a href="#" class="nav-button" data-section="apps-section"> <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect width="7" height="7" x="3" y="3" rx="1" />
                 <rect width="7" height="7" x="14" y="3" rx="1" />
                 <rect width="7" height="7" x="14" y="14" rx="1" />
@@ -74,5 +60,6 @@
         </a>
     </nav>
 
-    <script src="script.js"></script> </body>
+    <script src="script.js"></script>
+</body>
 </html>
