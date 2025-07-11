@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест прокрутки</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto; /* Позволяем прокрутку на body/html */
+            background-color: #333;
+        }
+
+        .test-container {
+            width: 100%; /* Занимает всю ширину вьюпорта */
+            overflow-x: auto; /* Позволяет горизонтальную прокрутку */
+            overflow-y: hidden;
+            white-space: nowrap; /* Важно для флекс-элементов, чтобы не переносились */
+            padding: 20px;
+            box-sizing: border-box;
+            border: 5px solid blue; /* Синяя рамка для контейнера прокрутки */
+
+            /* Это основной элемент, который должен быть шире экрана */
+            display: flex;
+            gap: 15px;
+            min-width: 1000px; /* Принуждаем к минимальной ширине */
+            /* Или даже попробовать width: max-content; */
+            /* Или еще агрессивнее: width: 200vw; */
+
+            border: 2px solid red; /* Красная рамка для самого элемента прокрутки */
+        }
+
+        .test-item {
+            width: 150px; /* Фиксированная ширина элемента */
+            height: 100px;
+            background-color: #FFD700;
+            display: inline-block; /* Или flex-shrink: 0; flex-grow: 0; для флекс-контейнера */
+            flex-shrink: 0; /* Важно для flex-элементов внутри flex-контейнера */
+            text-align: center;
+            line-height: 100px;
+            color: #333;
+            font-size: 1.2em;
+            margin-right: 10px; /* Отступ между элементами */
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="test-item">Элемент 1</div>
+        <div class="test-item">Элемент 2</div>
+        <div class="test-item">Элемент 3</div>
+        <div class="test-item">Элемент 4</div>
+        <div class="test-item">Элемент 5</div>
+        <div class="test-item">Элемент 6</div>
+        <div class="test-item">Элемент 7</div>
+        <div class="test-item">Элемент 8</div>
+        <div class="test-item">Элемент 9</div>
+        <div class="test-item">Элемент 10</div>
+        <div class="test-item">Элемент 11</div>
+        <div class="test-item">Элемент 12</div>
+    </div>
+</body>
+</html>
