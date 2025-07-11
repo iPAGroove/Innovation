@@ -1,0 +1,47 @@
+.menu-panel {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 280px;
+  height: 100%;
+  background: rgba(20, 20, 20, 0.95);
+  backdrop-filter: blur(12px);
+  box-shadow: -4px 0 10px rgba(0, 0, 0, 0.4);
+  transition: right 0.3s ease;
+  z-index: 9999;
+}
+
+.menu-panel.show {
+  right: 0;
+}
+
+.menu-content {
+  padding: 30px 20px;
+  color: white;
+}
+
+.menu-content h2 {
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+.menu-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-links li {
+  margin-bottom: 15px;
+}
+
+.menu-links a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 18px;
+  transition: color 0.2s ease;
+}
+
+.menu-links a:hover {
+  color: #87CEFA;
+}
