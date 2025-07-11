@@ -12,12 +12,12 @@
     -webkit-backdrop-filter: blur(10px);
 
     display: flex;
-    justify-content: center; /* Центрируем section-inner-content */
+    justify-content: center;
     align-items: flex-start; /* Контент начинается сверху */
-    padding: 20px; /* Отступы вокруг section-inner-content */
+    padding: 20px;
     box-sizing: border-box;
-    overflow-y: hidden;
-    overflow-x: hidden;
+    overflow-y: auto; /* ВЕРТИКАЛЬНЫЙ СКРОЛЛ НА ГЛАВНОМ МОДАЛЕ*/
+    overflow-x: hidden; /* Скрываем горизонтальный скролл на главном модале*/
 
 
     opacity: 0;
@@ -39,14 +39,15 @@
 .section-inner-content {
     width: 100%;
     max-width: 960px; /* Максимальная ширина для контента */
-    padding-top: 20px;
+    padding-top: 30px; /* Увеличен отступ сверху*/
+    padding-bottom: 30px; /* Добавлен отступ снизу*/
 }
 
 /* Адаптивность для мобильных */
 @media (max-width: 768px) {
     .full-screen-section {
         padding: 15px;
-        height: calc(100vh - 60px); /* Коррекция высоты на мобильных, если nav-панель 60px */
+        height: calc(100vh - 60px);
     }
 }
 
