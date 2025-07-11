@@ -6,65 +6,90 @@
     left: 0;
     width: 100%;
     height: 70px; /* Высота навигационной панели */
-    background-color: rgba(30, 30, 30, 0.9); /* Темный полупрозрачный фон */
+    /* Убираем обычный background-color и border-top */
+
+    background: rgba(30, 30, 30, 0.5); /* Полупрозрачный фон */
+    backdrop-filter: blur(10px) saturate(180%); /* Эффект блюра и насыщенности для стекла */
+    -webkit-backdrop-filter: blur(10px) saturate(180%); /* Для Safari */
+
     display: flex;
-    justify-content: space-around; /* Распределяет кнопки равномерно */
+    justify-content: space-around;
     align-items: center;
     padding: 0 10px;
     box-sizing: border-box;
-    z-index: 1000; /* Убедитесь, что панель поверх всего остального */
-    border-top: 1px solid rgba(255, 255, 255, 0.1); /* Слегка видимая граница сверху */
-    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3); /* Тень сверху */
+    z-index: 1000;
+    /* Убираем box-shadow, чтобы сделать дизайн легче, но можно добавить для глубины */
+    /* box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2); */
 }
 
 .nav-button {
     display: flex;
-    flex-direction: column; /* Иконка и текст будут располагаться по вертикали */
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    color: #f0f0f0; /* Цвет по умолчанию */
-    font-size: 0.8em; /* Размер текста */
-    transition: color 0.3s ease, transform 0.2s ease; /* Плавный переход для цвета и трансформации */
-    flex: 1; /* Чтобы кнопки занимали равное пространство */
-    padding: 5px; /* Внутренний отступ для кнопок */
+    color: #b0e0e6; /* Более мягкий цвет иконок по умолчанию */
+    transition: color 0.3s ease, transform 0.2s ease, background-color 0.3s ease; /* Добавляем transition для background-color */
+    flex: 1;
+    height: 100%; /* Чтобы кнопка занимала всю высоту панели для удобного нажатия */
+    /* border-radius: 10px; /* Слегка скругляем углы кнопок */
+    position: relative; /* Для эффекта выделения */
 }
 
 .nav-icon {
-    width: 30px; /* Размер иконки */
-    height: 30px;
-    margin-bottom: 5px; /* Отступ между иконкой и текстом */
-    color: #b0e0e6; /* Цвет иконок */
-    transition: color 0.3s ease, transform 0.2s ease; /* Плавный переход для иконки */
-}
-
-.nav-text {
-    display: none; /* Скрываем текст по умолчанию, как вы и просили */
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 400;
-    opacity: 0; /* Начальная прозрачность для анимации */
-    transition: opacity 0.3s ease;
+    width: 28px; /* Чуть меньше иконки */
+    height: 28px;
+    /* Убираем margin-bottom, так как текста нет */
+    color: inherit; /* Иконка будет наследовать цвет от родительской кнопки */
+    transition: color 0.3s ease, transform 0.2s ease;
 }
 
 /* Эффект при наведении */
 .nav-button:hover {
-    color: #FFD700; /* Изменяем цвет текста при наведении */
-    transform: translateY(-3px); /* Немного приподнимаем кнопку */
+    color: #FFD700; /* Цвет иконки при наведении */
+    /* transform: translateY(-3px); /* Убираем, чтобы не было смещения */
+    background-color: rgba(255, 255, 255, 0.1); /* Легкий фон при наведении */
 }
 
 .nav-button:hover .nav-icon {
-    color: #FFD700; /* Изменяем цвет иконки при наведении */
-    transform: scale(1.1); /* Немного увеличиваем иконку */
+    transform: scale(1.15); /* Увеличиваем иконку сильнее */
 }
 
-.nav-button:hover .nav-text {
-    display: block; /* Показываем текст при наведении */
-    opacity: 1; /* Делаем текст полностью видимым */
+/* Эффект активной/выбранной кнопки (можно использовать JavaScript для добавления класса 'active') */
+.nav-button.active {
+    color: #FFD700; /* Золотой цвет для активной иконки */
+    transform: scale(1.05); /* Немного увеличиваем активную иконку */
 }
 
-/* Адаптивность для мобильных устройств - можно убрать текст полностью, если места мало */
+.nav-button.active::after {
+    content: '';
+    position: absolute;
+    bottom: 5px; /* Расположение индикатора снизу */
+    width: 6px; /* Размер точки */
+    height: 6px;
+    background-color: #FFD700; /* Цвет точки */
+    border-radius: 50%;
+    box-shadow: 0 0 5px #FFD700;
+    animation: bounceIndicator 0.6s ease-in-out infinite alternate; /* Анимация пульсации */
+}
+
+@keyframes bounceIndicator {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-3px); /* Пульсация вверх */
+    }
+}
+
+
+/* Адаптивность для мобильных устройств - обычно не требуется для таких панелей */
 @media (max-width: 600px) {
-    .nav-text {
-        font-size: 0.7em; /* Чуть меньше текст на маленьких экранах */
+    .nav-icon {
+        width: 26px;
+        height: 26px;
+    }
+    .bottom-nav {
+        height: 60px; /* Чуть меньше высота на мобильных */
     }
 }
