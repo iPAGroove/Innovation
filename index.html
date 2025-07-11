@@ -4,51 +4,15 @@
   <meta charset="UTF-8">
   <title>iPA Groove</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html, body {
-      height: 100%;
-      overflow: hidden;
-    }
-
-    .video-bg {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      z-index: -1;
-    }
-
-    /* Поддержка адаптивности */
-    @media (orientation: portrait) {
-      .video-bg {
-        width: auto;
-        height: 100vh;
-      }
-    }
-
-    @media (orientation: landscape) {
-      .video-bg {
-        width: 100vw;
-        height: auto;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="background.css">
 </head>
 <body>
 
+  <!-- Видео фон -->
   <video class="video-bg" autoplay muted loop playsinline>
     <source src="https://raw.githubusercontent.com/iPAGroove/Innovation/main/videos/%D0%A4%D0%BE%D0%BD.mp4" type="video/mp4">
     <source src="https://raw.githubusercontent.com/iPAGroove/Innovation/main/videos/background1.webm" type="video/webm">
-    Your browser does not support the video tag.
+    Ваш браузер не поддерживает фоновое видео.
   </video>
 
 </body>
