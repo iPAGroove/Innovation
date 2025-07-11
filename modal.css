@@ -16,9 +16,8 @@
     align-items: flex-start; /* Контент начинается сверху */
     padding: 20px;
     box-sizing: border-box;
-    overflow-y: auto; /* ВЕРТИКАЛЬНЫЙ СКРОЛЛ НА ГЛАВНОМ МОДАЛЕ*/
-    overflow-x: hidden; /* Скрываем горизонтальный скролл на главном модале (это не мешает внутренней прокрутке) */
-
+    overflow-y: auto; /* ВЕРТИКАЛЬНЫЙ СКРОЛЛ НА ГЛАВНОМ МОДАЛЕ */
+    overflow-x: hidden; /* Скрываем горизонтальный скролл на главном модале */
 
     opacity: 0;
     visibility: hidden;
@@ -38,9 +37,10 @@
 /* Контейнер для внутреннего содержимого раздела */
 .section-inner-content {
     width: 100%;
-    max-width: 960px; /* Максимальная ширина для контента */
-    padding-top: 30px; /* Увеличен отступ сверху*/
-    padding-bottom: 30px; /* Добавлен отступ снизу*/
+    /* Удалено: max-width: 960px; */
+    padding-top: 30px;
+    padding-bottom: 30px;
+    box-sizing: border-box;
 }
 
 /* Адаптивность для мобильных */
