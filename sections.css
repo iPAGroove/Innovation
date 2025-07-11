@@ -35,8 +35,10 @@
   color: #fff;
   backdrop-filter: blur(6px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center; /* центрируем текст */
 }
 
 .search-bar input::placeholder {
   color: rgba(255, 255, 255, 0.5);
+  text-align: center; /* центрируем плейсхолдер */
 }
