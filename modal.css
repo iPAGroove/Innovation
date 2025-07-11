@@ -17,7 +17,7 @@
     padding: 20px;
     box-sizing: border-box;
     overflow-y: auto; /* ВЕРТИКАЛЬНЫЙ СКРОЛЛ НА ГЛАВНОМ МОДАЛЕ*/
-    /* УБРАНО: overflow-x: hidden; */
+    overflow-x: hidden; /* Скрываем горизонтальный скролл на главном модале (это не мешает внутренней прокрутке) */
 
 
     opacity: 0;
