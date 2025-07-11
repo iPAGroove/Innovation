@@ -5,7 +5,6 @@ body, html {
     height: 100%;
     overflow: hidden; /* Запрещаем скролл */
     font-family: Arial, sans-serif;
-    color: white; /* Цвет текста для примера */
 }
 
 .video-background {
@@ -48,17 +47,19 @@ body, html {
 
 .title, .subtitle {
     opacity: 0; /* Начальная прозрачность */
+    color: #f0f0f0; /* Более мягкий белый */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Небольшая тень для объема */
 }
 
 .title {
-    font-size: 2em;
-    margin-bottom: 10px;
-    animation: swirlIn 1s ease-in-out forwards, swirlOut 1s ease-in-out forwards 2s; /* 1s появление, 2s задержка, 1s исчезновение */
+    font-size: 2.5em; /* Немного увеличим размер */
+    margin-bottom: 15px;
+    animation: swirlIn 2s ease-in-out forwards, hold 2s forwards 2s, swirlOut 2s ease-in-out forwards 4s;
 }
 
 .subtitle {
-    font-size: 1em;
-    animation: swirlIn 1s ease-in-out 0.3s forwards, swirlOut 1s ease-in-out forwards 2.3s; /* Задержка появления и исчезновения */
+    font-size: 1.2em; /* Немного увеличим размер */
+    animation: swirlIn 2s ease-in-out 0.5s forwards, hold 2s forwards 2.5s, swirlOut 2s ease-in-out forwards 4.5s;
 }
 
 @keyframes swirlIn {
@@ -80,5 +81,14 @@ body, html {
     100% {
         transform: rotate(-90deg) scale(0);
         opacity: 0;
+    }
+}
+
+@keyframes hold {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
     }
 }
