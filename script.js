@@ -2,7 +2,8 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     const navButtons = document.querySelectorAll('.nav-button');
-    const fullScreenSections = document.querySelectorAll('.full-screen-section'); // Получаем все полноэкранные разделы
+    // Обновляем селектор, чтобы он выбирал только новый объединенный модал
+    const fullScreenSection = document.getElementById('games-and-apps-modal'); 
 
     // --- Логика для активной кнопки навигации ---
     function setActiveButton(button) {
@@ -12,58 +13,49 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Логика для открытия разделов ---
+    // --- Логика для открытия/закрытия разделов ---
     navButtons.forEach(button => {
         button.addEventListener('click', (e) => {
             e.preventDefault();
 
             const sectionId = button.dataset.section; // Получаем ID раздела из data-атрибута
 
-            // Закрываем все открытые разделы перед открытием нового
-            fullScreenSections.forEach(section => section.classList.remove('active'));
-
-            if (sectionId) { // Если кнопка имеет data-section (т.е. это Games или Apps)
-                const targetSection = document.getElementById(sectionId);
-                if (targetSection) {
-                    targetSection.classList.add('active');
+            // Если кликнутая кнопка должна открывать наш объединенный модал
+            if (sectionId === 'games-and-apps-modal') {
+                // Если модал уже активен, закрываем его
+                if (fullScreenSection.classList.contains('active')) {
+                    fullScreenSection.classList.remove('active');
+                    setActiveButton(null); // Сбрасываем активное состояние
+                } else { // Иначе, открываем его
+                    fullScreenSection.classList.add('active');
                     setActiveButton(button); // Делаем текущую кнопку активной
                 }
-            } else {
-                // Если кнопка не имеет data-section (например, Mail или Menu),
-                // просто убираем активное состояние со всех кнопок и закрываем все разделы
-                setActiveButton(null);
+            } else { // Если кликнута другая кнопка (например, Mail или Menu)
+                // Закрываем наш объединенный модал, если он был открыт
+                fullScreenSection.classList.remove('active');
+                setActiveButton(button); // Делаем текущую кнопку активной (или сбрасываем, если она не должна быть активной)
+                // Здесь вы можете добавить логику для открытия других модалов, если они есть и имеют свои data-section
             }
         });
     });
 
-    // --- Логика для закрытия разделов (по клику вне, если это необходимо) ---
+    // --- Логика для закрытия раздела по клику вне его (если это необходимо) ---
     // Если вы хотите, чтобы раздел закрывался по клику на фон, раскомментируйте этот блок:
-    fullScreenSections.forEach(section => {
-        section.addEventListener('click', (e) => {
+    if (fullScreenSection) {
+        fullScreenSection.addEventListener('click', (e) => {
             // Если клик был по самому разделу, а не по его дочерним элементам
-            if (e.target === section) {
-                section.classList.remove('active');
+            if (e.target === fullScreenSection) {
+                fullScreenSection.classList.remove('active');
                 setActiveButton(null); // Сбрасываем активное состояние
             }
         });
-    });
-
-    // Если вы добавите кнопки закрытия (например, с классом .section-close-button) внутри секций:
-    // const sectionCloseButtons = document.querySelectorAll('.section-close-button');
-    // sectionCloseButtons.forEach(button => {
-    //     button.addEventListener('click', () => {
-    //         const section = button.closest('.full-screen-section');
-    //         if (section) {
-    //             section.classList.remove('active');
-    //             setActiveButton(null);
-    //         }
-    //     });
-    // });
+    }
 
 
     // Опционально: Открыть раздел "Games" по умолчанию при загрузке.
     // Закомментируйте, если не хотите, чтобы раздел открывался при старте.
-    // const gamesButton = document.querySelector('[data-section="games-section"]');
+    // Если вы хотите, чтобы объединенный модал открывался при загрузке
+    // const gamesButton = document.querySelector('[data-section="games-and-apps-modal"]');
     // if (gamesButton) {
     //     gamesButton.click(); // Имитируем клик, чтобы открыть раздел и сделать кнопку активной
     // }
