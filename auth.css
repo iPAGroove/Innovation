@@ -1,155 +1,112 @@
-// Импортируем только необходимые функции из Firebase, так как initializeApp уже есть в index.html
-// Мы больше не импортируем getAuth, createUserWithEmailAndPassword и т.д. здесь напрямую,
-// потому что auth объект будет получен из window.firebaseAuth, который инициализирован в index.html.
+/* Стили для контейнера аутентификации */
+.auth-container {
+  background: #2a2a2a;
+  border-radius: 12px;
+  padding: 20px;
+  width: 100%;
+  max-width: 350px; /* Максимальная ширина для окна входа/регистрации */
+  margin: 20px auto 0 auto; /* Отступ сверху и центрирование */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
 
-document.addEventListener("DOMContentLoaded", () => {
-  // Получаем объект auth из глобального scope, который инициализирован в index.html
-  const auth = window.firebaseAuth;
-  // Убеждаемся, что функции Firebase Auth доступны через auth объект
-  const {
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    onAuthStateChanged,
-    signOut
-  } = firebase; // Используем глобальный объект Firebase для доступа к методам auth
+/* Переключатели вкладок */
+.auth-tabs {
+  display: flex;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
 
-  // Элементы DOM для форм и статуса
-  const loginTab = document.getElementById('loginTab');
-  const registerTab = document.getElementById('registerTab');
-  const loginForm = document.getElementById('loginForm');
-  const registerForm = document.getElementById('registerForm');
-  const userStatus = document.getElementById('userStatus');
-  const loggedInUser = document.getElementById('loggedInUser');
-  const logoutBtn = document.getElementById('logoutBtn');
+.auth-tab-btn {
+  flex: 1;
+  padding: 10px 0;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 16px;
+  cursor: pointer;
+  transition: color 0.3s ease, border-bottom 0.3s ease;
+}
 
-  // Поля ввода для входа
-  const loginEmailInput = document.getElementById('loginEmail');
-  const loginPasswordInput = document.getElementById('loginPassword');
-  // Кнопка входа теперь не имеет отдельного обработчика click, а является частью submit формы
-  const loginError = document.getElementById('loginError');
+.auth-tab-btn.active {
+  color: #fff;
+  border-bottom: 2px solid #87CEFA;
+  font-weight: bold;
+}
 
-  // Поля ввода для регистрации
-  const registerEmailInput = document.getElementById('registerEmail');
-  const registerNicknameInput = document.getElementById('registerNickname'); // Добавлено поле никнейма
-  const registerPasswordInput = document.getElementById('registerPassword');
-  // Кнопка регистрации теперь не имеет отдельного обработчика click, а является частью submit формы
-  const registerError = document.getElementById('registerError');
+/* Формы входа/регистрации */
+.auth-form {
+  display: none; /* По умолчанию скрыты */
+  flex-direction: column;
+  gap: 15px;
+}
 
-  // По умолчанию показываем форму входа и скрываем статус пользователя
-  loginForm.classList.add('active');
-  registerForm.classList.remove('active');
-  userStatus.style.display = 'none';
+.auth-form.active {
+  display: flex; /* Активная форма отображается */
+}
 
-  // Переключение между формами входа и регистрации
-  loginTab.addEventListener('click', () => {
-    loginForm.classList.add('active');
-    registerForm.classList.remove('active');
-    loginTab.classList.add('active');
-    registerTab.classList.remove('active');
-    loginError.textContent = ''; // Очистка ошибок
-    registerError.textContent = ''; // Очистка ошибок
-  });
+.auth-form input[type="email"],
+.auth-form input[type="password"] {
+  width: calc(100% - 20px); /* Ширина с учетом паддинга */
+  padding: 12px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 16px;
+  outline: none;
+}
 
-  registerTab.addEventListener('click', () => {
-    registerForm.classList.add('active');
-    loginForm.classList.remove('active');
-    registerTab.classList.add('active');
-    loginTab.classList.remove('active');
-    loginError.textContent = ''; // Очистка ошибок
-    registerError.textContent = ''; // Очистка ошибок
-  });
+.auth-form input[type="email"]::placeholder,
+.auth-form input[type="password"]::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
 
-  // Обработчик для ВХОДА (привязан к submit формы)
-  loginForm.addEventListener('submit', async (event) => {
-    event.preventDefault(); // Предотвращаем перезагрузку страницы
-    const email = loginEmailInput.value;
-    const password = loginPasswordInput.value;
-    loginError.textContent = ''; // Очищаем предыдущие ошибки
+.auth-form button {
+  width: 100%;
+  padding: 12px;
+  background: #87CEFA; /* Голубая кнопка */
+  color: #1e1e1e;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
 
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      console.log('Пользователь успешно вошел!');
-      // Firebase onAuthStateChanged обновит UI
-    } catch (error) {
-      console.error('Ошибка входа:', error.code, error.message);
-      let errorMessage = 'Ошибка входа. Пожалуйста, попробуйте еще раз.';
-      if (error.code === 'auth/invalid-email') {
-        errorMessage = 'Некорректный формат email.';
-      } else if (error.code === 'auth/user-disabled') {
-        errorMessage = 'Пользователь отключен.';
-      } else if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
-        errorMessage = 'Неправильный email или пароль.';
-      } else {
-        errorMessage = `Ошибка: ${error.message}`; // Более общая ошибка
-      }
-      loginError.textContent = errorMessage;
-    }
-  });
+.auth-form button:hover {
+  background: #6aadda;
+  transform: translateY(-1px);
+}
 
-  // Обработчик для РЕГИСТРАЦИИ (привязан к submit формы)
-  registerForm.addEventListener('submit', async (event) => {
-    event.preventDefault(); // Предотвращаем перезагрузку страницы
-    const email = registerEmailInput.value;
-    const nickname = registerNicknameInput.value; // Получаем никнейм
-    const password = registerPasswordInput.value;
-    registerError.textContent = ''; // Очищаем предыдущие ошибки
+.auth-error {
+  color: #ff6b6b;
+  font-size: 14px;
+  margin-top: 10px;
+}
 
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      // Обновляем профиль пользователя, если никнейм был введен
-      if (auth.currentUser && nickname) {
-        // Убедитесь, что firebase.auth.Auth.updateProfile доступен
-        await firebase.auth().currentUser.updateProfile({ displayName: nickname });
-      }
-      console.log('Пользователь успешно зарегистрирован!');
-      // Firebase onAuthStateChanged обновит UI
-    } catch (error) {
-      console.error('Ошибка регистрации:', error.code, error.message);
-      let errorMessage = 'Ошибка регистрации. Пожалуйста, попробуйте еще раз.';
-      if (error.code === 'auth/email-already-in-use') {
-        errorMessage = 'Этот email уже используется.';
-      } else if (error.code === 'auth/invalid-email') {
-        errorMessage = 'Некорректный формат email.';
-      } else if (error.code === 'auth/weak-password') {
-        errorMessage = 'Пароль должен быть не менее 6 символов.';
-      } else {
-        errorMessage = `Ошибка: ${error.message}`; // Более общая ошибка
-      }
-      registerError.textContent = errorMessage;
-    }
-  });
+/* Стили для статуса пользователя */
+.user-status {
+  margin-top: 20px;
+  color: #fff;
+  font-size: 16px;
+}
 
-  // Обработчик для выхода
-  logoutBtn.addEventListener('click', async () => {
-    try {
-      await signOut(auth);
-      console.log('Пользователь вышел.');
-      // Firebase onAuthStateChanged обновит UI
-    } catch (error) {
-      console.error('Ошибка выхода:', error.message);
-    }
-  });
+.user-status p {
+  margin-bottom: 10px;
+}
 
-  // Отслеживание состояния аутентификации (вход/выход)
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      // Пользователь вошел
-      loggedInUser.textContent = `Вы вошли как: ${user.email}`;
-      userStatus.style.display = 'block';
-      loginForm.style.display = 'none';
-      registerForm.style.display = 'none';
-      loginTab.style.display = 'none';
-      registerTab.style.display = 'none';
-    } else {
-      // Пользователь вышел
-      loggedInUser.textContent = '';
-      userStatus.style.display = 'none';
-      loginForm.style.display = 'flex'; // Показываем форму входа по умолчанию
-      registerForm.style.display = 'none';
-      loginTab.style.display = 'block'; // Показываем вкладки
-      registerTab.style.display = 'block';
-      loginTab.classList.add('active'); // Активируем вкладку входа
-      registerTab.classList.remove('active');
-    }
-  });
-});
+.logout-btn {
+  background: #dc3545; /* Красная кнопка выхода */
+  color: #fff;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: #c82333;
+}
