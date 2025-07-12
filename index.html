@@ -12,8 +12,7 @@
   <link rel="stylesheet" href="apps.css">
   <link rel="stylesheet" href="menu.css">
   <link rel="stylesheet" href="mail.css">
-  <link rel="stylesheet" href="auth.css">
-</head>
+  <link rel="stylesheet" href="auth.css"> </head>
 <body>
 
   <video class="video-bg" autoplay muted loop playsinline>
@@ -60,7 +59,8 @@
 
         <form id="registerForm" class="auth-form">
           <input type="email" id="registerEmail" placeholder="Email" autocomplete="email">
-          <input type="text" id="registerNickname" placeholder="Никнейм"> <input type="password" id="registerPassword" placeholder="Пароль" autocomplete="new-password">
+          <input type="text" id="registerNickname" placeholder="Никнейм">
+          <input type="password" id="registerPassword" placeholder="Пароль" autocomplete="new-password">
           <button id="registerBtn" type="submit">Зарегистрироваться</button>
           <p id="registerError" class="auth-error"></p>
         </form>
@@ -137,8 +137,6 @@
     // Передача объекта Firebase App в глобальный scope
     // Это позволяет auth.js (который теперь тоже модуль) получить объект 'app'
     window.firebaseApp = app; 
-    // window.firebaseAuth = auth; // Не нужно, так как auth.js получит auth через getAuth(app)
-    // window.firebaseDb = db;     // Не нужно для auth.js
 
     function renderCard(data) {
       return `
@@ -174,5 +172,6 @@
   <script src="script.js"></script>
   <script src="menu.js"></script>
   <script src="mail.js"></script>
-  <script type="module" src="auth.js"></script> </body>
+  <script type="module" src="auth.js"></script> 
+</body>
 </html>
