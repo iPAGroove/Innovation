@@ -13,7 +13,8 @@
   <link rel="stylesheet" href="menu.css">
   <link rel="stylesheet" href="mail.css">
   <link rel="stylesheet" href="auth.css">
-  <link rel="stylesheet" href="profile.css"> </head>
+  <link rel="stylesheet" href="profile.css">
+</head>
 <body>
 
   <video class="video-bg" autoplay muted loop playsinline>
@@ -84,35 +85,31 @@
                 <div class="community-stats">
                     <h3 class="stats-title">Community Statistics</h3>
                     <div class="stat-item">
-                        <img src="images/download_icon.png" alt="Downloads Icon" class="stat-icon"> <span class="stat-text">DOWNLOADS</span>
+                        <img src="images/download_icon_blue.png" alt="Downloads Icon" class="stat-icon"> <span class="stat-text">DOWNLOADS</span>
                     </div>
                 </div>
 
-                <div class="account-settings-link">
-                    Account Settings
-                    <svg class="arrow-down" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M7 10L12 15L17 10H7Z" fill="currentColor"/>
-                    </svg>
+                <div class="account-settings-link-wrapper"> <a href="#" class="account-settings-link">
+                        Account Settings
+                        <svg class="arrow-down" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7 10L12 15L17 10H7Z" fill="currentColor"/>
+                        </svg>
+                    </a>
                 </div>
             </div>
 
-            <div class="profile-card account-settings-card">
-                <div class="account-settings-link">
-                    Account Settings
-                    <svg class="arrow-down" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M7 10L12 15L17 10H7Z" fill="currentColor"/>
-                    </svg>
-                </div>
             </div>
-
-        </div>
-      </div> <h2></h2>
+      </div>
+      <h2></h2>
       <ul class="menu-links">
         <li><a href="#"></a></li>
         <li><a href="#"></a></li>
         <li><a href="#"></a></li>
       </ul>
-    </div> </div> <div id="mailModal" class="mail-modal">
+    </div>
+  </div>
+
+  <div id="mailModal" class="mail-modal">
     <div class="mail-content">
       <button class="close-btn" id="closeMail">×</button>
       <h2>Связаться с iPA Groove</h2>
@@ -204,5 +201,6 @@
   <script src="menu.js"></script>
   <script src="mail.js"></script>
   <script type="module" src="auth.js"></script>
-  <script type="module" src="profile.js"></script> </body>
+  <script type="module" src="profile.js"></script>
+</body>
 </html>
