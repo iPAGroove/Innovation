@@ -40,6 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const registerError = document.getElementById('registerError');
 
   // По умолчанию показываем форму входа и скрываем статус пользователя
+  // Убедитесь, что формы изначально скрыты через CSS и отображаются только при наличии класса 'active'
   loginForm.classList.add('active');
   registerForm.classList.remove('active');
   userStatus.style.display = 'none';
@@ -49,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loginForm.classList.add('active');
     registerForm.classList.remove('active');
     loginTab.classList.add('active');
-    registerTab.classList.remove('active');
+    registerTab.classList.remove('active'); 
     loginError.textContent = ''; // Очистка ошибок
     registerError.textContent = ''; // Очистка ошибок
   });
@@ -57,8 +58,8 @@ document.addEventListener("DOMContentLoaded", () => {
   registerTab.addEventListener('click', () => {
     registerForm.classList.add('active');
     loginForm.classList.remove('active');
-    registerTab.classList.add('active');
-    loginTab.classList.remove('active');
+    registerTab.classList.add('active'); 
+    loginTab.classList.remove('active'); 
     loginError.textContent = ''; // Очистка ошибок
     registerError.textContent = ''; // Очистка ошибок
   });
@@ -81,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
         errorMessage = 'Некорректный формат email.';
       } else if (error.code === 'auth/user-disabled') {
         errorMessage = 'Пользователь отключен.';
-      } else if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+      } else if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
         errorMessage = 'Неправильный email или пароль.';
       } else {
         errorMessage = `Ошибка: ${error.message}`; // Более общая ошибка
@@ -141,8 +142,8 @@ document.addEventListener("DOMContentLoaded", () => {
       userStatus.style.display = 'block';
       loginForm.style.display = 'none';
       registerForm.style.display = 'none';
-      loginTab.style.display = 'none';
-      registerTab.style.display = 'none';
+      loginTab.style.display = 'none'; // Скрываем вкладки после входа
+      registerTab.style.display = 'none'; // Скрываем вкладки после входа
     } else {
       // Пользователь вышел
       loggedInUser.textContent = '';
@@ -150,7 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
       loginForm.style.display = 'flex'; // Показываем форму входа по умолчанию
       registerForm.style.display = 'none';
       loginTab.style.display = 'block'; // Показываем вкладки
-      registerTab.style.display = 'block';
+      registerTab.style.display = 'block'; // Показываем вкладки
       loginTab.classList.add('active'); // Активируем вкладку входа
       registerTab.classList.remove('active');
     }
