@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="games.css">
   <link rel="stylesheet" href="apps.css">
   <link rel="stylesheet" href="menu.css">
-  <link rel="stylesheet" href="mail.css"> <link rel="stylesheet" href="auth.css">
+  <link rel="stylesheet" href="chat.css"> <link rel="stylesheet" href="auth.css">
   <link rel="stylesheet" href="profile.css">
 </head>
 <body>
@@ -40,7 +40,7 @@
     <div class="category-section"><h2 class="section-title">VIP</h2><div class="horizontal-scroll" id="apps-vip"></div></div>
     <div class="category-section"><h2 class="section-title">FREE</h2><div class="horizontal-scroll" id="apps-free"></div></div>
     <div class="category-section"><h2 class="section-title">UPDATES</h2><div class="horizontal-scroll" id="apps-updates"></div></div>
-    <div class="category-section"><h2 class="section-title">TOP</H2><div class="horizontal-scroll" id="apps-top"></div></div>
+    <div class="category-section"><h2 class="section-title">TOP</h2><div class="horizontal-scroll" id="apps-top"></div></div>
   </div>
 
   <div id="menuPanel" class="menu-panel">
@@ -109,8 +109,10 @@
     </div>
   </div>
 
-  <div id="chatModal" class="chat-modal"> <div class="chat-content">
-      <button class="close-btn" id="closeChat">×</button> <div class="chat-tabs">
+  <div id="chatModal" class="chat-modal">
+    <div class="chat-content">
+      <button class="close-btn" id="closeChat">×</button>
+      <div class="chat-tabs">
         <button class="chat-tab-btn active" data-chat-type="support">SUPPORT</button>
         <button class="chat-tab-btn" data-chat-type="chat">Chat</button>
         <button class="chat-tab-btn" data-chat-type="news">NEWS</button>
@@ -132,7 +134,8 @@
         <path d="M4 4H10V10H4V4ZM14 4H20V10H14V4ZM4 14H10V20H4V14ZM14 14H20V20H14V14Z" fill="white"/>
       </svg>
     </a>
-    <a href="#" class="nav-item" id="openChat" title="Chat"> <svg viewBox="0 0 24 24" fill="none">
+    <a href="#" class="nav-item" id="openChat" title="Chat">
+      <svg viewBox="0 0 24 24" fill="none">
         <path d="M4 4H20V20H4V4ZM4 4L12 13L20 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </a>
