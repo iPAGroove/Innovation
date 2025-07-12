@@ -1,17 +1,23 @@
-// Импортируем только необходимые функции из Firebase, так как initializeApp уже есть в index.html
-// Мы больше не импортируем getAuth, createUserWithEmailAndPassword и т.д. здесь напрямую,
-// потому что auth объект будет получен из window.firebaseAuth, который инициализирован в index.html.
+// ========== ИМПОРТЫ ИЗ FIREBASE SDK ==========
+// Эти импорты необходимы, потому что auth.js теперь будет модулем.
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+  updateProfile // Добавлено для установки никнейма
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Получаем объект auth из глобального scope, который инициализирован в index.html
-  const auth = window.firebaseAuth;
-  // Убеждаемся, что функции Firebase Auth доступны через auth объект
-  const {
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    onAuthStateChanged,
-    signOut
-  } = firebase; // Используем глобальный объект Firebase для доступа к методам auth
+  // Получаем экземпляр приложения Firebase из глобальной области видимости (инициализировано в index.html)
+  // Это предполагает, что index.html устанавливает `window.firebaseApp`
+  const app = window.firebaseApp; 
+  if (!app) {
+    console.error("Firebase App не инициализировано в index.html. Функции аутентификации могут не работать.");
+    return;
+  }
+  const auth = getAuth(app); // Получаем экземпляр службы аутентификации из приложения
 
   // Элементы DOM для форм и статуса
   const loginTab = document.getElementById('loginTab');
@@ -25,14 +31,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // Поля ввода для входа
   const loginEmailInput = document.getElementById('loginEmail');
   const loginPasswordInput = document.getElementById('loginPassword');
-  // Кнопка входа теперь не имеет отдельного обработчика click, а является частью submit формы
   const loginError = document.getElementById('loginError');
 
   // Поля ввода для регистрации
   const registerEmailInput = document.getElementById('registerEmail');
   const registerNicknameInput = document.getElementById('registerNickname'); // Добавлено поле никнейма
   const registerPasswordInput = document.getElementById('registerPassword');
-  // Кнопка регистрации теперь не имеет отдельного обработчика click, а является частью submit формы
   const registerError = document.getElementById('registerError');
 
   // По умолчанию показываем форму входа и скрываем статус пользователя
@@ -98,8 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       // Обновляем профиль пользователя, если никнейм был введен
       if (auth.currentUser && nickname) {
-        // Убедитесь, что firebase.auth.Auth.updateProfile доступен
-        await firebase.auth().currentUser.updateProfile({ displayName: nickname });
+        await updateProfile(auth.currentUser, { displayName: nickname });
       }
       console.log('Пользователь успешно зарегистрирован!');
       // Firebase onAuthStateChanged обновит UI
