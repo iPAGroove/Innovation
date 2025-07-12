@@ -4,29 +4,26 @@
 .profile-info-container {
     display: flex;
     flex-direction: column;
-    gap: 15px; /* Расстояние между карточками/блоками */
-    width: 100%; /* Занимает всю доступную ширину родителя */
-    margin-top: 20px;
-    margin-bottom: 20px;
+    gap: 12px; /* Уменьшим расстояние между блоками */
+    width: 100%;
+    margin-top: 15px; /* Уменьшим верхний отступ */
+    margin-bottom: 15px; /* Уменьшим нижний отступ */
     box-sizing: border-box;
-    /* Убедимся, что контейнер сам по себе не ограничивает ширину,
-       а позволяет profile-card регулировать ее */
 }
 
 /* Стили для самой карточки профиля и других блоков */
 .profile-card {
     background: #1C1C3A; /* Темный фон, как на скрине */
     border-radius: 12px;
-    padding: 15px 20px;
-    /* УСТАНАВЛИВАЕМ ШИРИНУ 95% ОТ РОДИТЕЛЯ (menu-content) */
-    width: 95%; /* 95% от ширины menu-content */
-    max-width: 600px; /* Ограничиваем максимальную ширину для больших экранов */
+    padding: 12px 18px; /* Немного уменьшим внутренние отступы карточки */
+    width: 95%;
+    max-width: 600px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
     display: flex;
     flex-direction: column;
     color: #fff;
     font-family: 'Montserrat', sans-serif;
-    margin: 0 auto; /* Центрируем карточку внутри profile-info-container */
+    margin: 0 auto;
 }
 
 /* Верхняя часть карточки профиля (аватар, ник, кнопки) */
@@ -34,9 +31,9 @@
     display: flex;
     align-items: center; /* Выравнивание элементов по центру вертикали */
     gap: 15px;
-    padding-bottom: 15px;
+    padding-bottom: 12px; /* Немного уменьшим нижний паддинг */
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    margin-bottom: 15px;
+    margin-bottom: 12px; /* Немного уменьшим нижний маргин */
 }
 
 /* Обертка для аватара */
@@ -66,9 +63,8 @@
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    /* ДОБАВЛЕНО/ИЗМЕНЕНО ДЛЯ ВЫРАВНИВАНИЯ НИКНЕЙМА/КНОПОК */
-    justify-content: center; /* Центрируем содержимое по вертикали внутри profile-details */
-    padding-top: 5px; /* НЕМНОГО ОПУСТИМ НИКНЕЙМ И КНОПКИ */
+    justify-content: center;
+    padding-top: 8px; /* УВЕЛИЧИМ padding-top, чтобы опустить никнейм и кнопки */
 }
 
 /* Заголовок профиля (никнейм) */
@@ -76,7 +72,7 @@
     font-size: 20px;
     font-weight: 700;
     color: #fff;
-    margin-bottom: 5px; /* Отступ от кнопок */
+    margin-bottom: 4px; /* Уменьшим отступ от кнопок */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -86,23 +82,22 @@
 /* Контейнер для кнопок Free Access / Upgrade VIP */
 .profile-buttons {
     display: flex;
-    flex-direction: row; /* ДОЛЖНЫ БЫТЬ В ОДНУ ЛИНИЮ */
-    gap: 8px; /* Расстояние между кнопками */
-    /* flex-wrap: wrap; */ /* Убрано flex-wrap, чтобы они ВСЕГДА были в одну линию, если позволяют размеры */
-    align-items: center; /* Выравнивание кнопок по центру вертикали */
+    flex-direction: row;
+    gap: 6px; /* Немного уменьшим расстояние между кнопками */
+    align-items: center;
 }
 
 /* Общие стили для кнопок профиля */
 .profile-btn {
-    padding: 5px 10px; /* СДЕЛАЕМ КНОПКИ ЕЩЕ МЕНЬШЕ */
+    padding: 4px 8px; /* УМЕНЬШИМ РАЗМЕР КНОПОК */
     border: none;
-    border-radius: 15px; /* Чуть меньше закругления, чтобы выглядели компактнее */
-    font-size: 12px; /* УМЕНЬШИМ РАЗМЕР ШРИФТА КНОПОК */
+    border-radius: 12px; /* Немного меньше закругления */
+    font-size: 11px; /* УМЕНЬШИМ РАЗМЕР ШРИФТА КНОПОК */
     font-weight: 600;
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    white-space: nowrap; /* Важно: не переносить текст на кнопках */
-    flex-shrink: 0; /* Не сжимать кнопки */
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .profile-btn:hover {
@@ -137,54 +132,53 @@
 .community-stats {
     display: flex;
     flex-direction: column;
-    align-items: center; /* ЦЕНТРИРУЕМ ПО ГОРИЗОНТАЛИ */
-    padding-bottom: 15px;
+    align-items: center;
+    padding-bottom: 12px; /* Немного уменьшим нижний паддинг */
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    margin-bottom: 15px;
+    margin-bottom: 12px; /* Немного уменьшим нижний маргин */
 }
 
 .stats-title {
-    font-size: 18px;
+    font-size: 16px; /* УМЕНЬШИМ РАЗМЕР Community Statistics */
     font-weight: 600;
     color: rgba(255, 255, 255, 0.8);
-    margin-bottom: 10px;
-    text-align: center; /* Центрируем текст заголовка */
+    margin-bottom: 8px; /* Уменьшим отступ */
+    text-align: center;
     width: 100%;
 }
 
 .stat-item {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Центрируем содержимое */
-    gap: 5px;
+    align-items: center;
+    gap: 3px; /* Уменьшим расстояние между 0 и DOWNLOADS */
     width: 100%;
     text-align: center;
 }
 
 /* Стиль для цифры "0" */
 .stat-number {
-    font-size: 40px; /* Крупный размер для цифры */
-    font-weight: 800; /* Очень жирный шрифт */
-    color: #87CEFA; /* Голубой цвет */
-    text-shadow: 0 0 10px rgba(0, 123, 255, 0.7); /* Небольшое свечение */
-    line-height: 1; /* Уберем лишний интерлиньяж */
-    margin-bottom: 5px; /* Отступ от текста "DOWNLOADS" */
+    font-size: 36px; /* УМЕНЬШИМ РАЗМЕР ЦИФРЫ "0" */
+    font-weight: 800;
+    color: #87CEFA;
+    text-shadow: 0 0 10px rgba(0, 123, 255, 0.7);
+    line-height: 1;
+    margin-bottom: 3px; /* Уменьшим отступ от текста "DOWNLOADS" */
 }
 
 .stat-text {
-    font-size: 16px;
+    font-size: 14px; /* УМЕНЬШИМ РАЗМЕР ТЕКСТА "DOWNLOADS" */
     font-weight: 700;
     color: #87CEFA;
-    letter-spacing: 1.5px;
+    letter-spacing: 1.2px; /* Немного уменьшим расстояние между буквами */
 }
 
 /* Стиль для обертки Account Settings Link */
 .account-settings-link-wrapper {
     background: #1C1C3A;
     border-radius: 12px;
-    padding: 15px 20px;
-    /* УСТАНАВЛИВАЕМ ШИРИНУ 95% ОТ РОДИТЕЛЯ (menu-content) */
-    width: 95%; /* 95% от ширины menu-content */
+    padding: 10px 18px; /* УМЕНЬШИМ ВЫСОТУ КНОПКИ Account Settings */
+    width: 95%;
     max-width: 600px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     margin: 0 auto;
@@ -195,7 +189,7 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    font-size: 18px;
+    font-size: 16px; /* УМЕНЬШИМ РАЗМЕР ШРИФТА ДЛЯ Account Settings */
     font-weight: 500;
     color: #fff;
     cursor: pointer;
@@ -208,8 +202,8 @@
 }
 
 .arrow-down {
-    width: 24px;
-    height: 24px;
+    width: 20px; /* Немного уменьшим стрелку */
+    height: 20px; /* Немного уменьшим стрелку */
     color: #fff;
     transition: transform 0.2s ease;
 }
