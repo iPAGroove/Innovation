@@ -4,26 +4,29 @@
 .auth-container {
     background: rgba(0, 0, 0, 0.7);
     border-radius: 10px;
-    padding: 20px; /* Здесь отступ 20px для форм */
+    padding: 20px; /* Отступы для форм входа/регистрации */
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 15px;
-    max-width: 90%; /* Оставляем, так как это относится к формам входа/регистрации */
+    max-width: 420px; /* Ограничиваем ширину форм, чтобы они не были слишком широкими */
+    width: 100%; /* Занимает 100% доступной ширины до max-width */
     margin: 20px auto;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     color: white;
-    transition: background 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease, gap 0.3s ease;
+    transition: background 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease, gap 0.3s ease, max-width 0.3s ease;
 }
 
-/* Новый класс для прозрачного фона контейнера, когда показан профиль */
+/* Стили, которые применяются, когда auth-container используется для ПРОФИЛЯ */
 .auth-container.transparent-bg {
     background: transparent;
     box-shadow: none;
-    padding: 0 10px; /* Уменьшим горизонтальный padding здесь, чтобы профиль мог быть шире */
+    padding: 0; /* Убираем внутренний padding, чтобы profile-card мог его задавать */
     gap: 0;
+    max-width: 100%; /* Позволяем ему расшириться до 100% от menu-content */
+    margin: 0; /* Убираем auto margin, чтобы не было лишних центрирований, когда он для профиля */
+    width: 100%; /* Убедимся, что занимает всю ширину */
 }
-
 
 /* Стили для вкладок (Войти/Регистрация) */
 .auth-tabs {
