@@ -1,5 +1,6 @@
 /* auth.css */
 
+/* Общие стили для контейнера аутентификации/профиля */
 .auth-container {
     background: rgba(0, 0, 0, 0.7);
     border-radius: 10px;
@@ -14,6 +15,7 @@
     color: white; /* Базовый цвет текста для контейнера */
 }
 
+/* Стили для вкладок (Войти/Регистрация) */
 .auth-tabs {
     display: flex;
     width: 100%;
@@ -45,6 +47,7 @@
     background: rgba(255, 255, 255, 0.2);
 }
 
+/* Стили для форм (Вход/Регистрация) */
 .auth-form {
     display: none; /* Изначально скрываем все формы */
     flex-direction: column;
@@ -60,7 +63,7 @@
 .auth-form input[type="email"],
 .auth-form input[type="password"],
 .auth-form input[type="text"] { 
-    width: calc(100% - 20px); 
+    width: calc(100% - 20px); /* 100% минус padding */
     padding: 10px;
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 5px;
@@ -75,13 +78,12 @@
     color: rgba(255, 255, 255, 0.6);
 }
 
-.auth-form button[type="submit"],
-.logout-btn {
+.auth-form button[type="submit"] { 
     width: 100%;
     padding: 12px;
     border: none;
     border-radius: 5px;
-    background: #28a745; 
+    background: #28a745; /* Зеленый для кнопки Войти/Зарегистрироваться */
     color: #fff;
     font-size: 18px;
     font-weight: bold;
@@ -91,87 +93,101 @@
     outline: none;
 }
 
-.auth-form button[type="submit"]:hover,
-.logout-btn:hover {
+.auth-form button[type="submit"]:hover {
     background: #218838; 
 }
 
 .auth-error {
-    color: #dc3545; 
+    color: #dc3545; /* Красный для ошибок */
     font-size: 14px;
     margin-top: 5px;
     text-align: center;
 }
 
-/* Старый user-status больше не используется, но оставлен для справки */
-/* .user-status {
-    display: none; 
-    color: #fff;
-    font-size: 16px;
-    text-align: center;
-    width: 100%;
-} */
-
-.logout-btn {
+/* Стили для кнопки выхода (если она все же нужна и расположена отдельно) */
+/* .logout-btn {
     background: #ffc107; 
     color: #333;
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 10px;
+    outline: none;
 }
 
 .logout-btn:hover {
     background: #e0a800;
-}
+} */
 
 
-/* НОВЫЕ СТИЛИ: Информация о профиле */
+/* НОВЫЕ СТИЛИ: Информация о профиле (по второму скриншоту) */
 .profile-info-container {
-    background: linear-gradient(135deg, rgba(30, 30, 60, 0.9), rgba(40, 40, 80, 0.9)); /* Градиент для фона */
-    border-radius: 10px;
-    padding: 15px; /* Уменьшаем padding для компактности */
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Центрируем содержимое по горизонтали */
-    gap: 15px;
+    /* Этот контейнер будет оберткой, центрирующей карточку */
+    display: flex; /* Важно, чтобы он был flex, но изначально скрыт через JS */
+    justify-content: center;
+    align-items: center;
     width: 100%;
-    max-width: 350px; /* Сохраняем максимальную ширину */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    color: white;
-    /* Изначально display: none; будет установлен через JS, но здесь он по умолчанию flex для удобства */
+    padding-top: 10px; /* Отступ сверху */
+    box-sizing: border-box; /* Учитываем padding в ширине/высоте */
+    /* background: transparent; Если background: rgba(0, 0, 0, 0.7); нужен только для форм, а для профиля нет */
 }
 
-.profile-header {
+.profile-card {
+    background: linear-gradient(135deg, #1A1A3A 0%, #2A2A5A 100%); /* Градиент как на скрине */
+    border-radius: 12px; /* Более мягкие углы */
+    padding: 15px 20px; /* Отступы внутри карточки */
+    width: 100%;
+    max-width: 300px; /* Ограничиваем ширину карточки */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* Более выраженная тень */
     display: flex;
     align-items: center;
-    gap: 15px; /* Расстояние между аватаром и никнеймом */
-    width: 100%; /* Занимает всю доступную ширину */
-    justify-content: flex-start; /* Выравнивание элементов внутри по левому краю */
+    gap: 15px; /* Расстояние между аватаром и текстом */
+    color: #fff;
+    font-family: 'Montserrat', sans-serif; /* Шрифт как на скрине */
+    margin-top: 10px; /* Отступ от вкладок */
+}
+
+.profile-avatar-wrapper {
+    width: 60px; /* Размер аватара */
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden; /* Обрезаем, если изображение выходит за круг */
+    flex-shrink: 0; /* Чтобы аватар не сжимался */
+    border: 2px solid rgba(0, 123, 255, 0.5); /* Обводка аватара */
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.3); /* Небольшое сияние */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .profile-avatar {
-    width: 60px; /* Размер аватара */
-    height: 60px;
-    border-radius: 50%; /* Круглая форма */
-    object-fit: cover;
-    border: 3px solid #007bff; /* Граница вокруг аватара */
-    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5); /* Небольшая тень для аватара */
-    flex-shrink: 0; /* Не сжимать аватар */
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Заполнение области, обрезка при необходимости */
+    display: block; /* Убираем лишние отступы под изображением */
 }
 
-.profile-nickname {
-    font-family: 'Montserrat', sans-serif; /* Или другой подходящий шрифт */
-    font-size: 22px;
-    font-weight: 700; /* Более жирный шрифт для никнейма */
+.profile-title {
+    font-size: 20px; /* Размер текста "iPA Groove" */
+    font-weight: 600; /* Более жирный шрифт */
     color: #fff;
-    flex-grow: 1; /* Чтобы никнейм занимал оставшееся пространство */
-    text-align: left; /* Выравнивание текста никнейма */
-    white-space: nowrap; /* Предотвращаем перенос строки */
-    overflow: hidden; /* Скрываем излишки текста */
-    text-overflow: ellipsis; /* Добавляем многоточие для длинных никнеймов */
+    white-space: nowrap; /* Не переносить текст */
+    overflow: hidden; /* Скрывать, если не помещается */
+    text-overflow: ellipsis; /* Добавлять многоточие */
+    flex-grow: 1; /* Чтобы занимал оставшееся пространство */
 }
 
-.user-email-display {
+/* Если вы решите оставить email под карточкой */
+/* .user-email-display {
     font-size: 14px;
     color: rgba(255, 255, 255, 0.7);
-    margin-top: -10px; /* Немного приподнять, чтобы был ближе к никнейму */
-    width: 100%; /* Чтобы текст занимал всю ширину для центрирования */
+    margin-top: 10px;
     text-align: center;
-}
+    width: 100%;
+} */
+
