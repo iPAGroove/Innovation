@@ -119,11 +119,7 @@
       </div>
       
       <div id="chatMainArea" class="chat-main-area"> <div id="messagesDisplay" class="messages-display">
-          <div class="message incoming">
-            <span class="message-sender">iPA Groove Admin</span>
-            <span class="message-text">Добро пожаловать в наш чат! Задавайте вопросы и общайтесь.</span>
           </div>
-        </div>
         <div class="chat-input-area">
           <textarea id="messageInput" class="message-input" placeholder="Введите ваше сообщение..."></textarea>
           <button id="sendMessageBtn" class="send-message-btn">
@@ -162,11 +158,10 @@
   <script type="module">
     // Импорт Firebase SDK
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+    // Добавлены импорты для Firestore и Auth
+    import { getFirestore, collection, getDocs, addDoc, serverTimestamp, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-analytics.js";
-    // Импорт модуля аутентификации (хотя getAuth используется в auth.js)
-    import { getAuth } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-
 
     const firebaseConfig = {
       apiKey: "AIzaSyB2In0cOmuiYB6zNj0dQrdJ8bwPkINKdzA",
@@ -183,8 +178,10 @@
     const db = getFirestore(app);
     const auth = getAuth(app); // Инициализация Firebase Auth
 
-    // Передача объекта Firebase App в глобальный scope, чтобы другие модули могли его использовать
+    // Передача объекта Firebase App и других объектов в глобальный scope, чтобы другие модули могли их использовать
     window.firebaseApp = app;
+    window.db = db; // Добавляем db в глобальный scope
+    window.auth = auth; // Добавляем auth в глобальный scope
 
     function renderCard(data) {
       return `
