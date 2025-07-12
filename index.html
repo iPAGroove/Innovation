@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>iPA Groove</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+
   <link rel="stylesheet" href="background.css">
   <link rel="stylesheet" href="navigation.css">
   <link rel="stylesheet" href="sections.css">
@@ -21,60 +21,64 @@
     <source src="https://raw.githubusercontent.com/iPAGroove/Innovation/main/videos/background1.webm" type="video/webm">
   </video>
 
-  <!-- GAMES -->
   <div class="screen" id="gamesScreen">
     <div class="search-bar">
       <input type="search" placeholder="Search games..." />
     </div>
+
     <div class="category-section"><h2 class="section-title">VIP</h2><div class="horizontal-scroll" id="games-vip"></div></div>
     <div class="category-section"><h2 class="section-title">FREE</h2><div class="horizontal-scroll" id="games-free"></div></div>
     <div class="category-section"><h2 class="section-title">UPDATES</h2><div class="horizontal-scroll" id="games-updates"></div></div>
     <div class="category-section"><h2 class="section-title">TOP</h2><div class="horizontal-scroll" id="games-top"></div></div>
   </div>
 
-  <!-- APPS -->
   <div class="screen" id="appsScreen">
     <div class="search-bar">
       <input type="search" placeholder="Search apps..." />
     </div>
+
     <div class="category-section"><h2 class="section-title">VIP</h2><div class="horizontal-scroll" id="apps-vip"></div></div>
     <div class="category-section"><h2 class="section-title">FREE</h2><div class="horizontal-scroll" id="apps-free"></div></div>
     <div class="category-section"><h2 class="section-title">UPDATES</h2><div class="horizontal-scroll" id="apps-updates"></div></div>
     <div class="category-section"><h2 class="section-title">TOP</h2><div class="horizontal-scroll" id="apps-top"></div></div>
   </div>
 
-  <!-- MENU -->
   <div id="menuPanel" class="menu-panel">
     <div class="menu-content">
       <div class="auth-container">
         <div class="auth-tabs">
-          <button id="loginTab" class="auth-tab-btn active">Войти</button>
-          <button id="registerTab" class="auth-tab-btn">Регистрация</button>
+          <button id="loginTab" class="auth-tab-btn active" data-form="login">Войти</button>
+          <button id="registerTab" class="auth-tab-btn" data-form="register">Регистрация</button>
         </div>
 
-        <div id="loginForm" class="auth-form active">
+        <form id="loginForm" class="auth-form active">
           <input type="email" id="loginEmail" placeholder="Email" autocomplete="email">
           <input type="password" id="loginPassword" placeholder="Пароль" autocomplete="current-password">
-          <button id="loginBtn">Войти</button>
+          <button id="loginBtn" type="submit">Войти</button>
           <p id="loginError" class="auth-error"></p>
-        </div>
+        </form>
 
-        <div id="registerForm" class="auth-form">
+        <form id="registerForm" class="auth-form">
           <input type="email" id="registerEmail" placeholder="Email" autocomplete="email">
-          <input type="password" id="registerPassword" placeholder="Пароль" autocomplete="new-password">
-          <button id="registerBtn">Зарегистрироваться</button>
+          <input type="text" id="registerNickname" placeholder="Никнейм"> <input type="password" id="registerPassword" placeholder="Пароль" autocomplete="new-password">
+          <button id="registerBtn" type="submit">Зарегистрироваться</button>
           <p id="registerError" class="auth-error"></p>
-        </div>
+        </form>
 
         <div id="userStatus" class="user-status">
           <p id="loggedInUser"></p>
           <button id="logoutBtn" class="logout-btn">Выйти</button>
         </div>
       </div>
+      <h2></h2>
+      <ul class="menu-links">
+        <li><a href="#"></a></li>
+        <li><a href="#"></a></li>
+        <li><a href="#"></a></li>
+      </ul>
     </div>
   </div>
 
-  <!-- MAIL MODAL -->
   <div id="mailModal" class="mail-modal">
     <div class="mail-content">
       <button class="close-btn" id="closeMail">×</button>
@@ -83,34 +87,44 @@
     </div>
   </div>
 
-  <!-- NAVIGATION -->
   <nav class="bottom-nav">
     <a href="#" class="nav-item" id="openGames" title="Games">
-      <svg viewBox="0 0 24 24" fill="none"><path d="M6 14H4L2 18V20H6L7 18L6 14ZM18 14H20L22 18V20H18L17 18L18 14ZM10 9H14V11H10V9ZM8 7H16V13H8V7Z" fill="white"/></svg>
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M6 14H4L2 18V20H6L7 18L6 14ZM18 14H20L22 18V20H18L17 18L18 14ZM10 9H14V11H10V9ZM8 7H16V13H8V7Z" fill="white"/>
+      </svg>
     </a>
     <a href="#" class="nav-item" id="openApps" title="Apps">
-      <svg viewBox="0 0 24 24" fill="none"><path d="M4 4H10V10H4V4ZM14 4H20V10H14V4ZM4 14H10V20H4V14ZM14 14H20V20H14V14Z" fill="white"/></svg>
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M4 4H10V10H4V4ZM14 4H20V10H14V4ZM4 14H10V20H4V14ZM14 14H20V20H14V14Z" fill="white"/>
+      </svg>
     </a>
     <a href="#" class="nav-item" title="Mail">
-      <svg viewBox="0 0 24 24" fill="none"><path d="M4 4H20V20H4V4ZM4 4L12 13L20 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M4 4H20V20H4V4ZM4 4L12 13L20 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
     </a>
     <a href="#" class="nav-item" title="Menu">
-      <svg viewBox="0 0 24 24" fill="none"><path d="M4 6H20M4 12H20M4 18H20" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M4 6H20M4 12H20M4 18H20" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      </svg>
     </a>
   </nav>
 
-  <!-- JS -->
   <script type="module">
+    // Импорт Firebase SDK
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
     import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-analytics.js";
+    // Импорт модулей аутентификации
     import {
       getAuth,
       createUserWithEmailAndPassword,
       signInWithEmailAndPassword,
       onAuthStateChanged,
-      signOut
+      signOut,
+      updateProfile // Добавлен import updateProfile для никнейма
     } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
 
     const firebaseConfig = {
       apiKey: "AIzaSyB2In0cOmuiYB6zNj0dQrdJ8bwPkINKdzA",
@@ -123,9 +137,30 @@
     };
 
     const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
     const db = getFirestore(app);
-    const auth = getAuth(app);
-    getAnalytics(app);
+    const auth = getAuth(app); // Инициализация Firebase Auth
+
+    // Передача объектов Firebase в глобальный scope
+    // Это позволяет другим скриптам (например, auth.js) получать доступ к ним
+    window.firebaseApp = app;
+    window.firebaseAuth = auth;
+    window.firebaseDb = db;
+    // Дополнительно: сделать методы auth доступными через глобальный объект firebase
+    window.firebase = {
+        auth: () => auth, // Метод для получения auth объекта (как в старом проекте)
+        // Если нужны другие модули Firebase в глобальном скоупе, можно добавить:
+        // firestore: () => db
+    };
+
+
+    function renderCard(data) {
+      return `
+        <div class="icon-card">
+          <img src="${data.icon}" alt="${data.title}">
+          <span>${data.title}</span>
+        </div>`;
+    }
 
     async function loadCollection(collName, prefix) {
       const querySnapshot = await getDocs(collection(db, collName));
@@ -137,117 +172,21 @@
       };
       querySnapshot.forEach(doc => {
         const d = doc.data();
-        if (containers[d.type]) containers[d.type].innerHTML += `
-          <div class="icon-card">
-            <img src="${d.icon}" alt="${d.title}">
-            <span>${d.title}</span>
-          </div>`;
+        if (containers[d.type]) containers[d.type].innerHTML += renderCard(d);
       });
     }
 
-    await loadCollection('games', 'games');
-    await loadCollection('apps', 'apps');
-
-    // ---------------------- AUTH ----------------------
-    const loginTab = document.getElementById('loginTab');
-    const registerTab = document.getElementById('registerTab');
-    const loginForm = document.getElementById('loginForm');
-    const registerForm = document.getElementById('registerForm');
-    const userStatus = document.getElementById('userStatus');
-    const loggedInUser = document.getElementById('loggedInUser');
-    const logoutBtn = document.getElementById('logoutBtn');
-    const loginEmailInput = document.getElementById('loginEmail');
-    const loginPasswordInput = document.getElementById('loginPassword');
-    const loginBtn = document.getElementById('loginBtn');
-    const loginError = document.getElementById('loginError');
-    const registerEmailInput = document.getElementById('registerEmail');
-    const registerPasswordInput = document.getElementById('registerPassword');
-    const registerBtn = document.getElementById('registerBtn');
-    const registerError = document.getElementById('registerError');
-
-    loginForm.classList.add('active');
-    registerForm.classList.remove('active');
-    userStatus.style.display = 'none';
-
-    loginTab.addEventListener('click', () => {
-      loginForm.classList.add('active');
-      registerForm.classList.remove('active');
-      loginTab.classList.add('active');
-      registerTab.classList.remove('active');
-      loginError.textContent = '';
-      registerError.textContent = '';
+    // Загрузка данных после инициализации Firebase
+    document.addEventListener("DOMContentLoaded", async () => {
+      await loadCollection('games', 'games');
+      await loadCollection('apps', 'apps');
+      console.log('✅ Данные загружены из Firebase');
     });
 
-    registerTab.addEventListener('click', () => {
-      registerForm.classList.add('active');
-      loginForm.classList.remove('active');
-      registerTab.classList.add('active');
-      loginTab.classList.remove('active');
-      loginError.textContent = '';
-      registerError.textContent = '';
-    });
-
-    loginBtn.addEventListener('click', async () => {
-      const email = loginEmailInput.value;
-      const password = loginPasswordInput.value;
-      loginError.textContent = '';
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
-      } catch (error) {
-        let msg = 'Ошибка входа.';
-        if (error.code === 'auth/invalid-email') msg = 'Некорректный email.';
-        else if (error.code === 'auth/user-disabled') msg = 'Пользователь отключен.';
-        else if (['auth/user-not-found', 'auth/wrong-password'].includes(error.code)) msg = 'Неправильный email или пароль.';
-        loginError.textContent = msg;
-      }
-    });
-
-    registerBtn.addEventListener('click', async () => {
-      const email = registerEmailInput.value;
-      const password = registerPasswordInput.value;
-      registerError.textContent = '';
-      try {
-        await createUserWithEmailAndPassword(auth, email, password);
-      } catch (error) {
-        let msg = 'Ошибка регистрации.';
-        if (error.code === 'auth/email-already-in-use') msg = 'Email уже используется.';
-        else if (error.code === 'auth/invalid-email') msg = 'Некорректный email.';
-        else if (error.code === 'auth/weak-password') msg = 'Пароль слишком простой.';
-        registerError.textContent = msg;
-      }
-    });
-
-    logoutBtn.addEventListener('click', async () => {
-      try {
-        await signOut(auth);
-      } catch (error) {
-        console.error('Ошибка выхода:', error.message);
-      }
-    });
-
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        loggedInUser.textContent = `Вы вошли как: ${user.email}`;
-        userStatus.style.display = 'block';
-        loginForm.style.display = 'none';
-        registerForm.style.display = 'none';
-        loginTab.style.display = 'none';
-        registerTab.style.display = 'none';
-      } else {
-        loggedInUser.textContent = '';
-        userStatus.style.display = 'none';
-        loginForm.style.display = 'flex';
-        registerForm.style.display = 'none';
-        loginTab.style.display = 'block';
-        registerTab.style.display = 'block';
-        loginTab.classList.add('active');
-        registerTab.classList.remove('active');
-      }
-    });
   </script>
 
   <script src="script.js"></script>
   <script src="menu.js"></script>
   <script src="mail.js"></script>
-</body>
+  <script src="auth.js"></script> </body>
 </html>
