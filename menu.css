@@ -4,9 +4,9 @@
   position: fixed;
   top: 0;
   right: -100%;
-  width: 100%; /* Занимает 100% ширины viewport */
-  height: calc(100% - 60px); /* Высота: 100% экрана минус высота нижней навигации (предполагаем 60px) */
-  bottom: 60px; /* Нижний край панели привязан к верхнему краю нижней навигации */
+  width: 100%;
+  height: calc(100% - 60px);
+  bottom: 60px;
   background: rgba(20, 20, 20, 0.95);
   backdrop-filter: blur(12px);
   transition: right 0.3s ease;
@@ -18,20 +18,19 @@
 }
 
 .menu-content {
-  padding: 30px 20px;
+  padding: 30px 0; /* ИЗМЕНЕНО: Горизонтальный padding убран */
   color: white;
-  
-  /* ✅ Убеждаемся, что содержимое занимает всю ширину */
-  width: 100%; /* !!! Добавлено: чтобы содержимое занимало всю ширину панели !!! */
-  max-width: 100%; /* !!! Добавлено: чтобы гарантировать отсутствие скрытых ограничений !!! */
-  
+
+  width: 100%;
+  max-width: 100%;
+
   display: flex;
   flex-direction: column;
-  align-items: center; /* Центрирование по горизонтали */
-  justify-content: flex-start; /* Размещение сверху */
-  height: 100%; /* Занимает всю доступную высоту панели */
-  overflow-y: auto; /* Для прокрутки, если содержимое выходит за пределы */
-  box-sizing: border-box; /* Учитываем padding в расчетах ширины/высоты */
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+  overflow-y: auto;
+  box-sizing: border-box;
 }
 
 .menu-content h2 {
