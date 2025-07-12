@@ -7,20 +7,19 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
-  updateProfile 
+  updateProfile
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
 // !!! ИМПОРТ ФУНКЦИИ ИЗ НОВОГО profile.js !!!
-import { updateProfileDisplay } from './profile.js'; 
-
+import { updateProfileDisplay } from './profile.js';
 
 document.addEventListener("DOMContentLoaded", () => {
-  const app = window.firebaseApp; 
+  const app = window.firebaseApp;
   if (!app) {
     console.error("Firebase App не инициализировано в index.html. Функции аутентификации могут не работать.");
     return;
   }
-  const auth = getAuth(app); 
+  const auth = getAuth(app);
 
   // Элементы DOM для форм и статуса
   const loginTab = document.getElementById('loginTab');
@@ -28,14 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const loginForm = document.getElementById('loginForm');
   const registerForm = document.getElementById('registerForm');
   const authContainer = document.querySelector('.auth-container');
-
-
-  // !!! УДАЛЕНЫ ССЫЛКИ НА ЭЛЕМЕНТЫ ПРОФИЛЯ, теперь это в profile.js !!!
-  // const profileInfoContainer = document.getElementById('profileInfoContainer');
-  // const profileNicknameDisplay = document.getElementById('profileNicknameDisplay');
-  // const loggedInUserDisplay = document.getElementById('loggedInUserDisplay');
-  // const logoutBtn = document.getElementById('logoutBtn');
-
+  const profileInfoContainer = document.getElementById('profileInfoContainer'); // Добавлено для управления видимостью
 
   // Поля ввода для входа
   const loginEmailInput = document.getElementById('loginEmail');
@@ -45,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Поля ввода для регистрации
   const registerEmailInput = document.getElementById('registerEmail');
-  const registerNicknameInput = document.getElementById('registerNickname'); 
+  const registerNicknameInput = document.getElementById('registerNickname');
   const registerPasswordInput = document.getElementById('registerPassword');
   const registerBtn = document.getElementById('registerBtn');
   const registerError = document.getElementById('registerError');
@@ -58,27 +50,30 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log('Элемент loginBtn:', loginBtn);
   console.log('Элемент registerBtn:', registerBtn);
   console.log('Элемент authContainer:', authContainer);
+  console.log('Элемент profileInfoContainer:', profileInfoContainer); // Отладочный лог
   // --- Конец отладочных логов ---
 
   // Функция для показа формы и переключения активных вкладок
   function showAuthForm(isRegister) {
+    // Скрываем контейнер профиля, когда показываем формы входа/регистрации
+    if (profileInfoContainer) {
+      profileInfoContainer.style.display = 'none';
+    }
+
     loginForm.classList.toggle('active', !isRegister);
     registerForm.classList.toggle('active', isRegister);
 
     loginForm.style.display = isRegister ? 'none' : 'flex';
     registerForm.style.display = isRegister ? 'flex' : 'none';
 
-    // !!! ВЫЗЫВАЕМ ФУНКЦИЮ ИЗ profile.js ДЛЯ СКРЫТИЯ ПРОФИЛЯ !!!
-    updateProfileDisplay(null); // Передаем null, чтобы скрыть профиль
-
     // !!! Убираем прозрачность фона auth-container при показе форм !!!
     if (authContainer) {
-        authContainer.classList.remove('transparent-bg');
+      authContainer.classList.remove('transparent-bg');
     }
 
-    // Показываем/скрываем вкладки
-    loginTab.style.display = 'block'; 
-    registerTab.style.display = 'block'; 
+    // Показываем вкладки
+    loginTab.style.display = 'block';
+    registerTab.style.display = 'block';
     loginTab.classList.toggle('active', !isRegister);
     registerTab.classList.toggle('active', isRegister);
 
@@ -88,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // По умолчанию показываем форму входа
-  showAuthForm(false);
+  // showAuthForm(false); // Убрали, так как теперь onAuthStateChanged управляет начальным отображением
 
   // Переключение между формами входа и регистрации
   loginTab.addEventListener('click', () => {
@@ -101,14 +96,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Обработчик для ВХОДА (привязан к submit формы)
   loginForm.addEventListener('submit', async (event) => {
-    event.preventDefault(); 
+    event.preventDefault();
     const email = loginEmailInput.value.trim();
     const password = loginPasswordInput.value;
-    loginError.textContent = ''; 
+    loginError.textContent = '';
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
       console.log('Пользователь успешно вошел!');
+      // При успешном входе формы должны закрыться, а профиль открыться.
+      // onAuthStateChanged позаботится об этом.
     } catch (error) {
       console.error('Ошибка входа:', error.code, error.message);
       let errorMessage = 'Ошибка входа. Пожалуйста, попробуйте еще раз.';
@@ -127,11 +124,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Обработчик для РЕГИСТРАЦИИ (привязан к submit формы)
   registerForm.addEventListener('submit', async (event) => {
-    event.preventDefault(); 
+    event.preventDefault();
     const email = registerEmailInput.value.trim();
-    const nickname = registerNicknameInput.value.trim(); 
+    const nickname = registerNicknameInput.value.trim();
     const password = registerPasswordInput.value;
-    registerError.textContent = ''; 
+    registerError.textContent = '';
 
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -139,6 +136,8 @@ document.addEventListener("DOMContentLoaded", () => {
         await updateProfile(auth.currentUser, { displayName: nickname });
       }
       console.log('Пользователь успешно зарегистрирован!');
+      // При успешной регистрации формы должны закрыться, а профиль открыться.
+      // onAuthStateChanged позаботится об этом.
     } catch (error) {
       console.error('Ошибка регистрации:', error.code, error.message);
       let errorMessage = 'Ошибка регистрации. Пожалуйста, попробуйте еще раз.';
@@ -149,54 +148,43 @@ document.addEventListener("DOMContentLoaded", () => {
       } else if (error.code === 'auth/weak-password') {
         errorMessage = 'Пароль должен быть не менее 6 символов.';
       } else {
-        errorMessage = `Ошибка: ${error.message}`; 
+        errorMessage = `Ошибка: ${error.message}`;
       }
       registerError.textContent = errorMessage;
     }
   });
 
-  // !!! ЛОГИКА КНОПКИ ВЫХОДА ПЕРЕНЕСЕНА В profile.js (если вы её там реализовали) !!!
-  // Если кнопка выхода находится в auth-container и не в profile-card, то оставьте здесь.
-  // В текущем HTML она находится в profileInfoContainer, поэтому она будет управляться profile.js
-  /*
-  const logoutBtn = document.getElementById('logoutBtn');
-  if (logoutBtn) { 
-    logoutBtn.addEventListener('click', async () => {
-      try {
-        await signOut(auth);
-        console.log('Пользователь вышел.');
-      } catch (error) {
-        console.error('Ошибка выхода:', error.message);
-      }
-    });
-  }
-  */
-
 
   // Отслеживание состояния аутентификации (вход/выход)
   onAuthStateChanged(auth, (user) => {
     // !!! ВЫЗЫВАЕМ ФУНКЦИЮ ИЗ profile.js ДЛЯ ОБНОВЛЕНИЯ ОТОБРАЖЕНИЯ ПРОФИЛЯ !!!
-    updateProfileDisplay(user); 
+    updateProfileDisplay(user);
 
     if (user) {
       // Пользователь вошел в систему
       // Скрываем формы и вкладки входа/регистрации
       loginForm.style.display = 'none';
       registerForm.style.display = 'none';
-      loginTab.style.display = 'none'; 
-      registerTab.style.display = 'none'; 
-      
+      loginTab.style.display = 'none';
+      registerTab.style.display = 'none';
+
       // !!! Делаем фон auth-container прозрачным при входе !!!
       if (authContainer) {
-          authContainer.classList.add('transparent-bg');
+        authContainer.classList.add('transparent-bg');
+      }
+
+      // Убеждаемся, что контейнер профиля видим
+      if (profileInfoContainer) {
+        profileInfoContainer.style.display = 'flex';
       }
 
     } else {
-      // Пользователь вышел из системы
+      // Пользователь вышел из системы или еще не вошел
       // Показываем формы и вкладки входа/регистрации
-      showAuthForm(registerTab.classList.contains('active')); 
+      showAuthForm(false); // По умолчанию показываем форму входа при выходе
 
       // showAuthForm уже позаботится об удалении 'transparent-bg'
+      // И скрытии profileInfoContainer
     }
   });
 });
