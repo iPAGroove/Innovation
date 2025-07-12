@@ -2,11 +2,12 @@
   position: fixed;
   top: 0;
   right: -100%;
-  width: 100%; /* ✅ Изменено на 100% для полноэкранного открытия */
-  height: 100%;
+  width: 100%;
+  height: calc(100% - 60px); /* Высота: 100% экрана минус высота нижней навигации (предполагаем 60px) */
+  bottom: 60px; /* Нижний край панели привязан к верхнему краю нижней навигации */
   background: rgba(20, 20, 20, 0.95);
   backdrop-filter: blur(12px);
-  /* box-shadow: -4px 0 10px rgba(0, 0, 0, 0.4); */ /* ❌ Убрана тень, так как панель теперь на весь экран */
+  /* box-shadow: -4px 0 10px rgba(0, 0, 0, 0.4); */ /* Убрана тень, так как панель теперь на весь экран */
   transition: right 0.3s ease;
   z-index: 9999;
 }
@@ -18,13 +19,12 @@
 .menu-content {
   padding: 30px 20px;
   color: white;
-  /* Добавим max-width и auto margin для центрирования контента на больших экранах, если это потребуется */
   /* max-width: 400px; */
   /* margin: 0 auto; */
 }
 
 .menu-content h2 {
-  font-family: 'Montserrat', sans-serif; /* ✅ Добавил Montserrat для заголовка */
+  font-family: 'Montserrat', sans-serif;
   font-size: 22px;
   margin-bottom: 20px;
 }
