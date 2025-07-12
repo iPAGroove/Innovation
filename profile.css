@@ -3,41 +3,49 @@
 /* Стили для контейнера информации о профиле */
 .profile-info-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%; /* Занимает всю ширину auth-container.transparent-bg */
+    flex-direction: column; /* Теперь колонками, так как будет несколько блоков */
+    gap: 15px; /* Расстояние между карточками/блоками */
+    width: 100%;
     margin-top: 20px;
     margin-bottom: 20px;
     box-sizing: border-box;
-    /* Уберем padding здесь, пусть profile-card сам управляет своим padding */
-    /* padding: 0 10px; */
+    /* Убираем padding здесь, чтобы карточки могли быть шире */
 }
 
-/* Стили для самой карточки профиля */
+/* Стили для самой карточки профиля и других блоков */
 .profile-card {
-    background: linear-gradient(135deg, #1A1A3A 0%, #2A2A5A 100%);
+    background: #1C1C3A; /* Темный фон, как на скрине */
     border-radius: 12px;
-    padding: 15px 20px; /* Внутренние отступы карточки */
-    width: calc(100% - 0px); /* Изменено: отнимаем 0, чтобы гарантировать 100% ширины от родителя, учитывая его padding */
-    /* Здесь можно добавить небольшой max-width, если не хотите, чтобы на очень широких экранах профиль был огромным */
-    /* max-width: 600px; */
+    padding: 15px 20px;
+    width: calc(100% - 40px); /* 100% минус 20px padding из menu-content */
+    max-width: 600px; /* Ограничиваем максимальную ширину для больших экранов */
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column; /* По умолчанию элементы внутри карточки идут в колонку */
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+    margin: 0 auto; /* Центрируем карточку внутри profile-info-container */
+}
+
+/* Верхняя часть карточки профиля (аватар, ник, кнопки) */
+.profile-header {
     display: flex;
     align-items: center;
     gap: 15px;
-    color: #fff;
-    font-family: 'Montserrat', sans-serif;
+    padding-bottom: 15px; /* Отступ от нижних секций */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Разделитель */
+    margin-bottom: 15px;
 }
 
 /* Обертка для аватара */
 .profile-avatar-wrapper {
-    width: 60px;
-    height: 60px;
+    width: 70px; /* Увеличим размер аватара */
+    height: 70px;
     border-radius: 50%;
     overflow: hidden;
     flex-shrink: 0;
-    border: 2px solid rgba(0, 123, 255, 0.5);
-    box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+    border: 3px solid #007bff; /* Более заметная обводка */
+    box-shadow: 0 0 12px rgba(0, 123, 255, 0.4);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -51,13 +59,139 @@
     display: block;
 }
 
-/* Заголовок профиля (например, "iPA Groove") */
+/* Контейнер для никнейма и кнопок */
+.profile-details {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Занимает оставшееся пространство */
+}
+
+/* Заголовок профиля (никнейм) */
 .profile-title {
-    font-size: 20px;
-    font-weight: 600;
+    font-size: 24px; /* Увеличим размер никнейма */
+    font-weight: 700; /* Более жирный шрифт */
     color: #fff;
+    margin-bottom: 8px; /* Отступ от кнопок */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    flex-grow: 1;
+}
+
+/* Контейнер для кнопок Free Access / Upgrade VIP */
+.profile-buttons {
+    display: flex;
+    gap: 10px; /* Расстояние между кнопками */
+    flex-wrap: wrap; /* Разрешить перенос кнопок на новую строку на маленьких экранах */
+}
+
+/* Общие стили для кнопок профиля */
+.profile-btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 20px; /* Сильно закругленные кнопки */
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    white-space: nowrap; /* Не переносить текст на кнопках */
+}
+
+.profile-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Стили для кнопки "Free Access" */
+.free-access-btn {
+    background-color: #28a745; /* Зеленый цвет */
+    color: #fff;
+}
+
+.free-access-btn:hover {
+    background-color: #218838;
+}
+
+/* Стили для кнопки "Upgrade to VIP" */
+.upgrade-vip-btn {
+    background: linear-gradient(90deg, #FF9900, #FFCC00); /* Оранжевый градиент */
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.upgrade-vip-btn:hover {
+    background: linear-gradient(90deg, #FFCC00, #FF9900);
+}
+
+/* Стили для секции "Community Statistics" */
+.community-stats {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Выравнивание элементов по левому краю */
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Разделитель */
+    margin-bottom: 15px;
+}
+
+.stats-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 10px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column; /* Иконка сверху, текст снизу */
+    align-items: center; /* Центрируем иконку и текст */
+    gap: 5px;
+    width: 100%; /* Занимает всю ширину */
+    text-align: center;
+}
+
+.stat-icon {
+    width: 40px; /* Размер иконки */
+    height: 40px;
+    filter: drop-shadow(0 0 5px rgba(0, 123, 255, 0.5)); /* Небольшое свечение */
+}
+
+.stat-text {
+    font-size: 16px;
+    font-weight: 700;
+    color: #87CEFA; /* Голубой цвет, как на скрине */
+    letter-spacing: 1.5px; /* Расстояние между буквами */
+}
+
+/* Стиль для отдельного блока Account Settings */
+.account-settings-card {
+    background: #1C1C3A; /* Такой же темный фон */
+    padding: 15px 20px;
+}
+
+.account-settings-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    font-size: 18px;
+    font-weight: 500;
+    color: #fff;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.account-settings-link:hover {
+    color: #87CEFA;
+}
+
+.arrow-down {
+    width: 24px;
+    height: 24px;
+    color: #fff; /* Цвет стрелки */
+    transition: transform 0.2s ease;
+}
+
+.account-settings-link:hover .arrow-down {
+    transform: rotate(90deg); /* Пример анимации для стрелки */
 }
