@@ -59,19 +59,10 @@
     flex-grow: 1; /* Чтобы занимал оставшееся пространство */
 }
 
-/* Если вы решите оставить email под карточкой, вот стили: */
-/* .user-email-display {
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.7);
-    margin-top: 10px;
-    text-align: center;
-    width: 100%;
-} */
-
-/* Если кнопка выхода будет отдельно */
-/* .logout-btn {
-    background: #ffc107; 
-    color: #333;
+/* Стиль для кнопки выхода из профиля (добавлен новый класс) */
+.logout-btn {
+    background: #ff4d4d; /* Красный цвет для кнопки выхода */
+    color: #fff;
     width: 100%;
     padding: 12px;
     border: none;
@@ -80,10 +71,10 @@
     font-weight: bold;
     cursor: pointer;
     transition: background 0.3s ease;
-    margin-top: 10px;
+    margin-top: 15px; /* Отступ сверху */
     outline: none;
 }
 
 .logout-btn:hover {
-    background: #e0a800;
-} */
+    background: #cc0000;
+}
