@@ -21,14 +21,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const registerTab = document.getElementById('registerTab');
   const loginForm = document.getElementById('loginForm');
   const registerForm = document.getElementById('registerForm');
-  // const userStatus = document.getElementById('userStatus'); // Этот элемент теперь удален или не используется
-  // const loggedInUser = document.getElementById('loggedInUser'); // Этот элемент теперь удален или не используется
 
-  // НОВЫЕ ЭЛЕМЕНТЫ DOM ДЛЯ ПРОФИЛЯ (кнопка выхода теперь здесь)
+  // НОВЫЕ ЭЛЕМЕНТЫ DOM ДЛЯ ПРОФИЛЯ
   const profileInfoContainer = document.getElementById('profileInfoContainer');
   const profileNicknameDisplay = document.getElementById('profileNicknameDisplay');
-  const loggedInUserDisplay = document.getElementById('loggedInUserDisplay');
-  const logoutBtn = document.getElementById('logoutBtn'); // Кнопка выхода теперь внутри profileInfoContainer
+  // Если вы раскомментировали email и кнопку выхода в HTML, то раскомментируйте и здесь:
+  // const loggedInUserDisplay = document.getElementById('loggedInUserDisplay');
+  // const logoutBtn = document.getElementById('logoutBtn');
 
 
   // Поля ввода для входа
@@ -53,8 +52,8 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log('Элемент registerBtn:', registerBtn);
   console.log('Элемент profileInfoContainer:', profileInfoContainer);
   console.log('Элемент profileNicknameDisplay:', profileNicknameDisplay);
-  console.log('Элемент loggedInUserDisplay:', loggedInUserDisplay);
-  console.log('Элемент logoutBtn:', logoutBtn);
+  // console.log('Элемент loggedInUserDisplay:', loggedInUserDisplay);
+  // console.log('Элемент logoutBtn:', logoutBtn);
   // --- Конец отладочных логов ---
 
   // Функция для показа формы и переключения активных вкладок
@@ -103,7 +102,6 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       console.log('Пользователь успешно вошел!');
-      // onAuthStateChanged будет вызван автоматически и обновит UI
     } catch (error) {
       console.error('Ошибка входа:', error.code, error.message);
       let errorMessage = 'Ошибка входа. Пожалуйста, попробуйте еще раз.';
@@ -134,7 +132,6 @@ document.addEventListener("DOMContentLoaded", () => {
         await updateProfile(auth.currentUser, { displayName: nickname });
       }
       console.log('Пользователь успешно зарегистрирован!');
-      // onAuthStateChanged будет вызван автоматически и обновит UI
     } catch (error) {
       console.error('Ошибка регистрации:', error.code, error.message);
       let errorMessage = 'Ошибка регистрации. Пожалуйста, попробуйте еще раз.';
@@ -151,26 +148,32 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Обработчик для выхода (кнопка теперь внутри profileInfoContainer)
-  if (logoutBtn) { // Проверяем, что кнопка найдена
-    logoutBtn.addEventListener('click', async () => {
-      try {
-        await signOut(auth);
-        console.log('Пользователь вышел.');
-      } catch (error) {
-        console.error('Ошибка выхода:', error.message);
-      }
-    });
-  }
+  // Обработчик для выхода (если кнопка была раскомментирована в HTML)
+  // if (logoutBtn) { 
+  //   logoutBtn.addEventListener('click', async () => {
+  //     try {
+  //       await signOut(auth);
+  //       console.log('Пользователь вышел.');
+  //     } catch (error) {
+  //       console.error('Ошибка выхода:', error.message);
+  //     }
+  //   });
+  // }
 
 
   // Отслеживание состояния аутентификации (вход/выход)
   onAuthStateChanged(auth, (user) => {
     if (user) {
       // Пользователь вошел в систему
-      if (profileInfoContainer && profileNicknameDisplay && loggedInUserDisplay) { // Проверяем все элементы
-        profileNicknameDisplay.textContent = user.displayName || user.email.split('@')[0]; // Никнейм или часть email
-        loggedInUserDisplay.textContent = user.email; // Полный email
+      if (profileInfoContainer && profileNicknameDisplay) { // Проверяем, что элементы существуют
+        // На скрине показан статический текст "iPA Groove", а не никнейм пользователя.
+        // Поэтому я оставил "iPA Groove" как основной текст.
+        // Если вы хотите показывать никнейм пользователя, раскомментируйте следующую строку:
+        // profileNicknameDisplay.textContent = user.displayName || user.email.split('@')[0]; 
+        
+        // Если email отображается, раскомментируйте:
+        // if (loggedInUserDisplay) loggedInUserDisplay.textContent = user.email; 
+
         profileInfoContainer.style.display = 'flex'; // Показываем контейнер профиля
       }
 
