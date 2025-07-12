@@ -16,8 +16,8 @@
     background: #1C1C3A; /* Темный фон, как на скрине */
     border-radius: 12px;
     padding: 15px 20px;
-    /* Увеличиваем ширину, чтобы она была почти вплотную к краям menu-content */
-    width: calc(100% - 20px); /* 100% ширины родителя (auth-container), минус 20px padding (по 10px с каждой стороны от menu-content) */
+    /* Ширина, чтобы быть максимально широкой в меню */
+    width: calc(100% - 20px); /* 100% ширины menu-content, минус 20px padding (по 10px с каждой стороны) */
     max-width: 600px; /* Ограничиваем максимальную ширину для больших экранов */
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
     display: flex;
@@ -66,6 +66,9 @@
     flex-grow: 1;
     /* Убрано justify-content: center; чтобы никнейм был наверху */
     /* Теперь никнейм и кнопки будут выравниваться по верху flex-контейнера .profile-header */
+    /* Убедимся, что никнейм и кнопки вместе занимают нужную высоту */
+    min-height: 70px; /* Высота аватара, чтобы содержимое растягивалось */
+    justify-content: center; /* Центрируем содержимое по вертикали внутри profile-details */
 }
 
 /* Заголовок профиля (никнейм) */
@@ -73,11 +76,11 @@
     font-size: 20px;
     font-weight: 700;
     color: #fff;
-    margin-bottom: 5px; /* Уменьшим отступ от кнопок, чтобы они были ближе */
+    margin-bottom: 5px; /* Отступ от кнопок */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    line-height: 1.2; /* Немного увеличим интерлиньяж, если нужно */
+    line-height: 1.2;
 }
 
 /* Контейнер для кнопок Free Access / Upgrade VIP */
@@ -85,7 +88,7 @@
     display: flex;
     flex-direction: row; /* ДОЛЖНЫ БЫТЬ В ОДНУ ЛИНИЮ */
     gap: 8px; /* Расстояние между кнопками */
-    flex-wrap: wrap; /* Позволяем перенос на новую строку, если места мало */
+    /* flex-wrap: wrap; */ /* Убираем flex-wrap, чтобы они ВСЕГДА были в одну линию, если позволяют размеры */
     align-items: center; /* Выравнивание кнопок по центру вертикали */
 }
 
@@ -98,12 +101,13 @@
     font-weight: 600;
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    white-space: nowrap;
+    white-space: nowrap; /* Важно: не переносить текст на кнопках */
+    flex-shrink: 0; /* Не сжимать кнопки */
 }
 
 .profile-btn:hover {
-    transform: translateY(-1px); /* Меньше сдвиг при наведении */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); /* Меньше тень */
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 /* Стили для кнопки "Free Access" */
@@ -122,7 +126,7 @@
     color: #fff;
     display: flex;
     align-items: center;
-    gap: 3px; /* Уменьшим gap для иконки внутри кнопки */
+    gap: 3px;
 }
 
 .upgrade-vip-btn:hover {
@@ -166,7 +170,6 @@
     line-height: 1; /* Уберем лишний интерлиньяж */
     margin-bottom: 5px; /* Отступ от текста "DOWNLOADS" */
 }
-
 
 .stat-text {
     font-size: 16px;
