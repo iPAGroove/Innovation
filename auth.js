@@ -28,14 +28,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // Поля ввода для входа
   const loginEmailInput = document.getElementById('loginEmail');
   const loginPasswordInput = document.getElementById('loginPassword');
-  const loginBtn = document.getElementById('loginBtn'); // Возвращаем получение кнопки по ID
+  const loginBtn = document.getElementById('loginBtn');
   const loginError = document.getElementById('loginError');
 
   // Поля ввода для регистрации
   const registerEmailInput = document.getElementById('registerEmail');
   const registerNicknameInput = document.getElementById('registerNickname'); 
   const registerPasswordInput = document.getElementById('registerPassword');
-  const registerBtn = document.getElementById('registerBtn'); // Возвращаем получение кнопки по ID
+  const registerBtn = document.getElementById('registerBtn');
   const registerError = document.getElementById('registerError');
 
   // --- Отладочные логи ---
@@ -43,39 +43,43 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log('Элемент registerTab:', registerTab);
   console.log('Элемент loginForm:', loginForm);
   console.log('Элемент registerForm:', registerForm);
-  console.log('Элемент loginBtn:', loginBtn); // Проверяем, что кнопка входа найдена
-  console.log('Элемент registerBtn:', registerBtn); // Проверяем, что кнопка регистрации найдена
+  console.log('Элемент loginBtn:', loginBtn);
+  console.log('Элемент registerBtn:', registerBtn);
   // --- Конец отладочных логов ---
 
+  // Функция для показа формы и переключения активных вкладок
+  function showAuthForm(isRegister) {
+    loginForm.classList.toggle('active', !isRegister);
+    registerForm.classList.toggle('active', isRegister);
+
+    loginTab.classList.toggle('active', !isRegister);
+    registerTab.classList.toggle('active', isRegister);
+
+    loginForm.style.display = isRegister ? 'none' : 'flex';
+    registerForm.style.display = isRegister ? 'flex' : 'none';
+
+    // Очищаем ошибки при смене формы
+    loginError.textContent = '';
+    registerError.textContent = '';
+  }
 
   // По умолчанию показываем форму входа и скрываем статус пользователя
-  loginForm.classList.add('active');
-  registerForm.classList.remove('active');
+  showAuthForm(false);
   userStatus.style.display = 'none';
 
   // Переключение между формами входа и регистрации
   loginTab.addEventListener('click', () => {
-    loginForm.classList.add('active');
-    registerForm.classList.remove('active');
-    loginTab.classList.add('active');
-    registerTab.classList.remove('active'); 
-    loginError.textContent = ''; 
-    registerError.textContent = ''; 
+    showAuthForm(false);
   });
 
   registerTab.addEventListener('click', () => {
-    registerForm.classList.add('active');
-    loginForm.classList.remove('active');
-    registerTab.classList.add('active'); 
-    loginTab.classList.remove('active'); 
-    loginError.textContent = ''; 
-    registerError.textContent = ''; 
+    showAuthForm(true);
   });
 
   // Обработчик для ВХОДА (привязан к submit формы)
-  loginForm.addEventListener('submit', async (event) => { // Слушаем событие на форме
+  loginForm.addEventListener('submit', async (event) => {
     event.preventDefault(); 
-    const email = loginEmailInput.value;
+    const email = loginEmailInput.value.trim();
     const password = loginPasswordInput.value;
     loginError.textContent = ''; 
 
@@ -99,10 +103,10 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Обработчик для РЕГИСТРАЦИИ (привязан к submit формы)
-  registerForm.addEventListener('submit', async (event) => { // Слушаем событие на форме
+  registerForm.addEventListener('submit', async (event) => {
     event.preventDefault(); 
-    const email = registerEmailInput.value;
-    const nickname = registerNicknameInput.value; 
+    const email = registerEmailInput.value.trim();
+    const nickname = registerNicknameInput.value.trim(); 
     const password = registerPasswordInput.value;
     registerError.textContent = ''; 
 
@@ -150,12 +154,10 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       loggedInUser.textContent = '';
       userStatus.style.display = 'none';
-      loginForm.style.display = 'flex'; 
-      registerForm.style.display = 'none';
+      // Показываем форму в зависимости от активной вкладки
+      showAuthForm(registerTab.classList.contains('active'));
       loginTab.style.display = 'block'; 
       registerTab.style.display = 'block'; 
-      loginTab.classList.add('active'); 
-      registerTab.classList.remove('active');
     }
   });
 });
