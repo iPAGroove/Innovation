@@ -115,15 +115,8 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
     import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-analytics.js";
-    // Импорт модулей аутентификации
-    import {
-      getAuth,
-      createUserWithEmailAndPassword,
-      signInWithEmailAndPassword,
-      onAuthStateChanged,
-      signOut,
-      updateProfile // Добавлен import updateProfile для никнейма
-    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+    // Импорт модуля аутентификации
+    import { getAuth } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
 
     const firebaseConfig = {
@@ -141,18 +134,11 @@
     const db = getFirestore(app);
     const auth = getAuth(app); // Инициализация Firebase Auth
 
-    // Передача объектов Firebase в глобальный scope
-    // Это позволяет другим скриптам (например, auth.js) получать доступ к ним
-    window.firebaseApp = app;
-    window.firebaseAuth = auth;
-    window.firebaseDb = db;
-    // Дополнительно: сделать методы auth доступными через глобальный объект firebase
-    window.firebase = {
-        auth: () => auth, // Метод для получения auth объекта (как в старом проекте)
-        // Если нужны другие модули Firebase в глобальном скоупе, можно добавить:
-        // firestore: () => db
-    };
-
+    // Передача объекта Firebase App в глобальный scope
+    // Это позволяет auth.js (который теперь тоже модуль) получить объект 'app'
+    window.firebaseApp = app; 
+    // window.firebaseAuth = auth; // Не нужно, так как auth.js получит auth через getAuth(app)
+    // window.firebaseDb = db;     // Не нужно для auth.js
 
     function renderCard(data) {
       return `
@@ -188,5 +174,5 @@
   <script src="script.js"></script>
   <script src="menu.js"></script>
   <script src="mail.js"></script>
-  <script src="auth.js"></script> </body>
+  <script type="module" src="auth.js"></script> </body>
 </html>
