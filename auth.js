@@ -1,3 +1,5 @@
+// auth.js
+
 // ========== ИМПОРТЫ ИЗ FIREBASE SDK ==========
 import {
   getAuth,
@@ -7,6 +9,10 @@ import {
   signOut,
   updateProfile 
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
+// !!! ИМПОРТ ФУНКЦИИ ИЗ НОВОГО profile.js !!!
+import { updateProfileDisplay } from './profile.js'; 
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const app = window.firebaseApp; 
@@ -21,13 +27,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const registerTab = document.getElementById('registerTab');
   const loginForm = document.getElementById('loginForm');
   const registerForm = document.getElementById('registerForm');
-  const authContainer = document.querySelector('.auth-container'); // !!! ДОБАВЛЕНО: получаем auth-container !!!
+  const authContainer = document.querySelector('.auth-container');
 
 
-  // НОВЫЕ ЭЛЕМЕНТЫ DOM ДЛЯ ПРОФИЛЯ
-  const profileInfoContainer = document.getElementById('profileInfoContainer');
-  const profileNicknameDisplay = document.getElementById('profileNicknameDisplay');
-  // Если вы раскомментировали email и кнопку выхода в HTML, то раскомментируйте и здесь:
+  // !!! УДАЛЕНЫ ССЫЛКИ НА ЭЛЕМЕНТЫ ПРОФИЛЯ, теперь это в profile.js !!!
+  // const profileInfoContainer = document.getElementById('profileInfoContainer');
+  // const profileNicknameDisplay = document.getElementById('profileNicknameDisplay');
   // const loggedInUserDisplay = document.getElementById('loggedInUserDisplay');
   // const logoutBtn = document.getElementById('logoutBtn');
 
@@ -52,11 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log('Элемент registerForm:', registerForm);
   console.log('Элемент loginBtn:', loginBtn);
   console.log('Элемент registerBtn:', registerBtn);
-  console.log('Элемент profileInfoContainer:', profileInfoContainer);
-  console.log('Элемент profileNicknameDisplay:', profileNicknameDisplay);
-  console.log('Элемент authContainer:', authContainer); // !!! НОВЫЙ ЛОГ !!!
-  // console.log('Элемент loggedInUserDisplay:', loggedInUserDisplay);
-  // console.log('Элемент logoutBtn:', logoutBtn);
+  console.log('Элемент authContainer:', authContainer);
   // --- Конец отладочных логов ---
 
   // Функция для показа формы и переключения активных вкладок
@@ -67,12 +68,10 @@ document.addEventListener("DOMContentLoaded", () => {
     loginForm.style.display = isRegister ? 'none' : 'flex';
     registerForm.style.display = isRegister ? 'flex' : 'none';
 
-    // Скрываем контейнер профиля, когда показываем формы аутентификации
-    if (profileInfoContainer) {
-      profileInfoContainer.style.display = 'none';
-    }
-    
-    // !!! ДОБАВЛЕНО: Убираем прозрачность фона auth-container при показе форм !!!
+    // !!! ВЫЗЫВАЕМ ФУНКЦИЮ ИЗ profile.js ДЛЯ СКРЫТИЯ ПРОФИЛЯ !!!
+    updateProfileDisplay(null); // Передаем null, чтобы скрыть профиль
+
+    // !!! Убираем прозрачность фона auth-container при показе форм !!!
     if (authContainer) {
         authContainer.classList.remove('transparent-bg');
     }
@@ -156,51 +155,44 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Обработчик для выхода (если кнопка была раскомментирована в HTML)
-  // if (logoutBtn) { 
-  //   logoutBtn.addEventListener('click', async () => {
-  //     try {
-  //       await signOut(auth);
-  //       console.log('Пользователь вышел.');
-  //     } catch (error) {
-  //       console.error('Ошибка выхода:', error.message);
-  //     }
-  //   });
-  // }
+  // !!! ЛОГИКА КНОПКИ ВЫХОДА ПЕРЕНЕСЕНА В profile.js (если вы её там реализовали) !!!
+  // Если кнопка выхода находится в auth-container и не в profile-card, то оставьте здесь.
+  // В текущем HTML она находится в profileInfoContainer, поэтому она будет управляться profile.js
+  /*
+  const logoutBtn = document.getElementById('logoutBtn');
+  if (logoutBtn) { 
+    logoutBtn.addEventListener('click', async () => {
+      try {
+        await signOut(auth);
+        console.log('Пользователь вышел.');
+      } catch (error) {
+        console.error('Ошибка выхода:', error.message);
+      }
+    });
+  }
+  */
 
 
   // Отслеживание состояния аутентификации (вход/выход)
   onAuthStateChanged(auth, (user) => {
+    // !!! ВЫЗЫВАЕМ ФУНКЦИЮ ИЗ profile.js ДЛЯ ОБНОВЛЕНИЯ ОТОБРАЖЕНИЯ ПРОФИЛЯ !!!
+    updateProfileDisplay(user); 
+
     if (user) {
       // Пользователь вошел в систему
-      if (profileInfoContainer && profileNicknameDisplay) {
-        profileNicknameDisplay.textContent = 'iPA Groove'; // Показываем статический текст "iPA Groove"
-        // Если хотите показывать никнейм пользователя, раскомментируйте следующую строку и закомментируйте предыдущую:
-        // profileNicknameDisplay.textContent = user.displayName || user.email.split('@')[0]; 
-        
-        // Если email отображается, раскомментируйте:
-        // if (loggedInUserDisplay) loggedInUserDisplay.textContent = user.email; 
-
-        profileInfoContainer.style.display = 'flex'; // Показываем контейнер профиля
-      }
-
       // Скрываем формы и вкладки входа/регистрации
       loginForm.style.display = 'none';
       registerForm.style.display = 'none';
       loginTab.style.display = 'none'; 
       registerTab.style.display = 'none'; 
       
-      // !!! ДОБАВЛЕНО: Делаем фон auth-container прозрачным при входе !!!
+      // !!! Делаем фон auth-container прозрачным при входе !!!
       if (authContainer) {
           authContainer.classList.add('transparent-bg');
       }
 
     } else {
       // Пользователь вышел из системы
-      if (profileInfoContainer) {
-        profileInfoContainer.style.display = 'none'; // Скрываем контейнер профиля
-      }
-
       // Показываем формы и вкладки входа/регистрации
       showAuthForm(registerTab.classList.contains('active')); 
 
