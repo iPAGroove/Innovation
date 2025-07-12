@@ -28,21 +28,23 @@ document.addEventListener("DOMContentLoaded", () => {
   // Поля ввода для входа
   const loginEmailInput = document.getElementById('loginEmail');
   const loginPasswordInput = document.getElementById('loginPassword');
+  const loginBtn = document.getElementById('loginBtn'); // Возвращаем получение кнопки по ID
   const loginError = document.getElementById('loginError');
 
   // Поля ввода для регистрации
   const registerEmailInput = document.getElementById('registerEmail');
   const registerNicknameInput = document.getElementById('registerNickname'); 
   const registerPasswordInput = document.getElementById('registerPassword');
+  const registerBtn = document.getElementById('registerBtn'); // Возвращаем получение кнопки по ID
   const registerError = document.getElementById('registerError');
 
   // --- Отладочные логи ---
-  // Проверьте, что все элементы найдены. Если какой-то null, это причина проблемы.
   console.log('Элемент loginTab:', loginTab);
   console.log('Элемент registerTab:', registerTab);
   console.log('Элемент loginForm:', loginForm);
   console.log('Элемент registerForm:', registerForm);
-  console.log('Элемент registerBtn (внутри формы):', registerForm.querySelector('button[type="submit"]'));
+  console.log('Элемент loginBtn:', loginBtn); // Проверяем, что кнопка входа найдена
+  console.log('Элемент registerBtn:', registerBtn); // Проверяем, что кнопка регистрации найдена
   // --- Конец отладочных логов ---
 
 
@@ -71,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Обработчик для ВХОДА (привязан к submit формы)
-  loginForm.addEventListener('submit', async (event) => {
+  loginForm.addEventListener('submit', async (event) => { // Слушаем событие на форме
     event.preventDefault(); 
     const email = loginEmailInput.value;
     const password = loginPasswordInput.value;
@@ -97,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Обработчик для РЕГИСТРАЦИИ (привязан к submit формы)
-  registerForm.addEventListener('submit', async (event) => {
+  registerForm.addEventListener('submit', async (event) => { // Слушаем событие на форме
     event.preventDefault(); 
     const email = registerEmailInput.value;
     const nickname = registerNicknameInput.value; 
