@@ -54,15 +54,15 @@
         <form id="loginForm" class="auth-form active">
           <input type="email" id="loginEmail" placeholder="Email" autocomplete="email">
           <input type="password" id="loginPassword" placeholder="Пароль" autocomplete="current-password">
-          <button type="submit">Войти</button>
-          <p id="loginError" class="auth-error"></p> </form>
+          <button id="loginBtn" type="submit">Войти</button> <p id="loginError" class="auth-error"></p>
+        </form>
 
         <form id="registerForm" class="auth-form">
           <input type="email" id="registerEmail" placeholder="Email" autocomplete="email">
           <input type="text" id="registerNickname" placeholder="Никнейм" autocomplete="nickname">
           <input type="password" id="registerPassword" placeholder="Пароль" autocomplete="new-password">
-          <button type="submit">Зарегистрироваться</button>
-          <p id="registerError" class="auth-error"></p> </form>
+          <button id="registerBtn" type="submit">Зарегистрироваться</button> <p id="registerError" class="auth-error"></p>
+        </form>
 
         <div id="userStatus" class="user-status">
           <p id="loggedInUser"></p>
@@ -122,7 +122,7 @@
       apiKey: "AIzaSyB2In0cOmuiYB6zNj0dQrdJ8bwPkINKdzA",
       authDomain: "updaterepoipa.firebaseapp.com",
       projectId: "updaterepoipa",
-      storageBucket: "updaterepoipa.firebasestorage.app",
+      storageBucket: "updaterepoipa.firebase-storage.app", // Исправлено: firebase-storage
       messagingSenderId: "621595788422",
       appId: "1:621595788422:web:180163c46b349232243d07",
       measurementId: "G-T42CG13QPR"
