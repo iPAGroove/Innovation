@@ -1,6 +1,12 @@
-// auth.js
-
-// ... (существующие импорты и инициализация) ...
+// ========== ИМПОРТЫ ИЗ FIREBASE SDK ==========
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+  updateProfile 
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const app = window.firebaseApp; 
@@ -15,14 +21,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const registerTab = document.getElementById('registerTab');
   const loginForm = document.getElementById('loginForm');
   const registerForm = document.getElementById('registerForm');
-  // const userStatus = document.getElementById('userStatus'); // Этот элемент может быть удален или переосмыслен
-  // const loggedInUser = document.getElementById('loggedInUser'); // Этот элемент может быть удален или переосмыслен
-  const logoutBtn = document.getElementById('logoutBtn'); // Если перенесли кнопку, она будет найдена в новом контейнере
+  // const userStatus = document.getElementById('userStatus'); // Этот элемент теперь удален или не используется
+  // const loggedInUser = document.getElementById('loggedInUser'); // Этот элемент теперь удален или не используется
 
-  // НОВЫЕ ЭЛЕМЕНТЫ DOM ДЛЯ ПРОФИЛЯ
+  // НОВЫЕ ЭЛЕМЕНТЫ DOM ДЛЯ ПРОФИЛЯ (кнопка выхода теперь здесь)
   const profileInfoContainer = document.getElementById('profileInfoContainer');
   const profileNicknameDisplay = document.getElementById('profileNicknameDisplay');
-  const loggedInUserDisplay = document.getElementById('loggedInUserDisplay'); // Если выводим email пользователя
+  const loggedInUserDisplay = document.getElementById('loggedInUserDisplay');
+  const logoutBtn = document.getElementById('logoutBtn'); // Кнопка выхода теперь внутри profileInfoContainer
+
 
   // Поля ввода для входа
   const loginEmailInput = document.getElementById('loginEmail');
@@ -44,7 +51,10 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log('Элемент registerForm:', registerForm);
   console.log('Элемент loginBtn:', loginBtn);
   console.log('Элемент registerBtn:', registerBtn);
-  console.log('Элемент profileInfoContainer:', profileInfoContainer); // НОВЫЙ ЛОГ
+  console.log('Элемент profileInfoContainer:', profileInfoContainer);
+  console.log('Элемент profileNicknameDisplay:', profileNicknameDisplay);
+  console.log('Элемент loggedInUserDisplay:', loggedInUserDisplay);
+  console.log('Элемент logoutBtn:', logoutBtn);
   // --- Конец отладочных логов ---
 
   // Функция для показа формы и переключения активных вкладок
@@ -55,8 +65,8 @@ document.addEventListener("DOMContentLoaded", () => {
     loginForm.style.display = isRegister ? 'none' : 'flex';
     registerForm.style.display = isRegister ? 'flex' : 'none';
 
-    // Также скрываем контейнер профиля, когда показываем формы аутентификации
-    if (profileInfoContainer) { // Проверяем существование элемента
+    // Скрываем контейнер профиля, когда показываем формы аутентификации
+    if (profileInfoContainer) {
       profileInfoContainer.style.display = 'none';
     }
     
@@ -73,7 +83,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // По умолчанию показываем форму входа
   showAuthForm(false);
-  // userStatus.style.display = 'none'; // Этот элемент может быть удален
 
   // Переключение между формами входа и регистрации
   loginTab.addEventListener('click', () => {
@@ -142,9 +151,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Обработчик для выхода (если кнопка была перемещена в profileInfoContainer, она все равно будет найдена)
-  // Убедитесь, что logoutBtn существует, прежде чем добавлять слушатель
-  if (logoutBtn) {
+  // Обработчик для выхода (кнопка теперь внутри profileInfoContainer)
+  if (logoutBtn) { // Проверяем, что кнопка найдена
     logoutBtn.addEventListener('click', async () => {
       try {
         await signOut(auth);
@@ -160,9 +168,9 @@ document.addEventListener("DOMContentLoaded", () => {
   onAuthStateChanged(auth, (user) => {
     if (user) {
       // Пользователь вошел в систему
-      if (profileInfoContainer) {
-        profileNicknameDisplay.textContent = user.displayName || user.email.split('@')[0]; // Показываем никнейм или часть email
-        loggedInUserDisplay.textContent = user.email; // Показываем полный email
+      if (profileInfoContainer && profileNicknameDisplay && loggedInUserDisplay) { // Проверяем все элементы
+        profileNicknameDisplay.textContent = user.displayName || user.email.split('@')[0]; // Никнейм или часть email
+        loggedInUserDisplay.textContent = user.email; // Полный email
         profileInfoContainer.style.display = 'flex'; // Показываем контейнер профиля
       }
 
@@ -171,7 +179,6 @@ document.addEventListener("DOMContentLoaded", () => {
       registerForm.style.display = 'none';
       loginTab.style.display = 'none'; 
       registerTab.style.display = 'none'; 
-      // userStatus.style.display = 'none'; // Если userStatus больше не нужен
 
     } else {
       // Пользователь вышел из системы
@@ -180,8 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       // Показываем формы и вкладки входа/регистрации
-      // Сохраняем текущую активную вкладку, если она есть
-      showAuthForm(registerTab.classList.contains('active')); 
+      showAuthForm(registerTab.classList.contains('active')); // Сохраняем текущую активную вкладку
     }
   });
 });
