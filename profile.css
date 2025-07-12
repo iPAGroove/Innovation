@@ -1,0 +1,89 @@
+/* profile.css */
+
+/* Стили для контейнера информации о профиле */
+.profile-info-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px; /* Отступ сверху, чтобы компенсировать padding родителя */
+    margin-bottom: 20px; /* Отступ снизу */
+    box-sizing: border-box;
+}
+
+/* Стили для самой карточки профиля */
+.profile-card {
+    background: linear-gradient(135deg, #1A1A3A 0%, #2A2A5A 100%); /* Градиент как на скрине */
+    border-radius: 12px; /* Более мягкие углы */
+    padding: 15px 20px; /* Отступы внутри карточки */
+    width: 100%;
+    max-width: 100%; /* Занимает 100% ширины своего родителя (.profile-info-container, который сам ограничен .auth-container) */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* Более выраженная тень */
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Расстояние между аватаром и текстом */
+    color: #fff;
+    font-family: 'Montserrat', sans-serif; /* Шрифт как на скрине */
+}
+
+/* Обертка для аватара */
+.profile-avatar-wrapper {
+    width: 60px; /* Размер аватара */
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden; /* Обрезаем, если изображение выходит за круг */
+    flex-shrink: 0; /* Чтобы аватар не сжимался */
+    border: 2px solid rgba(0, 123, 255, 0.5); /* Обводка аватара */
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.3); /* Небольшое сияние */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Изображение аватара */
+.profile-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Заполнение области, обрезка при необходимости */
+    display: block; /* Убираем лишние отступы под изображением */
+}
+
+/* Заголовок профиля (например, "iPA Groove") */
+.profile-title {
+    font-size: 20px; /* Размер текста "iPA Groove" */
+    font-weight: 600; /* Более жирный шрифт */
+    color: #fff;
+    white-space: nowrap; /* Не переносить текст */
+    overflow: hidden; /* Скрывать, если не помещается */
+    text-overflow: ellipsis; /* Добавлять многоточие */
+    flex-grow: 1; /* Чтобы занимал оставшееся пространство */
+}
+
+/* Если вы решите оставить email под карточкой, вот стили: */
+/* .user-email-display {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 10px;
+    text-align: center;
+    width: 100%;
+} */
+
+/* Если кнопка выхода будет отдельно */
+/* .logout-btn {
+    background: #ffc107; 
+    color: #333;
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 10px;
+    outline: none;
+}
+
+.logout-btn:hover {
+    background: #e0a800;
+} */
