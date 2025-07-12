@@ -11,6 +11,7 @@
     max-width: 350px;
     margin: 20px auto; /* Центрирование, если родитель позволяет */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    color: white; /* Базовый цвет текста для контейнера */
 }
 
 .auth-tabs {
@@ -31,7 +32,7 @@
     cursor: pointer;
     transition: background 0.3s ease, color 0.3s ease;
     text-align: center;
-    outline: none; /* Убираем обводку при фокусе */
+    outline: none; 
 }
 
 .auth-tab-btn.active {
@@ -47,9 +48,9 @@
 .auth-form {
     display: none; /* Изначально скрываем все формы */
     flex-direction: column;
-    gap: 10px; /* Промежуток между полями формы */
+    gap: 10px; 
     width: 100%;
-    padding-top: 10px; /* Отступ сверху для формы */
+    padding-top: 10px; 
 }
 
 .auth-form.active {
@@ -58,8 +59,8 @@
 
 .auth-form input[type="email"],
 .auth-form input[type="password"],
-.auth-form input[type="text"] { /* Добавляем input[type="text"] для никнейма */
-    width: calc(100% - 20px); /* Ширина с учетом паддинга */
+.auth-form input[type="text"] { 
+    width: calc(100% - 20px); 
     padding: 10px;
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 5px;
@@ -67,6 +68,7 @@
     color: #fff;
     font-size: 16px;
     outline: none;
+    box-sizing: border-box; /* Важно для padding и ширины */
 }
 
 .auth-form input::placeholder {
@@ -79,29 +81,30 @@
     padding: 12px;
     border: none;
     border-radius: 5px;
-    background: #28a745; /* Цвет для кнопок действия */
+    background: #28a745; 
     color: #fff;
     font-size: 18px;
     font-weight: bold;
     cursor: pointer;
     transition: background 0.3s ease;
     margin-top: 10px;
+    outline: none;
 }
 
 .auth-form button[type="submit"]:hover,
 .logout-btn:hover {
-    background: #218838; /* Темнее при наведении */
+    background: #218838; 
 }
 
 .auth-error {
-    color: #dc3545; /* Красный цвет для ошибок */
+    color: #dc3545; 
     font-size: 14px;
     margin-top: 5px;
     text-align: center;
 }
 
 .user-status {
-    display: none; /* Скрыт по умолчанию, показывается при входе */
+    display: none; 
     color: #fff;
     font-size: 16px;
     text-align: center;
@@ -109,7 +112,7 @@
 }
 
 .logout-btn {
-    background: #ffc107; /* Оранжевый для кнопки выхода */
+    background: #ffc107; 
     color: #333;
 }
 
