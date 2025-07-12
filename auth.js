@@ -1,12 +1,6 @@
-// ========== ИМПОРТЫ ИЗ FIREBASE SDK ==========
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut,
-  updateProfile 
-} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+// auth.js
+
+// ... (существующие импорты и инициализация) ...
 
 document.addEventListener("DOMContentLoaded", () => {
   const app = window.firebaseApp; 
@@ -21,9 +15,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const registerTab = document.getElementById('registerTab');
   const loginForm = document.getElementById('loginForm');
   const registerForm = document.getElementById('registerForm');
-  const userStatus = document.getElementById('userStatus');
-  const loggedInUser = document.getElementById('loggedInUser');
-  const logoutBtn = document.getElementById('logoutBtn');
+  // const userStatus = document.getElementById('userStatus'); // Этот элемент может быть удален или переосмыслен
+  // const loggedInUser = document.getElementById('loggedInUser'); // Этот элемент может быть удален или переосмыслен
+  const logoutBtn = document.getElementById('logoutBtn'); // Если перенесли кнопку, она будет найдена в новом контейнере
+
+  // НОВЫЕ ЭЛЕМЕНТЫ DOM ДЛЯ ПРОФИЛЯ
+  const profileInfoContainer = document.getElementById('profileInfoContainer');
+  const profileNicknameDisplay = document.getElementById('profileNicknameDisplay');
+  const loggedInUserDisplay = document.getElementById('loggedInUserDisplay'); // Если выводим email пользователя
 
   // Поля ввода для входа
   const loginEmailInput = document.getElementById('loginEmail');
@@ -45,6 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log('Элемент registerForm:', registerForm);
   console.log('Элемент loginBtn:', loginBtn);
   console.log('Элемент registerBtn:', registerBtn);
+  console.log('Элемент profileInfoContainer:', profileInfoContainer); // НОВЫЙ ЛОГ
   // --- Конец отладочных логов ---
 
   // Функция для показа формы и переключения активных вкладок
@@ -52,20 +52,28 @@ document.addEventListener("DOMContentLoaded", () => {
     loginForm.classList.toggle('active', !isRegister);
     registerForm.classList.toggle('active', isRegister);
 
-    loginTab.classList.toggle('active', !isRegister);
-    registerTab.classList.toggle('active', isRegister);
-
     loginForm.style.display = isRegister ? 'none' : 'flex';
     registerForm.style.display = isRegister ? 'flex' : 'none';
+
+    // Также скрываем контейнер профиля, когда показываем формы аутентификации
+    if (profileInfoContainer) { // Проверяем существование элемента
+      profileInfoContainer.style.display = 'none';
+    }
+    
+    // Показываем/скрываем вкладки
+    loginTab.style.display = 'block'; 
+    registerTab.style.display = 'block'; 
+    loginTab.classList.toggle('active', !isRegister);
+    registerTab.classList.toggle('active', isRegister);
 
     // Очищаем ошибки при смене формы
     loginError.textContent = '';
     registerError.textContent = '';
   }
 
-  // По умолчанию показываем форму входа и скрываем статус пользователя
+  // По умолчанию показываем форму входа
   showAuthForm(false);
-  userStatus.style.display = 'none';
+  // userStatus.style.display = 'none'; // Этот элемент может быть удален
 
   // Переключение между формами входа и регистрации
   loginTab.addEventListener('click', () => {
@@ -86,6 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       console.log('Пользователь успешно вошел!');
+      // onAuthStateChanged будет вызван автоматически и обновит UI
     } catch (error) {
       console.error('Ошибка входа:', error.code, error.message);
       let errorMessage = 'Ошибка входа. Пожалуйста, попробуйте еще раз.';
@@ -116,6 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
         await updateProfile(auth.currentUser, { displayName: nickname });
       }
       console.log('Пользователь успешно зарегистрирован!');
+      // onAuthStateChanged будет вызван автоматически и обновит UI
     } catch (error) {
       console.error('Ошибка регистрации:', error.code, error.message);
       let errorMessage = 'Ошибка регистрации. Пожалуйста, попробуйте еще раз.';
@@ -132,32 +142,46 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Обработчик для выхода
-  logoutBtn.addEventListener('click', async () => {
-    try {
-      await signOut(auth);
-      console.log('Пользователь вышел.');
-    } catch (error) {
-      console.error('Ошибка выхода:', error.message);
-    }
-  });
+  // Обработчик для выхода (если кнопка была перемещена в profileInfoContainer, она все равно будет найдена)
+  // Убедитесь, что logoutBtn существует, прежде чем добавлять слушатель
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', async () => {
+      try {
+        await signOut(auth);
+        console.log('Пользователь вышел.');
+      } catch (error) {
+        console.error('Ошибка выхода:', error.message);
+      }
+    });
+  }
+
 
   // Отслеживание состояния аутентификации (вход/выход)
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      loggedInUser.textContent = `Вы вошли как: ${user.email}`;
-      userStatus.style.display = 'block';
+      // Пользователь вошел в систему
+      if (profileInfoContainer) {
+        profileNicknameDisplay.textContent = user.displayName || user.email.split('@')[0]; // Показываем никнейм или часть email
+        loggedInUserDisplay.textContent = user.email; // Показываем полный email
+        profileInfoContainer.style.display = 'flex'; // Показываем контейнер профиля
+      }
+
+      // Скрываем формы и вкладки входа/регистрации
       loginForm.style.display = 'none';
       registerForm.style.display = 'none';
       loginTab.style.display = 'none'; 
       registerTab.style.display = 'none'; 
+      // userStatus.style.display = 'none'; // Если userStatus больше не нужен
+
     } else {
-      loggedInUser.textContent = '';
-      userStatus.style.display = 'none';
-      // Показываем форму в зависимости от активной вкладки
-      showAuthForm(registerTab.classList.contains('active'));
-      loginTab.style.display = 'block'; 
-      registerTab.style.display = 'block'; 
+      // Пользователь вышел из системы
+      if (profileInfoContainer) {
+        profileInfoContainer.style.display = 'none'; // Скрываем контейнер профиля
+      }
+
+      // Показываем формы и вкладки входа/регистрации
+      // Сохраняем текущую активную вкладку, если она есть
+      showAuthForm(registerTab.classList.contains('active')); 
     }
   });
 });
