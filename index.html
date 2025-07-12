@@ -73,8 +73,7 @@
                 </div>
                 <span id="profileNicknameDisplay" class="profile-title">iPA Groove</span>
             </div>
-            </div>
-
+        </div>
       </div> <h2></h2>
       <ul class="menu-links">
         <li><a href="#"></a></li>
@@ -137,7 +136,7 @@
     const auth = getAuth(app); // Инициализация Firebase Auth
 
     // Передача объекта Firebase App в глобальный scope, чтобы другие модули могли его использовать
-    window.firebaseApp = app; 
+    window.firebaseApp = app;
 
     function renderCard(data) {
       return `
@@ -172,6 +171,6 @@
   <script src="script.js"></script>
   <script src="menu.js"></script>
   <script src="mail.js"></script>
-  <script type="module" src="auth.js"></script> 
+  <script type="module" src="auth.js"></script>
   <script type="module" src="profile.js"></script> </body>
 </html>
