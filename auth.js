@@ -1,14 +1,17 @@
 // Импортируем только необходимые функции из Firebase, так как initializeApp уже есть в index.html
-import { 
-  getAuth, 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword, 
-  onAuthStateChanged,
-  signOut 
-} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+// Мы больше не импортируем getAuth, createUserWithEmailAndPassword и т.д. здесь напрямую,
+// потому что auth объект будет получен из window.firebaseAuth, который инициализирован в index.html.
 
 document.addEventListener("DOMContentLoaded", () => {
-  const auth = window.firebaseAuth; // Получаем объект auth из глобального scope
+  // Получаем объект auth из глобального scope, который инициализирован в index.html
+  const auth = window.firebaseAuth;
+  // Убеждаемся, что функции Firebase Auth доступны через auth объект
+  const {
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    onAuthStateChanged,
+    signOut
+  } = firebase; // Используем глобальный объект Firebase для доступа к методам auth
 
   // Элементы DOM для форм и статуса
   const loginTab = document.getElementById('loginTab');
@@ -22,13 +25,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // Поля ввода для входа
   const loginEmailInput = document.getElementById('loginEmail');
   const loginPasswordInput = document.getElementById('loginPassword');
-  const loginBtn = document.getElementById('loginBtn');
+  // Кнопка входа теперь не имеет отдельного обработчика click, а является частью submit формы
   const loginError = document.getElementById('loginError');
 
   // Поля ввода для регистрации
   const registerEmailInput = document.getElementById('registerEmail');
+  const registerNicknameInput = document.getElementById('registerNickname'); // Добавлено поле никнейма
   const registerPasswordInput = document.getElementById('registerPassword');
-  const registerBtn = document.getElementById('registerBtn');
+  // Кнопка регистрации теперь не имеет отдельного обработчика click, а является частью submit формы
   const registerError = document.getElementById('registerError');
 
   // По умолчанию показываем форму входа и скрываем статус пользователя
@@ -55,8 +59,9 @@ document.addEventListener("DOMContentLoaded", () => {
     registerError.textContent = ''; // Очистка ошибок
   });
 
-  // Обработчик для входа
-  loginBtn.addEventListener('click', async () => {
+  // Обработчик для ВХОДА (привязан к submit формы)
+  loginForm.addEventListener('submit', async (event) => {
+    event.preventDefault(); // Предотвращаем перезагрузку страницы
     const email = loginEmailInput.value;
     const password = loginPasswordInput.value;
     loginError.textContent = ''; // Очищаем предыдущие ошибки
@@ -74,19 +79,28 @@ document.addEventListener("DOMContentLoaded", () => {
         errorMessage = 'Пользователь отключен.';
       } else if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
         errorMessage = 'Неправильный email или пароль.';
+      } else {
+        errorMessage = `Ошибка: ${error.message}`; // Более общая ошибка
       }
       loginError.textContent = errorMessage;
     }
   });
 
-  // Обработчик для регистрации
-  registerBtn.addEventListener('click', async () => {
+  // Обработчик для РЕГИСТРАЦИИ (привязан к submit формы)
+  registerForm.addEventListener('submit', async (event) => {
+    event.preventDefault(); // Предотвращаем перезагрузку страницы
     const email = registerEmailInput.value;
+    const nickname = registerNicknameInput.value; // Получаем никнейм
     const password = registerPasswordInput.value;
     registerError.textContent = ''; // Очищаем предыдущие ошибки
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      // Обновляем профиль пользователя, если никнейм был введен
+      if (auth.currentUser && nickname) {
+        // Убедитесь, что firebase.auth.Auth.updateProfile доступен
+        await firebase.auth().currentUser.updateProfile({ displayName: nickname });
+      }
       console.log('Пользователь успешно зарегистрирован!');
       // Firebase onAuthStateChanged обновит UI
     } catch (error) {
@@ -98,6 +112,8 @@ document.addEventListener("DOMContentLoaded", () => {
         errorMessage = 'Некорректный формат email.';
       } else if (error.code === 'auth/weak-password') {
         errorMessage = 'Пароль должен быть не менее 6 символов.';
+      } else {
+        errorMessage = `Ошибка: ${error.message}`; // Более общая ошибка
       }
       registerError.textContent = errorMessage;
     }
