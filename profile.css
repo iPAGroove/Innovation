@@ -3,13 +3,12 @@
 /* Стили для контейнера информации о профиле */
 .profile-info-container {
     display: flex;
-    flex-direction: column; /* Теперь колонками, так как будет несколько блоков */
+    flex-direction: column;
     gap: 15px; /* Расстояние между карточками/блоками */
-    width: 100%;
+    width: 100%; /* Занимает всю доступную ширину родителя */
     margin-top: 20px;
     margin-bottom: 20px;
     box-sizing: border-box;
-    /* Убираем padding здесь, чтобы карточки могли быть шире */
 }
 
 /* Стили для самой карточки профиля и других блоков */
@@ -17,11 +16,12 @@
     background: #1C1C3A; /* Темный фон, как на скрине */
     border-radius: 12px;
     padding: 15px 20px;
-    width: calc(100% - 40px); /* 100% минус 20px padding из menu-content */
+    /* УВЕЛИЧИВАЕМ ШИРИНУ: */
+    width: calc(100% - 20px); /* 100% ширины родителя (auth-container), минус 10px отступы с каждой стороны от menu-content */
     max-width: 600px; /* Ограничиваем максимальную ширину для больших экранов */
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
     display: flex;
-    flex-direction: column; /* По умолчанию элементы внутри карточки идут в колонку */
+    flex-direction: column;
     color: #fff;
     font-family: 'Montserrat', sans-serif;
     margin: 0 auto; /* Центрируем карточку внутри profile-info-container */
@@ -30,21 +30,21 @@
 /* Верхняя часть карточки профиля (аватар, ник, кнопки) */
 .profile-header {
     display: flex;
-    align-items: center;
+    align-items: flex-start; /* Выравнивание по верху для никнейма и кнопок */
     gap: 15px;
-    padding-bottom: 15px; /* Отступ от нижних секций */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Разделитель */
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     margin-bottom: 15px;
 }
 
 /* Обертка для аватара */
 .profile-avatar-wrapper {
-    width: 70px; /* Увеличим размер аватара */
+    width: 70px;
     height: 70px;
     border-radius: 50%;
     overflow: hidden;
     flex-shrink: 0;
-    border: 3px solid #007bff; /* Более заметная обводка */
+    border: 3px solid #007bff;
     box-shadow: 0 0 12px rgba(0, 123, 255, 0.4);
     display: flex;
     justify-content: center;
@@ -63,37 +63,42 @@
 .profile-details {
     display: flex;
     flex-direction: column;
-    flex-grow: 1; /* Занимает оставшееся пространство */
+    flex-grow: 1;
+    justify-content: center; /* Центрируем по вертикали никнейм и кнопки относительно аватара */
 }
 
 /* Заголовок профиля (никнейм) */
 .profile-title {
-    font-size: 24px; /* Увеличим размер никнейма */
-    font-weight: 700; /* Более жирный шрифт */
+    font-size: 20px; /* УМЕНЬШЕ РАЗМЕР НИКНЕЙМА */
+    font-weight: 700;
     color: #fff;
-    margin-bottom: 8px; /* Отступ от кнопок */
+    margin-bottom: 8px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    line-height: 1; /* Убираем лишний интерлиньяж */
 }
 
 /* Контейнер для кнопок Free Access / Upgrade VIP */
 .profile-buttons {
     display: flex;
-    gap: 10px; /* Расстояние между кнопками */
-    flex-wrap: wrap; /* Разрешить перенос кнопок на новую строку на маленьких экранах */
+    gap: 8px; /* Уменьшим расстояние между кнопками */
+    flex-wrap: wrap;
+    /* Убедимся, что они всегда в одну линию, если позволяют размеры */
+    flex-direction: row;
+    align-items: center;
 }
 
 /* Общие стили для кнопок профиля */
 .profile-btn {
-    padding: 8px 15px;
+    padding: 6px 12px; /* УМЕНЬШИМ РАЗМЕР КНОПОК */
     border: none;
-    border-radius: 20px; /* Сильно закругленные кнопки */
-    font-size: 14px;
+    border-radius: 20px;
+    font-size: 13px; /* УМЕНЬШИМ РАЗМЕР ШРИФТА КНОПОК */
     font-weight: 600;
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    white-space: nowrap; /* Не переносить текст на кнопках */
+    white-space: nowrap;
 }
 
 .profile-btn:hover {
@@ -103,7 +108,7 @@
 
 /* Стили для кнопки "Free Access" */
 .free-access-btn {
-    background-color: #28a745; /* Зеленый цвет */
+    background-color: #28a745;
     color: #fff;
 }
 
@@ -113,7 +118,7 @@
 
 /* Стили для кнопки "Upgrade to VIP" */
 .upgrade-vip-btn {
-    background: linear-gradient(90deg, #FF9900, #FFCC00); /* Оранжевый градиент */
+    background: linear-gradient(90deg, #FF9900, #FFCC00);
     color: #fff;
     display: flex;
     align-items: center;
@@ -128,9 +133,9 @@
 .community-stats {
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Выравнивание элементов по левому краю */
+    align-items: center; /* ЦЕНТРИРУЕМ ПО ГОРИЗОНТАЛИ */
     padding-bottom: 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Разделитель */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     margin-bottom: 15px;
 }
 
@@ -139,34 +144,44 @@
     font-weight: 600;
     color: rgba(255, 255, 255, 0.8);
     margin-bottom: 10px;
+    text-align: center; /* Центрируем текст заголовка */
+    width: 100%;
 }
 
 .stat-item {
     display: flex;
-    flex-direction: column; /* Иконка сверху, текст снизу */
-    align-items: center; /* Центрируем иконку и текст */
+    flex-direction: column;
+    align-items: center; /* Центрируем содержимое */
     gap: 5px;
-    width: 100%; /* Занимает всю ширину */
+    width: 100%;
     text-align: center;
 }
 
 .stat-icon {
-    width: 40px; /* Размер иконки */
+    width: 40px;
     height: 40px;
-    filter: drop-shadow(0 0 5px rgba(0, 123, 255, 0.5)); /* Небольшое свечение */
+    filter: drop-shadow(0 0 5px rgba(0, 123, 255, 0.5));
+    /* Иконка останется, но не будет дублироваться цифрами. 
+       Если вы хотите, чтобы там БЫЛИ цифры вместо иконки, 
+       вам нужно будет изменить HTML и, возможно, добавить JavaScript для обновления этих цифр. */
 }
 
 .stat-text {
     font-size: 16px;
     font-weight: 700;
-    color: #87CEFA; /* Голубой цвет, как на скрине */
-    letter-spacing: 1.5px; /* Расстояние между буквами */
+    color: #87CEFA;
+    letter-spacing: 1.5px;
 }
 
-/* Стиль для отдельного блока Account Settings */
-.account-settings-card {
-    background: #1C1C3A; /* Такой же темный фон */
+/* Стиль для обертки Account Settings Link */
+.account-settings-link-wrapper {
+    background: #1C1C3A; /* Цвет фона, как у profile-card */
+    border-radius: 12px; /* Закругленные углы */
     padding: 15px 20px;
+    width: calc(100% - 40px); /* Та же ширина, что и у profile-card */
+    max-width: 600px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    margin: 0 auto; /* Центрируем */
 }
 
 .account-settings-link {
@@ -178,6 +193,7 @@
     font-weight: 500;
     color: #fff;
     cursor: pointer;
+    text-decoration: none; /* Убираем подчеркивание у ссылки */
     transition: color 0.2s ease;
 }
 
@@ -188,10 +204,10 @@
 .arrow-down {
     width: 24px;
     height: 24px;
-    color: #fff; /* Цвет стрелки */
+    color: #fff;
     transition: transform 0.2s ease;
 }
 
 .account-settings-link:hover .arrow-down {
-    transform: rotate(90deg); /* Пример анимации для стрелки */
+    transform: rotate(90deg);
 }
