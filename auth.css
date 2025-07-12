@@ -2,26 +2,26 @@
 
 /* Общие стили для контейнера аутентификации/профиля */
 .auth-container {
-    background: rgba(0, 0, 0, 0.7); /* Это то, что создает черный контейнер, будем его переопределять */
+    background: rgba(0, 0, 0, 0.7);
     border-radius: 10px;
     padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 15px;
-    max-width: 350px;
+    max-width: 90%; /* Изменено на 90% от ширины родителя */
     margin: 20px auto;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     color: white;
-    transition: background 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease, gap 0.3s ease; /* Добавляем transition */
+    transition: background 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease, gap 0.3s ease;
 }
 
 /* Новый класс для прозрачного фона контейнера, когда показан профиль */
 .auth-container.transparent-bg {
-    background: transparent; /* Делаем фон прозрачным */
-    box-shadow: none; /* Убираем тень */
-    padding: 0; /* Убираем padding */
-    gap: 0; /* Убираем gap */
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
+    gap: 0;
 }
 
 
@@ -120,8 +120,8 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    margin-top: 20px; /* Отступ сверху, чтобы компенсировать padding родителя */
-    margin-bottom: 20px; /* Отступ снизу */
+    margin-top: 20px;
+    margin-bottom: 20px;
     box-sizing: border-box;
 }
 
@@ -130,7 +130,7 @@
     border-radius: 12px;
     padding: 15px 20px;
     width: 100%;
-    max-width: 300px;
+    max-width: 100%; /* Изменено на 100%, чтобы она занимала всю ширину родительского .auth-container */
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
     display: flex;
     align-items: center;
@@ -168,32 +168,3 @@
     text-overflow: ellipsis;
     flex-grow: 1;
 }
-
-/* Если вы решите оставить email под карточкой, вот стили: */
-/* .user-email-display {
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.7);
-    margin-top: 10px;
-    text-align: center;
-    width: 100%;
-} */
-
-/* Если кнопка выхода будет отдельно */
-/* .logout-btn {
-    background: #ffc107; 
-    color: #333;
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 5px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    margin-top: 10px;
-    outline: none;
-}
-
-.logout-btn:hover {
-    background: #e0a800;
-} */
