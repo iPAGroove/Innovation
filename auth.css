@@ -1,112 +1,118 @@
-/* Стили для контейнера аутентификации */
+/* auth.css */
+
 .auth-container {
-  background: #2a2a2a;
-  border-radius: 12px;
-  padding: 20px;
-  width: 100%;
-  max-width: 350px; /* Максимальная ширина для окна входа/регистрации */
-  margin: 20px auto 0 auto; /* Отступ сверху и центрирование */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  text-align: center;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px; /* Промежуток между элементами внутри контейнера */
+    max-width: 350px;
+    margin: 20px auto; /* Центрирование, если родитель позволяет */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
-/* Переключатели вкладок */
 .auth-tabs {
-  display: flex;
-  margin-bottom: 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .auth-tab-btn {
-  flex: 1;
-  padding: 10px 0;
-  background: transparent;
-  border: none;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 16px;
-  cursor: pointer;
-  transition: color 0.3s ease, border-bottom 0.3s ease;
+    flex: 1;
+    padding: 10px 15px;
+    border: none;
+    background: transparent;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease;
+    text-align: center;
+    outline: none; /* Убираем обводку при фокусе */
 }
 
 .auth-tab-btn.active {
-  color: #fff;
-  border-bottom: 2px solid #87CEFA;
-  font-weight: bold;
+    background: #007bff; /* Активная вкладка */
+    color: #fff;
+    font-weight: bold;
 }
 
-/* Формы входа/регистрации */
+.auth-tab-btn:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.2);
+}
+
 .auth-form {
-  display: none; /* По умолчанию скрыты */
-  flex-direction: column;
-  gap: 15px;
+    display: none; /* Изначально скрываем все формы */
+    flex-direction: column;
+    gap: 10px; /* Промежуток между полями формы */
+    width: 100%;
+    padding-top: 10px; /* Отступ сверху для формы */
 }
 
 .auth-form.active {
-  display: flex; /* Активная форма отображается */
+    display: flex; /* Показываем только активную форму */
 }
 
 .auth-form input[type="email"],
-.auth-form input[type="password"] {
-  width: calc(100% - 20px); /* Ширина с учетом паддинга */
-  padding: 12px 10px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
-  font-size: 16px;
-  outline: none;
+.auth-form input[type="password"],
+.auth-form input[type="text"] { /* Добавляем input[type="text"] для никнейма */
+    width: calc(100% - 20px); /* Ширина с учетом паддинга */
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    font-size: 16px;
+    outline: none;
 }
 
-.auth-form input[type="email"]::placeholder,
-.auth-form input[type="password"]::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+.auth-form input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
 }
 
-.auth-form button {
-  width: 100%;
-  padding: 12px;
-  background: #87CEFA; /* Голубая кнопка */
-  color: #1e1e1e;
-  border: none;
-  border-radius: 8px;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
+.auth-form button[type="submit"],
+.logout-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    background: #28a745; /* Цвет для кнопок действия */
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 10px;
 }
 
-.auth-form button:hover {
-  background: #6aadda;
-  transform: translateY(-1px);
+.auth-form button[type="submit"]:hover,
+.logout-btn:hover {
+    background: #218838; /* Темнее при наведении */
 }
 
 .auth-error {
-  color: #ff6b6b;
-  font-size: 14px;
-  margin-top: 10px;
+    color: #dc3545; /* Красный цвет для ошибок */
+    font-size: 14px;
+    margin-top: 5px;
+    text-align: center;
 }
 
-/* Стили для статуса пользователя */
 .user-status {
-  margin-top: 20px;
-  color: #fff;
-  font-size: 16px;
-}
-
-.user-status p {
-  margin-bottom: 10px;
+    display: none; /* Скрыт по умолчанию, показывается при входе */
+    color: #fff;
+    font-size: 16px;
+    text-align: center;
+    width: 100%;
 }
 
 .logout-btn {
-  background: #dc3545; /* Красная кнопка выхода */
-  color: #fff;
-  padding: 8px 15px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s ease;
+    background: #ffc107; /* Оранжевый для кнопки выхода */
+    color: #333;
 }
 
 .logout-btn:hover {
-  background: #c82333;
+    background: #e0a800;
 }
