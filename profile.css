@@ -5,19 +5,19 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%; /* Должен быть 100% от своего родителя */
+    width: 100%;
     margin-top: 20px;
     margin-bottom: 20px;
     box-sizing: border-box;
-    padding: 0 10px; /* Добавим небольшой горизонтальный отступ, чтобы профиль не прилипал к краям */
+    /* padding: 0 10px; */ /* УДАЛЕНО: Отступы будут на самой карточке */
 }
 
 /* Стили для самой карточки профиля */
 .profile-card {
     background: linear-gradient(135deg, #1A1A3A 0%, #2A2A5A 100%);
     border-radius: 12px;
-    padding: 15px 20px;
-    width: 100%; /* Убрали max-width, чтобы занимал всю доступную ширину родителя */
+    padding: 15px 20px; /* ДОБАВЛЕНО: Снова добавляем внутренний padding */
+    width: 100%; /* Занимает всю доступную ширину родителя */
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
     display: flex;
     align-items: center;
