@@ -18,7 +18,7 @@
 }
 
 .menu-content {
-  padding: 30px 20px; /* ВОЗВРАЩЕНО: Универсальный padding для всей панели меню */
+  padding: 30px 0; /* ИЗМЕНЕНО: Горизонтальный padding уменьшен до 0 */
   color: white;
 
   width: 100%;
