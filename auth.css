@@ -103,13 +103,14 @@
     text-align: center;
 }
 
-.user-status {
+/* Старый user-status больше не используется, но оставлен для справки */
+/* .user-status {
     display: none; 
     color: #fff;
     font-size: 16px;
     text-align: center;
     width: 100%;
-}
+} */
 
 .logout-btn {
     background: #ffc107; 
@@ -118,4 +119,59 @@
 
 .logout-btn:hover {
     background: #e0a800;
+}
+
+
+/* НОВЫЕ СТИЛИ: Информация о профиле */
+.profile-info-container {
+    background: linear-gradient(135deg, rgba(30, 30, 60, 0.9), rgba(40, 40, 80, 0.9)); /* Градиент для фона */
+    border-radius: 10px;
+    padding: 15px; /* Уменьшаем padding для компактности */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Центрируем содержимое по горизонтали */
+    gap: 15px;
+    width: 100%;
+    max-width: 350px; /* Сохраняем максимальную ширину */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    color: white;
+    /* Изначально display: none; будет установлен через JS, но здесь он по умолчанию flex для удобства */
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Расстояние между аватаром и никнеймом */
+    width: 100%; /* Занимает всю доступную ширину */
+    justify-content: flex-start; /* Выравнивание элементов внутри по левому краю */
+}
+
+.profile-avatar {
+    width: 60px; /* Размер аватара */
+    height: 60px;
+    border-radius: 50%; /* Круглая форма */
+    object-fit: cover;
+    border: 3px solid #007bff; /* Граница вокруг аватара */
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5); /* Небольшая тень для аватара */
+    flex-shrink: 0; /* Не сжимать аватар */
+}
+
+.profile-nickname {
+    font-family: 'Montserrat', sans-serif; /* Или другой подходящий шрифт */
+    font-size: 22px;
+    font-weight: 700; /* Более жирный шрифт для никнейма */
+    color: #fff;
+    flex-grow: 1; /* Чтобы никнейм занимал оставшееся пространство */
+    text-align: left; /* Выравнивание текста никнейма */
+    white-space: nowrap; /* Предотвращаем перенос строки */
+    overflow: hidden; /* Скрываем излишки текста */
+    text-overflow: ellipsis; /* Добавляем многоточие для длинных никнеймов */
+}
+
+.user-email-display {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: -10px; /* Немного приподнять, чтобы был ближе к никнейму */
+    width: 100%; /* Чтобы текст занимал всю ширину для центрирования */
+    text-align: center;
 }
