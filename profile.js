@@ -44,30 +44,4 @@ export function updateProfileDisplay(user) {
     }
 }
 
-// !!! УДАЛЕН КОД ДЛЯ КНОПКИ ВЫХОДА ИЗ ПРОФИЛЯ !!!
-// document.addEventListener("DOMContentLoaded", () => {
-//     const profileInfoContainer = document.getElementById('profileInfoContainer');
-//     let logoutBtn = document.getElementById('logoutBtn');
-
-//     if (profileInfoContainer && !logoutBtn) {
-//         logoutBtn = document.createElement('button');
-//         logoutBtn.id = 'logoutBtn';
-//         logoutBtn.textContent = 'Выйти из профиля';
-//         logoutBtn.classList.add('logout-btn');
-//         profileInfoContainer.parentNode.insertBefore(logoutBtn, profileInfoContainer.nextSibling);
-//     }
-
-//     if (logoutBtn) {
-//         logoutBtn.addEventListener('click', async () => {
-//             const { getAuth, signOut } = await import("https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js");
-//             const auth = getAuth(window.firebaseApp);
-
-//             try {
-//                 await signOut(auth);
-//                 console.log('Пользователь вышел из профиля.');
-//             } catch (error) {
-//                 console.error('Ошибка выхода из профиля:', error.message);
-//             }
-//         });
-//     }
-// });
+// !!! КОД ДЛЯ КНОПКИ ВЫХОДА ИЗ ПРОФИЛЯ ПО-ПРЕЖНЕМУ УДАЛЕН !!!
