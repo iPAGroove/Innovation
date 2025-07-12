@@ -1,23 +1,20 @@
 // ========== ИМПОРТЫ ИЗ FIREBASE SDK ==========
-// Эти импорты необходимы, потому что auth.js теперь будет модулем.
 import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
-  updateProfile // Добавлено для установки никнейма
+  updateProfile 
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Получаем экземпляр приложения Firebase из глобальной области видимости (инициализировано в index.html)
-  // Это предполагает, что index.html устанавливает `window.firebaseApp`
   const app = window.firebaseApp; 
   if (!app) {
     console.error("Firebase App не инициализировано в index.html. Функции аутентификации могут не работать.");
     return;
   }
-  const auth = getAuth(app); // Получаем экземпляр службы аутентификации из приложения
+  const auth = getAuth(app); 
 
   // Элементы DOM для форм и статуса
   const loginTab = document.getElementById('loginTab');
@@ -35,12 +32,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Поля ввода для регистрации
   const registerEmailInput = document.getElementById('registerEmail');
-  const registerNicknameInput = document.getElementById('registerNickname'); // Добавлено поле никнейма
+  const registerNicknameInput = document.getElementById('registerNickname'); 
   const registerPasswordInput = document.getElementById('registerPassword');
   const registerError = document.getElementById('registerError');
 
+  // --- Отладочные логи ---
+  // Проверьте, что все элементы найдены. Если какой-то null, это причина проблемы.
+  console.log('Элемент loginTab:', loginTab);
+  console.log('Элемент registerTab:', registerTab);
+  console.log('Элемент loginForm:', loginForm);
+  console.log('Элемент registerForm:', registerForm);
+  console.log('Элемент registerBtn (внутри формы):', registerForm.querySelector('button[type="submit"]'));
+  // --- Конец отладочных логов ---
+
+
   // По умолчанию показываем форму входа и скрываем статус пользователя
-  // Убедитесь, что формы изначально скрыты через CSS и отображаются только при наличии класса 'active'
   loginForm.classList.add('active');
   registerForm.classList.remove('active');
   userStatus.style.display = 'none';
@@ -51,8 +57,8 @@ document.addEventListener("DOMContentLoaded", () => {
     registerForm.classList.remove('active');
     loginTab.classList.add('active');
     registerTab.classList.remove('active'); 
-    loginError.textContent = ''; // Очистка ошибок
-    registerError.textContent = ''; // Очистка ошибок
+    loginError.textContent = ''; 
+    registerError.textContent = ''; 
   });
 
   registerTab.addEventListener('click', () => {
@@ -60,21 +66,20 @@ document.addEventListener("DOMContentLoaded", () => {
     loginForm.classList.remove('active');
     registerTab.classList.add('active'); 
     loginTab.classList.remove('active'); 
-    loginError.textContent = ''; // Очистка ошибок
-    registerError.textContent = ''; // Очистка ошибок
+    loginError.textContent = ''; 
+    registerError.textContent = ''; 
   });
 
   // Обработчик для ВХОДА (привязан к submit формы)
   loginForm.addEventListener('submit', async (event) => {
-    event.preventDefault(); // Предотвращаем перезагрузку страницы
+    event.preventDefault(); 
     const email = loginEmailInput.value;
     const password = loginPasswordInput.value;
-    loginError.textContent = ''; // Очищаем предыдущие ошибки
+    loginError.textContent = ''; 
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
       console.log('Пользователь успешно вошел!');
-      // Firebase onAuthStateChanged обновит UI
     } catch (error) {
       console.error('Ошибка входа:', error.code, error.message);
       let errorMessage = 'Ошибка входа. Пожалуйста, попробуйте еще раз.';
@@ -85,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } else if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
         errorMessage = 'Неправильный email или пароль.';
       } else {
-        errorMessage = `Ошибка: ${error.message}`; // Более общая ошибка
+        errorMessage = `Ошибка: ${error.message}`;
       }
       loginError.textContent = errorMessage;
     }
@@ -93,20 +98,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Обработчик для РЕГИСТРАЦИИ (привязан к submit формы)
   registerForm.addEventListener('submit', async (event) => {
-    event.preventDefault(); // Предотвращаем перезагрузку страницы
+    event.preventDefault(); 
     const email = registerEmailInput.value;
-    const nickname = registerNicknameInput.value; // Получаем никнейм
+    const nickname = registerNicknameInput.value; 
     const password = registerPasswordInput.value;
-    registerError.textContent = ''; // Очищаем предыдущие ошибки
+    registerError.textContent = ''; 
 
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      // Обновляем профиль пользователя, если никнейм был введен
       if (auth.currentUser && nickname) {
         await updateProfile(auth.currentUser, { displayName: nickname });
       }
       console.log('Пользователь успешно зарегистрирован!');
-      // Firebase onAuthStateChanged обновит UI
     } catch (error) {
       console.error('Ошибка регистрации:', error.code, error.message);
       let errorMessage = 'Ошибка регистрации. Пожалуйста, попробуйте еще раз.';
@@ -117,7 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } else if (error.code === 'auth/weak-password') {
         errorMessage = 'Пароль должен быть не менее 6 символов.';
       } else {
-        errorMessage = `Ошибка: ${error.message}`; // Более общая ошибка
+        errorMessage = `Ошибка: ${error.message}`; 
       }
       registerError.textContent = errorMessage;
     }
@@ -128,7 +131,6 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       await signOut(auth);
       console.log('Пользователь вышел.');
-      // Firebase onAuthStateChanged обновит UI
     } catch (error) {
       console.error('Ошибка выхода:', error.message);
     }
@@ -137,22 +139,20 @@ document.addEventListener("DOMContentLoaded", () => {
   // Отслеживание состояния аутентификации (вход/выход)
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      // Пользователь вошел
       loggedInUser.textContent = `Вы вошли как: ${user.email}`;
       userStatus.style.display = 'block';
       loginForm.style.display = 'none';
       registerForm.style.display = 'none';
-      loginTab.style.display = 'none'; // Скрываем вкладки после входа
-      registerTab.style.display = 'none'; // Скрываем вкладки после входа
+      loginTab.style.display = 'none'; 
+      registerTab.style.display = 'none'; 
     } else {
-      // Пользователь вышел
       loggedInUser.textContent = '';
       userStatus.style.display = 'none';
-      loginForm.style.display = 'flex'; // Показываем форму входа по умолчанию
+      loginForm.style.display = 'flex'; 
       registerForm.style.display = 'none';
-      loginTab.style.display = 'block'; // Показываем вкладки
-      registerTab.style.display = 'block'; // Показываем вкладки
-      loginTab.classList.add('active'); // Активируем вкладку входа
+      loginTab.style.display = 'block'; 
+      registerTab.style.display = 'block'; 
+      loginTab.classList.add('active'); 
       registerTab.classList.remove('active');
     }
   });
