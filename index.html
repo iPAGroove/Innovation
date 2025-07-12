@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="menu.css">
   <link rel="stylesheet" href="mail.css">
   <link rel="stylesheet" href="auth.css">
-</head>
+  <link rel="stylesheet" href="profile.css"> </head>
 <body>
 
   <video class="video-bg" autoplay muted loop playsinline>
@@ -75,17 +75,13 @@
             </div>
             </div>
 
-        </div>
-      <h2></h2>
+      </div> <h2></h2>
       <ul class="menu-links">
         <li><a href="#"></a></li>
         <li><a href="#"></a></li>
         <li><a href="#"></a></li>
       </ul>
-    </div>
-  </div>
-
-  <div id="mailModal" class="mail-modal">
+    </div> </div> <div id="mailModal" class="mail-modal">
     <div class="mail-content">
       <button class="close-btn" id="closeMail">×</button>
       <h2>Связаться с iPA Groove</h2>
@@ -121,7 +117,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
     import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-analytics.js";
-    // Импорт модуля аутентификации
+    // Импорт модуля аутентификации (хотя getAuth используется в auth.js)
     import { getAuth } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
 
@@ -140,7 +136,7 @@
     const db = getFirestore(app);
     const auth = getAuth(app); // Инициализация Firebase Auth
 
-    // Передача объекта Firebase App в глобальный scope
+    // Передача объекта Firebase App в глобальный scope, чтобы другие модули могли его использовать
     window.firebaseApp = app; 
 
     function renderCard(data) {
@@ -177,5 +173,5 @@
   <script src="menu.js"></script>
   <script src="mail.js"></script>
   <script type="module" src="auth.js"></script> 
-</body>
+  <script type="module" src="profile.js"></script> </body>
 </html>
