@@ -11,7 +11,8 @@
   <link rel="stylesheet" href="games.css">
   <link rel="stylesheet" href="apps.css">
   <link rel="stylesheet" href="menu.css">
-  <link rel="stylesheet" href="mail.css"> </head>
+  <link rel="stylesheet" href="mail.css">
+  <link rel="stylesheet" href="auth.css"> </head>
 <body>
 
   <video class="video-bg" autoplay muted loop playsinline>
@@ -43,8 +44,37 @@
 
   <div id="menuPanel" class="menu-panel">
     <div class="menu-content">
-      <h2></h2> <ul class="menu-links">
-        <li><a href="#"></a></li> <li><a href="#"></a></li> <li><a href="#"></a></li> </ul>
+      <div class="auth-container">
+        <div class="auth-tabs">
+          <button id="loginTab" class="auth-tab-btn active">Войти</button>
+          <button id="registerTab" class="auth-tab-btn">Регистрация</button>
+        </div>
+
+        <div id="loginForm" class="auth-form active">
+          <input type="email" id="loginEmail" placeholder="Email" autocomplete="email">
+          <input type="password" id="loginPassword" placeholder="Пароль" autocomplete="current-password">
+          <button id="loginBtn">Войти</button>
+          <p id="loginError" class="auth-error"></p>
+        </div>
+
+        <div id="registerForm" class="auth-form">
+          <input type="email" id="registerEmail" placeholder="Email" autocomplete="email">
+          <input type="password" id="registerPassword" placeholder="Пароль" autocomplete="new-password">
+          <button id="registerBtn">Зарегистрироваться</button>
+          <p id="registerError" class="auth-error"></p>
+        </div>
+
+        <div id="userStatus" class="user-status">
+          <p id="loggedInUser"></p>
+          <button id="logoutBtn" class="logout-btn">Выйти</button>
+        </div>
+      </div>
+      <h2></h2> 
+      <ul class="menu-links">
+        <li><a href="#"></a></li> 
+        <li><a href="#"></a></li> 
+        <li><a href="#"></a></li> 
+      </ul>
     </div>
   </div>
 
@@ -83,6 +113,15 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
     import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-analytics.js";
+    // ✅ Импорт модулей аутентификации
+    import { 
+      getAuth, 
+      createUserWithEmailAndPassword, 
+      signInWithEmailAndPassword, 
+      onAuthStateChanged,
+      signOut 
+    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
 
     const firebaseConfig = {
       apiKey: "AIzaSyB2In0cOmuiYB6zNj0dQrdJ8bwPkINKdzA",
@@ -97,6 +136,7 @@
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
     const db = getFirestore(app);
+    const auth = getAuth(app); // ✅ Инициализация Firebase Auth
 
     function renderCard(data) {
       return `
@@ -123,9 +163,15 @@
     await loadCollection('games', 'games');
     await loadCollection('apps', 'apps');
     console.log('✅ Данные загружены из Firebase');
+
+    // ✅ Передача объектов Firebase в глобальный scope или инициализация в auth.js
+    // Для простоты, пока оставим инициализацию здесь, но в реальном проекте лучше передавать
+    // auth, db и т.д. в отдельные модули или использовать контекст.
+    window.firebaseAuth = auth;
   </script>
 
   <script src="script.js"></script>
   <script src="menu.js"></script>
-  <script src="mail.js"></script> </body>
+  <script src="mail.js"></script>
+  <script type="module" src="auth.js"></script> </body>
 </html>
