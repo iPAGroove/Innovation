@@ -11,7 +11,8 @@
   <link rel="stylesheet" href="games.css">
   <link rel="stylesheet" href="apps.css">
   <link rel="stylesheet" href="menu.css">
-  <link rel="stylesheet" href="chat.css"> <link rel="stylesheet" href="auth.css">
+  <link rel="stylesheet" href="chat.css">
+  <link rel="stylesheet" href="auth.css">
   <link rel="stylesheet" href="profile.css">
 </head>
 <body>
@@ -40,7 +41,7 @@
     <div class="category-section"><h2 class="section-title">VIP</h2><div class="horizontal-scroll" id="apps-vip"></div></div>
     <div class="category-section"><h2 class="section-title">FREE</h2><div class="horizontal-scroll" id="apps-free"></div></div>
     <div class="category-section"><h2 class="section-title">UPDATES</h2><div class="horizontal-scroll" id="apps-updates"></div></div>
-    <div class="category-section"><h2 class="section-title">TOP</h2><div class="horizontal-scroll" id="apps-top"></div></div>
+    <div class="category-section"><h2 class="section-title">TOP</H2><div class="horizontal-scroll" id="apps-top"></div></div>
   </div>
 
   <div id="menuPanel" class="menu-panel">
@@ -113,12 +114,24 @@
     <div class="chat-content">
       <button class="close-btn" id="closeChat">×</button>
       <div class="chat-tabs">
-        <button class="chat-tab-btn active" data-chat-type="support">SUPPORT</button>
-        <button class="chat-tab-btn" data-chat-type="chat">Chat</button>
-        <button class="chat-tab-btn" data-chat-type="news">NEWS</button>
+        <button class="chat-tab-btn" data-chat-type="support">SUPPORT</button>
+        <button class="chat-tab-btn active" data-chat-type="chat">Chat</button> <button class="chat-tab-btn" data-chat-type="news">NEWS</button>
       </div>
-      <div id="chatWindow" class="chat-window">
-        <p>Добро пожаловать в чат!</p>
+      
+      <div id="chatMainArea" class="chat-main-area"> <div id="messagesDisplay" class="messages-display">
+          <div class="message incoming">
+            <span class="message-sender">iPA Groove Admin</span>
+            <span class="message-text">Добро пожаловать в наш чат! Задавайте вопросы и общайтесь.</span>
+          </div>
+        </div>
+        <div class="chat-input-area">
+          <textarea id="messageInput" class="message-input" placeholder="Введите ваше сообщение..."></textarea>
+          <button id="sendMessageBtn" class="send-message-btn">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 4L3 11L10 14L20 4ZM20 4L13 21L10 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -205,7 +218,8 @@
 
   <script src="script.js"></script>
   <script src="menu.js"></script>
-  <script src="chat.js"></script> <script type="module" src="auth.js"></script>
+  <script src="chat.js"></script>
+  <script type="module" src="auth.js"></script>
   <script type="module" src="profile.js"></script>
 </body>
 </html>
