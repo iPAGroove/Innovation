@@ -16,8 +16,8 @@
     background: #1C1C3A; /* Темный фон, как на скрине */
     border-radius: 12px;
     padding: 15px 20px;
-    /* УВЕЛИЧИВАЕМ ШИРИНУ: */
-    width: calc(100% - 20px); /* 100% ширины родителя (auth-container), минус 10px отступы с каждой стороны от menu-content */
+    /* Увеличиваем ширину, чтобы она была почти вплотную к краям menu-content */
+    width: calc(100% - 20px); /* 100% ширины родителя (auth-container), минус 20px padding (по 10px с каждой стороны от menu-content) */
     max-width: 600px; /* Ограничиваем максимальную ширину для больших экранов */
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
     display: flex;
@@ -30,7 +30,7 @@
 /* Верхняя часть карточки профиля (аватар, ник, кнопки) */
 .profile-header {
     display: flex;
-    align-items: flex-start; /* Выравнивание по верху для никнейма и кнопок */
+    align-items: center; /* Выравнивание элементов по центру вертикали */
     gap: 15px;
     padding-bottom: 15px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -64,37 +64,37 @@
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    justify-content: center; /* Центрируем по вертикали никнейм и кнопки относительно аватара */
+    /* Убрано justify-content: center; чтобы никнейм был наверху */
+    /* Теперь никнейм и кнопки будут выравниваться по верху flex-контейнера .profile-header */
 }
 
 /* Заголовок профиля (никнейм) */
 .profile-title {
-    font-size: 20px; /* УМЕНЬШЕ РАЗМЕР НИКНЕЙМА */
+    font-size: 20px;
     font-weight: 700;
     color: #fff;
-    margin-bottom: 8px;
+    margin-bottom: 5px; /* Уменьшим отступ от кнопок, чтобы они были ближе */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    line-height: 1; /* Убираем лишний интерлиньяж */
+    line-height: 1.2; /* Немного увеличим интерлиньяж, если нужно */
 }
 
 /* Контейнер для кнопок Free Access / Upgrade VIP */
 .profile-buttons {
     display: flex;
-    gap: 8px; /* Уменьшим расстояние между кнопками */
-    flex-wrap: wrap;
-    /* Убедимся, что они всегда в одну линию, если позволяют размеры */
-    flex-direction: row;
-    align-items: center;
+    flex-direction: row; /* ДОЛЖНЫ БЫТЬ В ОДНУ ЛИНИЮ */
+    gap: 8px; /* Расстояние между кнопками */
+    flex-wrap: wrap; /* Позволяем перенос на новую строку, если места мало */
+    align-items: center; /* Выравнивание кнопок по центру вертикали */
 }
 
 /* Общие стили для кнопок профиля */
 .profile-btn {
-    padding: 6px 12px; /* УМЕНЬШИМ РАЗМЕР КНОПОК */
+    padding: 5px 10px; /* СДЕЛАЕМ КНОПКИ ЕЩЕ МЕНЬШЕ */
     border: none;
-    border-radius: 20px;
-    font-size: 13px; /* УМЕНЬШИМ РАЗМЕР ШРИФТА КНОПОК */
+    border-radius: 15px; /* Чуть меньше закругления, чтобы выглядели компактнее */
+    font-size: 12px; /* УМЕНЬШИМ РАЗМЕР ШРИФТА КНОПОК */
     font-weight: 600;
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -102,8 +102,8 @@
 }
 
 .profile-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transform: translateY(-1px); /* Меньше сдвиг при наведении */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); /* Меньше тень */
 }
 
 /* Стили для кнопки "Free Access" */
@@ -122,7 +122,7 @@
     color: #fff;
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 3px; /* Уменьшим gap для иконки внутри кнопки */
 }
 
 .upgrade-vip-btn:hover {
@@ -157,14 +157,16 @@
     text-align: center;
 }
 
-.stat-icon {
-    width: 40px;
-    height: 40px;
-    filter: drop-shadow(0 0 5px rgba(0, 123, 255, 0.5));
-    /* Иконка останется, но не будет дублироваться цифрами. 
-       Если вы хотите, чтобы там БЫЛИ цифры вместо иконки, 
-       вам нужно будет изменить HTML и, возможно, добавить JavaScript для обновления этих цифр. */
+/* Стиль для цифры "0" */
+.stat-number {
+    font-size: 40px; /* Крупный размер для цифры */
+    font-weight: 800; /* Очень жирный шрифт */
+    color: #87CEFA; /* Голубой цвет */
+    text-shadow: 0 0 10px rgba(0, 123, 255, 0.7); /* Небольшое свечение */
+    line-height: 1; /* Уберем лишний интерлиньяж */
+    margin-bottom: 5px; /* Отступ от текста "DOWNLOADS" */
 }
+
 
 .stat-text {
     font-size: 16px;
@@ -175,13 +177,13 @@
 
 /* Стиль для обертки Account Settings Link */
 .account-settings-link-wrapper {
-    background: #1C1C3A; /* Цвет фона, как у profile-card */
-    border-radius: 12px; /* Закругленные углы */
+    background: #1C1C3A;
+    border-radius: 12px;
     padding: 15px 20px;
     width: calc(100% - 40px); /* Та же ширина, что и у profile-card */
     max-width: 600px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    margin: 0 auto; /* Центрируем */
+    margin: 0 auto;
 }
 
 .account-settings-link {
@@ -193,7 +195,7 @@
     font-weight: 500;
     color: #fff;
     cursor: pointer;
-    text-decoration: none; /* Убираем подчеркивание у ссылки */
+    text-decoration: none;
     transition: color 0.2s ease;
 }
 
