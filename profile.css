@@ -6,35 +6,35 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    margin-top: 20px; /* Отступ сверху, чтобы компенсировать padding родителя */
-    margin-bottom: 20px; /* Отступ снизу */
+    margin-top: 20px;
+    margin-bottom: 20px;
     box-sizing: border-box;
 }
 
 /* Стили для самой карточки профиля */
 .profile-card {
-    background: linear-gradient(135deg, #1A1A3A 0%, #2A2A5A 100%); /* Градиент как на скрине */
-    border-radius: 12px; /* Более мягкие углы */
-    padding: 15px 20px; /* Отступы внутри карточки */
+    background: linear-gradient(135deg, #1A1A3A 0%, #2A2A5A 100%);
+    border-radius: 12px;
+    padding: 15px 20px;
     width: 100%;
-    max-width: 100%; /* Занимает 100% ширины своего родителя (.profile-info-container, который сам ограничен .auth-container) */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* Более выраженная тень */
+    max-width: 90%; /* Изменено на 90% */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
     display: flex;
     align-items: center;
-    gap: 15px; /* Расстояние между аватаром и текстом */
+    gap: 15px;
     color: #fff;
-    font-family: 'Montserrat', sans-serif; /* Шрифт как на скрине */
+    font-family: 'Montserrat', sans-serif;
 }
 
 /* Обертка для аватара */
 .profile-avatar-wrapper {
-    width: 60px; /* Размер аватара */
+    width: 60px;
     height: 60px;
     border-radius: 50%;
-    overflow: hidden; /* Обрезаем, если изображение выходит за круг */
-    flex-shrink: 0; /* Чтобы аватар не сжимался */
-    border: 2px solid rgba(0, 123, 255, 0.5); /* Обводка аватара */
-    box-shadow: 0 0 10px rgba(0, 123, 255, 0.3); /* Небольшое сияние */
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 2px solid rgba(0, 123, 255, 0.5);
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -44,24 +44,25 @@
 .profile-avatar {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Заполнение области, обрезка при необходимости */
-    display: block; /* Убираем лишние отступы под изображением */
+    object-fit: cover;
+    display: block;
 }
 
 /* Заголовок профиля (например, "iPA Groove") */
 .profile-title {
-    font-size: 20px; /* Размер текста "iPA Groove" */
-    font-weight: 600; /* Более жирный шрифт */
+    font-size: 20px;
+    font-weight: 600;
     color: #fff;
-    white-space: nowrap; /* Не переносить текст */
-    overflow: hidden; /* Скрывать, если не помещается */
-    text-overflow: ellipsis; /* Добавлять многоточие */
-    flex-grow: 1; /* Чтобы занимал оставшееся пространство */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1;
 }
 
-/* Стиль для кнопки выхода из профиля (добавлен новый класс) */
+/* !!! УДАЛЕНЫ СТИЛИ ДЛЯ КНОПКИ ВЫХОДА ИЗ ПРОФИЛЯ !!! */
+/*
 .logout-btn {
-    background: #ff4d4d; /* Красный цвет для кнопки выхода */
+    background: #ff4d4d;
     color: #fff;
     width: 100%;
     padding: 12px;
@@ -71,10 +72,11 @@
     font-weight: bold;
     cursor: pointer;
     transition: background 0.3s ease;
-    margin-top: 15px; /* Отступ сверху */
+    margin-top: 15px;
     outline: none;
 }
 
 .logout-btn:hover {
     background: #cc0000;
 }
+*/
