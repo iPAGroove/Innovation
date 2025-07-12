@@ -9,7 +9,7 @@
     flex-direction: column;
     align-items: center;
     gap: 15px;
-    max-width: 420px; /* Ограничиваем ширину форм, чтобы они не были слишком широкими */
+    max-width: 420px; /* Ограничиваем ширину форм */
     width: 100%; /* Занимает 100% доступной ширины до max-width */
     margin: 20px auto;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
@@ -21,11 +21,11 @@
 .auth-container.transparent-bg {
     background: transparent;
     box-shadow: none;
-    padding: 0; /* Убираем внутренний padding, чтобы profile-card мог его задавать */
+    padding: 0; /* Убираем внутренний padding */
     gap: 0;
-    max-width: 100%; /* Позволяем ему расшириться до 100% от menu-content */
+    max-width: none; /* СБРОСИТЬ ВСЕ ОГРАНИЧЕНИЯ ШИРИНЫ ОТ РОДИТЕЛЯ */
+    width: 100%; /* Занять всю доступную ширину */
     margin: 0; /* Убираем auto margin, чтобы не было лишних центрирований, когда он для профиля */
-    width: 100%; /* Убедимся, что занимает всю ширину */
 }
 
 /* Стили для вкладок (Войти/Регистрация) */
