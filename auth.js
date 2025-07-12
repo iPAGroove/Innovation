@@ -21,6 +21,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const registerTab = document.getElementById('registerTab');
   const loginForm = document.getElementById('loginForm');
   const registerForm = document.getElementById('registerForm');
+  const authContainer = document.querySelector('.auth-container'); // !!! ДОБАВЛЕНО: получаем auth-container !!!
+
 
   // НОВЫЕ ЭЛЕМЕНТЫ DOM ДЛЯ ПРОФИЛЯ
   const profileInfoContainer = document.getElementById('profileInfoContainer');
@@ -52,6 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log('Элемент registerBtn:', registerBtn);
   console.log('Элемент profileInfoContainer:', profileInfoContainer);
   console.log('Элемент profileNicknameDisplay:', profileNicknameDisplay);
+  console.log('Элемент authContainer:', authContainer); // !!! НОВЫЙ ЛОГ !!!
   // console.log('Элемент loggedInUserDisplay:', loggedInUserDisplay);
   // console.log('Элемент logoutBtn:', logoutBtn);
   // --- Конец отладочных логов ---
@@ -69,6 +72,11 @@ document.addEventListener("DOMContentLoaded", () => {
       profileInfoContainer.style.display = 'none';
     }
     
+    // !!! ДОБАВЛЕНО: Убираем прозрачность фона auth-container при показе форм !!!
+    if (authContainer) {
+        authContainer.classList.remove('transparent-bg');
+    }
+
     // Показываем/скрываем вкладки
     loginTab.style.display = 'block'; 
     registerTab.style.display = 'block'; 
@@ -165,10 +173,9 @@ document.addEventListener("DOMContentLoaded", () => {
   onAuthStateChanged(auth, (user) => {
     if (user) {
       // Пользователь вошел в систему
-      if (profileInfoContainer && profileNicknameDisplay) { // Проверяем, что элементы существуют
-        // На скрине показан статический текст "iPA Groove", а не никнейм пользователя.
-        // Поэтому я оставил "iPA Groove" как основной текст.
-        // Если вы хотите показывать никнейм пользователя, раскомментируйте следующую строку:
+      if (profileInfoContainer && profileNicknameDisplay) {
+        profileNicknameDisplay.textContent = 'iPA Groove'; // Показываем статический текст "iPA Groove"
+        // Если хотите показывать никнейм пользователя, раскомментируйте следующую строку и закомментируйте предыдущую:
         // profileNicknameDisplay.textContent = user.displayName || user.email.split('@')[0]; 
         
         // Если email отображается, раскомментируйте:
@@ -182,6 +189,11 @@ document.addEventListener("DOMContentLoaded", () => {
       registerForm.style.display = 'none';
       loginTab.style.display = 'none'; 
       registerTab.style.display = 'none'; 
+      
+      // !!! ДОБАВЛЕНО: Делаем фон auth-container прозрачным при входе !!!
+      if (authContainer) {
+          authContainer.classList.add('transparent-bg');
+      }
 
     } else {
       // Пользователь вышел из системы
@@ -190,7 +202,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       // Показываем формы и вкладки входа/регистрации
-      showAuthForm(registerTab.classList.contains('active')); // Сохраняем текущую активную вкладку
+      showAuthForm(registerTab.classList.contains('active')); 
+
+      // showAuthForm уже позаботится об удалении 'transparent-bg'
     }
   });
 });
