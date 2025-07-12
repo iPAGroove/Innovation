@@ -44,7 +44,7 @@
     cursor: pointer;
     transition: background 0.3s ease, color 0.3s ease;
     text-align: center;
-    outline: none; 
+    outline: none;
 }
 
 .auth-tab-btn.active {
@@ -61,9 +61,9 @@
 .auth-form {
     display: none;
     flex-direction: column;
-    gap: 10px; 
+    gap: 10px;
     width: 100%;
-    padding-top: 10px; 
+    padding-top: 10px;
 }
 
 .auth-form.active {
@@ -72,7 +72,7 @@
 
 .auth-form input[type="email"],
 .auth-form input[type="password"],
-.auth-form input[type="text"] { 
+.auth-form input[type="text"] {
     width: calc(100% - 20px);
     padding: 10px;
     border: 1px solid rgba(255, 255, 255, 0.3);
@@ -88,7 +88,7 @@
     color: rgba(255, 255, 255, 0.6);
 }
 
-.auth-form button[type="submit"] { 
+.auth-form button[type="submit"] {
     width: 100%;
     padding: 12px;
     border: none;
@@ -104,7 +104,7 @@
 }
 
 .auth-form button[type="submit"]:hover {
-    background: #218838; 
+    background: #218838;
 }
 
 .auth-error {
@@ -113,3 +113,4 @@
     margin-top: 5px;
     text-align: center;
 }
+
