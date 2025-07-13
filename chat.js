@@ -21,6 +21,15 @@ document.addEventListener("DOMContentLoaded", () => {
   let db = null; // Переменная для хранения объекта Firestore
   let auth = null; // Переменная для хранения объекта Auth
 
+  // --- Отладочные логи для кнопки чата (можно удалить после решения проблемы) ---
+  console.log("chat.js загружен.");
+  if (chatBtn) {
+    console.log("Элемент 'openChat' найден:", chatBtn);
+  } else {
+    console.error("Элемент 'openChat' НЕ найден. Проверьте ID в index.html.");
+  }
+  // --- Конец отладочных логов ---
+
   // Ждем, пока Firebase SDK инициализируется и db/auth станут доступны из глобального scope
   function initializeChat() {
     // Проверяем наличие window.db и window.auth, которые передаются из index.html
@@ -73,7 +82,10 @@ document.addEventListener("DOMContentLoaded", () => {
         
         // Проверяем, является ли сообщение исходящим (от текущего пользователя)
         // Сравниваем либо по displayName, либо по email, если displayName отсутствует
-        const isOutgoing = currentUser && (currentUser.displayName === senderName || currentUser.email === senderName);
+        // Важно: currentUser может быть null, если пользователь не вошел.
+        const isOutgoing = currentUser && 
+                           ( (currentUser.displayName && currentUser.displayName === senderName) || 
+                             (!currentUser.displayName && currentUser.email === senderName) );
 
         if (isOutgoing) {
             messageElement.classList.add('outgoing');
@@ -122,24 +134,33 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       // Открытие модального окна чата
-      chatBtn.addEventListener('click', (event) => {
-        event.preventDefault();
-        chatModal.classList.add('active');
-        activateChatTab('chat'); // Убедимся, что 'chat' вкладка активна при открытии
-        loadMessages(); // Загружаем сообщения при открытии чата
-      });
+      // Добавлена проверка chatBtn на null
+      if (chatBtn) {
+        chatBtn.addEventListener('click', (event) => {
+          event.preventDefault();
+          chatModal.classList.add('active');
+          activateChatTab('chat'); // Убедимся, что 'chat' вкладка активна при открытии
+          loadMessages(); // Загружаем сообщения при открытии чата
+        });
+      } else {
+        console.error("chatBtn не найден, не удалось прикрепить слушатель события.");
+      }
 
       // Закрытие модального окна чата по кнопке "X"
-      closeChatBtn.addEventListener('click', () => {
-        chatModal.classList.remove('active');
-      });
+      if (closeChatBtn) {
+        closeChatBtn.addEventListener('click', () => {
+          chatModal.classList.remove('active');
+        });
+      }
 
       // Закрытие при клике вне окна
-      chatModal.addEventListener('click', (e) => {
-        if (e.target === chatModal) {
-          chatModal.classList.remove('active');
-        }
-      });
+      if (chatModal) {
+        chatModal.addEventListener('click', (e) => {
+          if (e.target === chatModal) {
+            chatModal.classList.remove('active');
+          }
+        });
+      }
 
       // Логика переключения вкладок чата
       chatTabButtons.forEach(button => {
@@ -184,9 +205,9 @@ document.addEventListener("DOMContentLoaded", () => {
             messagesDisplay.innerHTML = `
               <p><strong>Последние новости и обновления iPA Groove:</strong></p>
               <ul>
-                <li><strong>2025-07-13:</strong> Добавлены новые функции в раздел профиля.</li>
-                <li><strong>2025-07-10:</strong> Обновление библиотеки игр и приложений.</li>
-                <li><strong>2025-07-05:</strong> Плановые технические работы завершены успешно.</li>
+                <li><strong>${new Date().getFullYear()}-07-13:</strong> Добавлены новые функции в раздел профиля.</li>
+                <li><strong>${new Date().getFullYear()}-07-10:</strong> Обновление библиотеки игр и приложений.</li>
+                <li><strong>${new Date().getFullYear()}-07-05:</strong> Плановые технические работы завершены успешно.</li>
               </ul>
             `;
         }
