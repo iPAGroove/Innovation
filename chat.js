@@ -1,5 +1,11 @@
 // chat.js
 
+// Импорт необходимых функций из Firebase Firestore SDK
+// Эти импорты необходимы, потому что chat.js является отдельным модулем,
+// и функции (collection, query, etc.) не становятся глобальными автоматически
+// даже если SDK импортирован в index.html.
+import { collection, query, orderBy, onSnapshot, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
 document.addEventListener("DOMContentLoaded", () => {
   const chatBtn = document.getElementById('openChat');
   const chatModal = document.getElementById('chatModal');
@@ -12,25 +18,28 @@ document.addEventListener("DOMContentLoaded", () => {
   const sendMessageBtn = document.getElementById('sendMessageBtn');
 
   let currentUser = null; // Переменная для хранения информации о текущем пользователе
+  let db = null; // Переменная для хранения объекта Firestore
+  let auth = null; // Переменная для хранения объекта Auth
 
-  // Ждем, пока Firebase SDK инициализируется и db/auth станут доступны
+  // Ждем, пока Firebase SDK инициализируется и db/auth станут доступны из глобального scope
   function initializeChat() {
+    // Проверяем наличие window.db и window.auth, которые передаются из index.html
     if (window.db && window.auth) {
-      const db = window.db;
-      const auth = window.auth;
+      db = window.db; // Присваиваем глобальный объект Firestore
+      auth = window.auth; // Присваиваем глобальный объект Auth
 
       // Слушатель состояния аутентификации Firebase
-      // Это нужно для получения информации о текущем пользователе
+      // Это нужно для получения информации о текущем пользователе в реальном времени
       auth.onAuthStateChanged(user => {
         currentUser = user;
-        // console.log("Current user in chat.js:", currentUser);
+        // console.log("Current user in chat.js:", currentUser); // Для отладки
         if (currentUser) {
-            // Если пользователь авторизован, можно включить поле ввода, если нужно
+            // Если пользователь авторизован, включаем поле ввода
             messageInput.disabled = false;
             sendMessageBtn.disabled = false;
             messageInput.placeholder = "Введите ваше сообщение...";
         } else {
-            // Если пользователь не авторизован, отключить поле ввода
+            // Если пользователь не авторизован, отключаем поле ввода
             messageInput.disabled = true;
             sendMessageBtn.disabled = true;
             messageInput.placeholder = "Войдите, чтобы отправлять сообщения...";
@@ -40,12 +49,12 @@ document.addEventListener("DOMContentLoaded", () => {
       // Функция для загрузки и отображения сообщений в реальном времени
       function loadMessages() {
         // Создаем запрос к коллекции "chatMessages", упорядочиваем по timestamp
-        const messagesRef = window.firebase.firestore().collection('chatMessages'); // Используем window.firebase.firestore()
-        const q = messagesRef.orderBy('timestamp', 'asc');
+        const messagesRef = collection(db, 'chatMessages'); // Используем импортированную функцию collection и объект db
+        const q = query(messagesRef, orderBy('timestamp', 'asc')); // Используем импортированные функции query и orderBy
 
         // Подписываемся на изменения в коллекции в реальном времени
-        window.firebase.firestore().onSnapshot(q, (snapshot) => { // Используем window.firebase.firestore()
-          messagesDisplay.innerHTML = ''; // Очищаем текущие сообщения
+        onSnapshot(q, (snapshot) => { // Используем импортированную функцию onSnapshot
+          messagesDisplay.innerHTML = ''; // Очищаем текущие сообщения перед обновлением
           snapshot.forEach(doc => {
             const message = doc.data();
             displayMessage(message);
@@ -59,8 +68,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const messageElement = document.createElement('div');
         messageElement.classList.add('message');
 
-        const senderName = message.sender || 'Аноним'; // Используем sender, если он есть, иначе 'Аноним'
-        const isOutgoing = currentUser && currentUser.displayName === senderName; // Проверяем, является ли сообщение исходящим
+        // Определяем имя отправителя. Если displayName отсутствует, используем email.
+        const senderName = message.sender || 'Аноним'; 
+        
+        // Проверяем, является ли сообщение исходящим (от текущего пользователя)
+        // Сравниваем либо по displayName, либо по email, если displayName отсутствует
+        const isOutgoing = currentUser && (currentUser.displayName === senderName || currentUser.email === senderName);
 
         if (isOutgoing) {
             messageElement.classList.add('outgoing');
@@ -92,10 +105,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         try {
-          await window.firebase.firestore().collection('chatMessages').add({ // Используем window.firebase.firestore()
-            sender: currentUser.displayName || currentUser.email, // Используем displayName, если доступен, иначе email
+          // Используем displayName пользователя, если доступен, иначе email
+          const senderIdentifier = currentUser.displayName || currentUser.email;
+
+          // Добавляем документ в коллекцию 'chatMessages'
+          await addDoc(collection(db, 'chatMessages'), { // Используем импортированные функции addDoc и collection
+            sender: senderIdentifier,
             text: messageText,
-            timestamp: window.firebase.firestore.FieldValue.serverTimestamp() // Метка времени от сервера
+            timestamp: serverTimestamp() // Используем импортированную функцию serverTimestamp
           });
           messageInput.value = ''; // Очистить поле ввода после отправки
         } catch (error) {
@@ -131,6 +148,8 @@ document.addEventListener("DOMContentLoaded", () => {
           activateChatTab(chatType);
           if (chatType === 'chat') {
             loadMessages(); // Перезагружаем сообщения, если переключились на вкладку "Chat"
+          } else {
+            messagesDisplay.innerHTML = ''; // Очищаем сообщения при переключении на другие вкладки
           }
         });
       });
@@ -145,27 +164,20 @@ document.addEventListener("DOMContentLoaded", () => {
           activeButton.classList.add('active');
         }
 
-        if (chatType === 'chat' || chatType === 'support') {
+        // Отображаем или скрываем поле ввода в зависимости от вкладки
+        if (chatType === 'chat') {
             chatMainArea.style.display = 'flex';
-            if (chatType === 'chat') {
-                messageInput.style.display = 'block';
-                sendMessageBtn.style.display = 'flex';
-                // messagesDisplay.innerHTML = `
-                //   <div class="message incoming">
-                //     <span class="message-sender">iPA Groove Admin</span>
-                //     <span class="message-text">Добро пожаловать в наш чат! Задавайте вопросы и общайтесь.</span>
-                //   </div>
-                //   `; // Теперь сообщения будут загружаться из Firebase
-                // messagesDisplay.scrollTop = messagesDisplay.scrollHeight;
-            } else if (chatType === 'support') {
-                messageInput.style.display = 'none';
-                sendMessageBtn.style.display = 'none';
-                messagesDisplay.innerHTML = `
-                  <p>Это раздел поддержки. Вы можете задать свой вопрос здесь.</p>
-                  <p>Наши операторы скоро ответят. Пожалуйста, опишите вашу проблему как можно подробнее.</p>
-                  `;
-            }
-        } else {
+            messageInput.style.display = 'block';
+            sendMessageBtn.style.display = 'flex';
+        } else if (chatType === 'support') {
+            chatMainArea.style.display = 'flex';
+            messageInput.style.display = 'none';
+            sendMessageBtn.style.display = 'none';
+            messagesDisplay.innerHTML = `
+              <p>Это раздел поддержки. Вы можете задать свой вопрос здесь.</p>
+              <p>Наши операторы скоро ответят. Пожалуйста, опишите вашу проблему как можно подробнее.</p>
+              `;
+        } else if (chatType === 'news') {
             chatMainArea.style.display = 'flex';
             messageInput.style.display = 'none';
             sendMessageBtn.style.display = 'none';
@@ -180,7 +192,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
     } else {
-      // Если Firebase еще не инициализирован, попробуйте снова через короткий промежуток времени
+      // Если Firebase еще не инициализирован (window.db или window.auth отсутствуют),
+      // пробуем снова через короткий промежуток времени.
       setTimeout(initializeChat, 100);
     }
   }
@@ -188,4 +201,3 @@ document.addEventListener("DOMContentLoaded", () => {
   // Запускаем инициализацию чата
   initializeChat();
 });
-
