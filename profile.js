@@ -9,17 +9,17 @@ export function updateProfileDisplay(user) {
     const registerForm = document.getElementById('registerForm');
     const authContainer = document.querySelector('.auth-container');
 
+    // Базовая проверка на существование всех необходимых элементов
     if (!profileInfoContainer || !profileNicknameDisplay || !authTabs || !loginForm || !registerForm || !authContainer) {
-        console.warn('Один или несколько элементов профиля/аутентификации не найдены в DOM.');
+        console.warn('Один или несколько элементов профиля/аутентификации не найдены в DOM. Проверьте HTML и ID.');
         return;
     }
 
     if (user) {
         // Пользователь вошел в систему
-        profileNicknameDisplay.textContent = 'iPA Groove';
-        // Если хотите показывать никнейм пользователя, раскомментируйте следующую строку:
-        // profileNicknameDisplay.textContent = user.displayName || user.email.split('@')[0];
-
+        // Устанавливаем никнейм: предпочитаем displayName, если нет - часть email до @
+        profileNicknameDisplay.textContent = user.displayName || (user.email ? user.email.split('@')[0] : 'Гость');
+        
         profileInfoContainer.style.display = 'flex'; // Показываем контейнер профиля
 
         // Скрываем вкладки и формы
@@ -34,14 +34,15 @@ export function updateProfileDisplay(user) {
         // Пользователь вышел из системы
         profileInfoContainer.style.display = 'none'; // Скрываем контейнер профиля
 
-        // Показываем вкладки и формы
+        // Показываем вкладки и формы (по умолчанию форму входа)
         authTabs.style.display = 'flex';
-        loginForm.style.display = 'flex'; // Показываем форму входа по умолчанию
-        registerForm.style.display = 'none'; // Скрываем форму регистрации
+        loginForm.style.display = 'flex'; 
+        registerForm.style.display = 'none'; 
 
         // Удаляем прозрачность контейнера auth-container
         authContainer.classList.remove('transparent-bg');
+
+        // Сбрасываем текст никнейма
+        profileNicknameDisplay.textContent = 'Войдите'; // Или 'iPA Groove' по умолчанию
     }
 }
-
-// !!! КОД ДЛЯ КНОПКИ ВЫХОДА ИЗ ПРОФИЛЯ ПО-ПРЕЖНЕМУ УДАЛЕН !!!
