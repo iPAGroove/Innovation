@@ -14,7 +14,8 @@
   <link rel="stylesheet" href="chat.css">
   <link rel="stylesheet" href="auth.css">
   <link rel="stylesheet" href="profile.css">
-</head>
+
+  </head>
 <body>
 
   <video class="video-bg" autoplay muted loop playsinline>
@@ -74,7 +75,7 @@
                         <img src="images/ipa_groove_avatar.png" alt="iPA Groove Avatar" class="profile-avatar">
                     </div>
                     <div class="profile-details">
-                        <span id="profileNicknameDisplay" class="profile-title">vibratedrift</span>
+                        <span id="profileNicknameDisplay" class="profile-title">Загрузка...</span>
                         <div class="profile-buttons">
                             <button class="profile-btn free-access-btn">Free Access</button>
                             <button class="profile-btn upgrade-vip-btn">⚡ Upgrade to VIP</button>
@@ -98,6 +99,7 @@
                         </svg>
                     </a>
                 </div>
+                <button id="logoutBtn" class="profile-btn free-access-btn" style="margin-top: 15px; width: 100%;">Выйти</button>
             </div>
         </div>
       </div>
@@ -115,10 +117,12 @@
       <button class="close-btn" id="closeChat">×</button>
       <div class="chat-tabs">
         <button class="chat-tab-btn" data-chat-type="support">SUPPORT</button>
-        <button class="chat-tab-btn active" data-chat-type="chat">Chat</button> <button class="chat-tab-btn" data-chat-type="news">NEWS</button>
+        <button class="chat-tab-btn active" data-chat-type="chat">Chat</button> 
+        <button class="chat-tab-btn" data-chat-type="news">NEWS</button>
       </div>
       
-      <div id="chatMainArea" class="chat-main-area"> <div id="messagesDisplay" class="messages-display">
+      <div id="chatMainArea" class="chat-main-area"> 
+        <div id="messagesDisplay" class="messages-display">
           </div>
         <div class="chat-input-area">
           <textarea id="messageInput" class="message-input" placeholder="Введите ваше сообщение..."></textarea>
@@ -148,8 +152,7 @@
         <path d="M4 4H20V20H4V4ZM4 4L12 13L20 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </a>
-    <a href="#" class="nav-item" title="Menu">
-      <svg viewBox="0 0 24 24" fill="none">
+    <a href="#" class="nav-item" id="openMenu" title="Menu"> <svg viewBox="0 0 24 24" fill="none">
         <path d="M4 6H20M4 12H20M4 18H20" stroke="white" stroke-width="2" stroke-linecap="round"/>
       </svg>
     </a>
@@ -158,11 +161,11 @@
   <script type="module">
     // Импорт Firebase SDK
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-    // Добавлены импорты для Firestore и Auth
     import { getFirestore, collection, getDocs, addDoc, serverTimestamp, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-analytics.js";
 
+    // ВАШИ АКТУАЛЬНЫЕ НАСТРОЙКИ FIREBASE КОНФИГУРАЦИИ
     const firebaseConfig = {
       apiKey: "AIzaSyB2In0cOmuiYB6zNj0dQrdJ8bwPkINKdzA",
       authDomain: "updaterepoipa.firebaseapp.com",
@@ -173,16 +176,23 @@
       measurementId: "G-T42CG13QPR"
     };
 
+    // Инициализация Firebase App
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
     const db = getFirestore(app);
-    const auth = getAuth(app); // Инициализация Firebase Auth
+    const auth = getAuth(app); 
 
-    // Передача объекта Firebase App и других объектов в глобальный scope, чтобы другие модули могли их использовать
+    // Передача объектов Firebase в глобальный scope (окно),
+    // чтобы их могли использовать другие модули (chat.js, auth.js и т.д.)
     window.firebaseApp = app;
-    window.db = db; // Добавляем db в глобальный scope
-    window.auth = auth; // Добавляем auth в глобальный scope
+    window.db = db;
+    window.auth = auth;
+    // Дополнительно можно передать и функции Firestore, если модули не хотят их импортировать сами
+    window.firebase.firestore_functions = { collection, query, orderBy, onSnapshot, addDoc, serverTimestamp };
+    window.firebase.auth_functions = { onAuthStateChanged, signOut };
 
+
+    // Функции для рендеринга карточек (Games/Apps)
     function renderCard(data) {
       return `
         <div class="icon-card">
@@ -191,32 +201,43 @@
         </div>`;
     }
 
+    // Функция для загрузки коллекций Games/Apps
     async function loadCollection(collName, prefix) {
-      const querySnapshot = await getDocs(collection(db, collName));
       const containers = {
         vip: document.getElementById(`${prefix}-vip`),
         free: document.getElementById(`${prefix}-free`),
         updates: document.getElementById(`${prefix}-updates`),
         top: document.getElementById(`${prefix}-top`),
       };
+      
+      // Очищаем контейнеры перед загрузкой
+      Object.values(containers).forEach(container => {
+        if (container) container.innerHTML = '';
+      });
+
+      const querySnapshot = await getDocs(collection(db, collName));
       querySnapshot.forEach(doc => {
         const d = doc.data();
-        if (containers[d.type]) containers[d.type].innerHTML += renderCard(d);
+        if (containers[d.type]) {
+            containers[d.type].innerHTML += renderCard(d);
+        } else {
+            console.warn(`Документ ${doc.id} из коллекции ${collName} имеет неизвестный тип: ${d.type}`);
+        }
       });
     }
 
+    // Загрузка данных при загрузке DOM
     document.addEventListener("DOMContentLoaded", async () => {
+      // Инициализируем экраны: по умолчанию виден gamesScreen
+      document.getElementById("gamesScreen").style.display = "block";
+      document.getElementById("appsScreen").style.display = "none";
+      
       await loadCollection('games', 'games');
       await loadCollection('apps', 'apps');
-      console.log('✅ Данные загружены из Firebase');
+      console.log('✅ Данные игр и приложений загружены из Firebase.');
     });
 
   </script>
 
-  <script src="script.js"></script>
-  <script src="menu.js"></script>
-  <script src="chat.js"></script>
-  <script type="module" src="auth.js"></script>
-  <script type="module" src="profile.js"></script>
-</body>
+  <script src="script.js"></script> <script src="menu.js"></script>   <script type="module" src="profile.js"></script> <script type="module" src="auth.js"></script>    <script type="module" src="chat.js"></script>    </body>
 </html>
