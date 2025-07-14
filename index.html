@@ -14,8 +14,7 @@
   <link rel="stylesheet" href="chat.css">
   <link rel="stylesheet" href="auth.css">
   <link rel="stylesheet" href="profile.css">
-
-  </head>
+  <link rel="stylesheet" href="admin.css"> </head>
 <body>
 
   <video class="video-bg" autoplay muted loop playsinline>
@@ -70,36 +69,36 @@
 
         <div id="profileInfoContainer" class="profile-info-container" style="display: none;">
             <div class="profile-card">
-                <div class="profile-header">
-                    <div class="profile-avatar-wrapper">
-                        <img src="images/ipa_groove_avatar.png" alt="iPA Groove Avatar" class="profile-avatar">
-                    </div>
-                    <div class="profile-details">
-                        <span id="profileNicknameDisplay" class="profile-title">Загрузка...</span>
-                        <div class="profile-buttons">
-                            <button class="profile-btn free-access-btn">Free Access</button>
-                            <button class="profile-btn upgrade-vip-btn">⚡ Upgrade to VIP</button>
-                        </div>
-                    </div>
+              <div class="profile-header">
+                <div class="profile-avatar-wrapper">
+                  <img src="images/ipa_groove_avatar.png" alt="iPA Groove Avatar" class="profile-avatar">
                 </div>
+                <div class="profile-details">
+                  <span id="profileNicknameDisplay" class="profile-title">Загрузка...</span>
+                  <div class="profile-buttons">
+                    <button class="profile-btn free-access-btn">Free Access</button>
+                    <button class="profile-btn upgrade-vip-btn">⚡ Upgrade to VIP</button>
+                  </div>
+                </div>
+              </div>
 
-                <div class="community-stats">
-                    <h3 class="stats-title">Community Statistics</h3>
-                    <div class="stat-item">
-                        <span class="stat-number">0</span>
-                        <span class="stat-text">DOWNLOADS</span>
-                    </div>
+              <div class="community-stats">
+                <h3 class="stats-title">Community Statistics</h3>
+                <div class="stat-item">
+                  <span class="stat-number">0</span>
+                  <span class="stat-text">DOWNLOADS</span>
                 </div>
+              </div>
 
-                <div class="account-settings-link-wrapper">
-                    <a href="#" class="account-settings-link">
-                        Account Settings
-                        <svg class="arrow-down" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M7 10L12 15L17 10H7Z" fill="currentColor"/>
-                        </svg>
-                    </a>
-                </div>
-                <button id="logoutBtn" class="profile-btn free-access-btn" style="margin-top: 15px; width: 100%;">Выйти</button>
+              <div class="account-settings-link-wrapper">
+                <a href="#" class="account-settings-link">
+                  Account Settings
+                  <svg class="arrow-down" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 10L12 15L17 10H7Z" fill="currentColor"/>
+                  </svg>
+                </a>
+              </div>
+              <button id="logoutBtn" class="profile-btn free-access-btn" style="margin-top: 15px; width: 100%;">Выйти</button>
             </div>
         </div>
       </div>
@@ -112,16 +111,61 @@
     </div>
   </div>
 
+  <div id="adminPanel" class="admin-panel">
+    <div class="admin-content">
+      <h2>Панель администратора</h2>
+      <button class="close-btn" id="closeAdminPanel">×</button>
+      <div class="admin-tabs">
+        <button id="addGameTab" class="admin-tab-btn active" data-content="addGame">Добавить игру</button>
+        <button id="addAppTab" class="admin-tab-btn" data-content="addApp">Добавить приложение</button>
+      </div>
+
+      <div id="addGameSection" class="admin-section active">
+        <h3>Добавить новую игру</h3>
+        <form id="addGameForm" class="add-item-form">
+          <input type="text" id="gameName" placeholder="Название игры" required>
+          <input type="text" id="gameIconUrl" placeholder="URL иконки" required>
+          <select id="gameType" required>
+            <option value="">Выберите тип</option>
+            <option value="vip">VIP</option>
+            <option value="free">FREE</option>
+            <option value="updates">UPDATES</option>
+            <option value="top">TOP</option>
+          </select>
+          <button type="submit">Добавить игру</button>
+          <p id="gameMessage" class="admin-message"></p>
+        </form>
+      </div>
+
+      <div id="addAppSection" class="admin-section">
+        <h3>Добавить новое приложение</h3>
+        <form id="addAppForm" class="add-item-form">
+          <input type="text" id="appName" placeholder="Название приложения" required>
+          <input type="text" id="appIconUrl" placeholder="URL иконки" required>
+          <select id="appType" required>
+            <option value="">Выберите тип</option>
+            <option value="vip">VIP</option>
+            <option value="free">FREE</option>
+            <option value="updates">UPDATES</option>
+            <option value="top">TOP</option>
+          </select>
+          <button type="submit">Добавить приложение</button>
+          <p id="appMessage" class="admin-message"></p>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <div id="chatModal" class="chat-modal">
     <div class="chat-content">
       <button class="close-btn" id="closeChat">×</button>
       <div class="chat-tabs">
         <button class="chat-tab-btn" data-chat-type="support">SUPPORT</button>
-        <button class="chat-tab-btn active" data-chat-type="chat">Chat</button> 
+        <button class="chat-tab-btn active" data-chat-type="chat">Chat</button>
         <button class="chat-tab-btn" data-chat-type="news">NEWS</button>
       </div>
-      
-      <div id="chatMainArea" class="chat-main-area"> 
+
+      <div id="chatMainArea" class="chat-main-area">
         <div id="messagesDisplay" class="messages-display">
           </div>
         <div class="chat-input-area">
@@ -152,6 +196,12 @@
         <path d="M4 4H20V20H4V4ZM4 4L12 13L20 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </a>
+    <a href="#" class="nav-item" id="openAdminPanel" title="Admin">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-settings">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0-.33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+      </svg>
+    </a>
     <a href="#" class="nav-item" id="openMenu" title="Menu"> <svg viewBox="0 0 24 24" fill="none">
         <path d="M4 6H20M4 12H20M4 18H20" stroke="white" stroke-width="2" stroke-linecap="round"/>
       </svg>
@@ -160,7 +210,8 @@
 
   <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-  import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+  // Добавляем addDoc в импорты Firestore
+  import { getFirestore, collection, onSnapshot, addDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
   import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-analytics.js";
 
@@ -182,6 +233,8 @@
   window.firebaseApp = app;
   window.db = db;
   window.auth = auth;
+  // Делаем addDoc доступным глобально, чтобы admin.js мог его использовать
+  window.addDoc = addDoc;
 
   function renderCard(data) {
     return `
@@ -229,5 +282,10 @@
 
 </script>
 
-  <script src="script.js"></script> <script src="menu.js"></script>   <script type="module" src="profile.js"></script> <script type="module" src="auth.js"></script>    <script type="module" src="chat.js"></script>    </body>
+  <script src="script.js"></script>
+  <script src="menu.js"></script>
+  <script type="module" src="profile.js"></script>
+  <script type="module" src="auth.js"></script>
+  <script type="module" src="chat.js"></script>
+  <script type="module" src="admin.js"></script> </body>
 </html>
