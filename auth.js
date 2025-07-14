@@ -1,14 +1,15 @@
 // auth.js
 
 // ========== ИМПОРТЫ ИЗ FIREBASE SDK ==========
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut, // Теперь используется для кнопки выхода
-  updateProfile
-} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+// Эти импорты УДАЛЕНЫ, так как используются глобальные объекты из index.html
+// import {
+//   getAuth,
+//   createUserWithEmailAndPassword,
+//   signInWithEmailAndPassword,
+//   onAuthStateChanged,
+//   signOut,
+//   updateProfile
+// } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
 // !!! ИМПОРТ ФУНКЦИИ ИЗ profile.js !!!
 // Убедитесь, что profile.js загружается ДО auth.js в index.html
@@ -23,7 +24,13 @@ document.addEventListener("DOMContentLoaded", () => {
     console.error("Firebase App не инициализировано в index.html. Функции аутентификации могут не работать.");
     return;
   }
-  const auth = getAuth(app); // Дополнительно получаем Auth, хотя в window.auth уже есть
+  // Используем глобальный объект auth, инициализированный в index.html
+  const auth = window.auth;
+  if (!auth) {
+    console.error("Firebase Auth не инициализирован глобально. Проверьте ваш index.html.");
+    return;
+  }
+
 
   // Элементы DOM для форм и статуса
   const loginTab = document.getElementById('loginTab');
@@ -108,7 +115,8 @@ document.addEventListener("DOMContentLoaded", () => {
     loginError.textContent = ''; // Очищаем предыдущую ошибку
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      // Используем метод объекта auth
+      await auth.signInWithEmailAndPassword(email, password);
       console.log('✅ Пользователь успешно вошел!');
       // onAuthStateChanged обработает обновления UI при успешном входе
       // Очищаем поля формы
@@ -149,10 +157,12 @@ document.addEventListener("DOMContentLoaded", () => {
     registerError.textContent = ''; // Очищаем предыдущую ошибку
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      // Используем метод объекта auth
+      const userCredential = await auth.createUserWithEmailAndPassword(email, password);
       // Обновляем профиль пользователя с никнеймом, если предоставлен
       if (auth.currentUser && nickname) {
-        await updateProfile(auth.currentUser, {
+        // Используем метод объекта auth.currentUser
+        await auth.currentUser.updateProfile({
           displayName: nickname
         });
       }
@@ -186,7 +196,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Слушатель для кнопки ВЫХОД
   logoutBtn.addEventListener('click', async () => {
     try {
-      await signOut(auth);
+      // Используем метод объекта auth
+      await auth.signOut();
       console.log('👋 Пользователь успешно вышел из системы.');
       // onAuthStateChanged обработает обновления UI при выходе
     } catch (error) {
@@ -198,7 +209,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Наблюдение за изменениями состояния аутентификации (вход/выход)
   // Эта функция будет вызвана при каждой загрузке страницы и при каждом изменении состояния входа
-  onAuthStateChanged(auth, (user) => {
+  // Используем метод объекта auth
+  auth.onAuthStateChanged((user) => {
     // Вызываем функцию из profile.js для обновления отображения профиля
     // updateProfileDisplay управляет видимостью authContainer, profileInfoContainer, табов и форм
     updateProfileDisplay(user);
