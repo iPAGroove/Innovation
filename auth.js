@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log('👤 Пользователь авторизован:', user.email);
       // Проверяем, является ли пользователь администратором по email
       // ВНИМАНИЕ: Это ПРОСТОЙ пример. Для продакшена лучше использовать Firebase Custom Claims.
-      const adminEmails = ["youradmin@example.com", "anotheradmin@example.com"]; // Замените на реальные админские email-ы
+      const adminEmails = ["ipagroove@gmail.com", "другой_админ@example.com"]; // Замените на реальные админские email-ы
       if (adminEmails.includes(user.email)) {
         isAdmin = true;
       }
