@@ -1,0 +1,26 @@
+.admin-modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0; top: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+}
+
+.admin-modal.active {
+  display: flex;
+}
+
+.admin-modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+}
+
+.close {
+  float: right;
+  font-size: 20px;
+  cursor: pointer;
+}
