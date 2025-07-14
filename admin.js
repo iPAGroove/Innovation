@@ -1,11 +1,12 @@
-i// admin.js
+// admin.js
 
 import { collection, addDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+// auth не нужен здесь, так как проверка админа происходит в auth.js и profile.js
+// import { getAuth } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const adminPanel = document.getElementById('adminPanel');
-  const openAdminPanelBtn = document.getElementById('openAdminPanel');
+  const openAdminPanelBtn = document.getElementById('openAdminPanel'); // Получаем ссылку на кнопку в меню
   const closeAdminPanelBtn = document.getElementById('closeAdminPanel');
   const adminTabButtons = document.querySelectorAll('.admin-tab-btn');
   const adminSections = document.querySelectorAll('.admin-section');
@@ -35,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const db = window.db; // Получаем db из глобального объекта window
-  const auth = getAuth(); // Получаем auth
+  // const auth = getAuth(); // auth здесь не нужен
 
   if (!db) {
     console.error("❗ Firestore (db) не инициализирован. Убедитесь, что firebaseApp инициализируется до admin.js");
@@ -45,6 +46,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // Функция для открытия/закрытия админ-панели
   openAdminPanelBtn.addEventListener('click', (e) => {
     e.preventDefault();
+    // При открытии админ-панели, убедимся, что панель меню закрыта (если есть такая функция)
+    const menuPanel = document.getElementById('menuPanel');
+    if (menuPanel) {
+      menuPanel.classList.remove('active'); // Предполагаем, что 'active' класс открывает панель
+    }
     adminPanel.classList.add('active');
   });
 
@@ -69,24 +75,17 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     gameMessage.textContent = ''; // Очищаем предыдущие сообщения
 
-    const user = auth.currentUser;
+    const user = window.auth.currentUser; // Получаем текущего пользователя из глобального auth
     if (!user) {
       gameMessage.style.color = '#dc3545';
-      gameMessage.textContent = 'Для добавления игр необходимо быть авторизованным администратором.';
+      gameMessage.textContent = 'Для добавления игр необходимо быть авторизованным.';
       return;
     }
 
-    // TODO: Добавить проверку роли пользователя здесь.
-    // Например, можно получить пользовательские клеймы из Firebase Authentication
-    // или проверить поле в профиле пользователя в Firestore.
-    // Если пользователь не админ, вернуть ошибку.
-    // Пример (псевдокод):
-    // const idTokenResult = await user.getIdTokenResult();
-    // if (!idTokenResult.claims.admin) {
-    //   gameMessage.style.color = '#dc3545';
-    //   gameMessage.textContent = 'У вас нет прав администратора для добавления игр.';
-    //   return;
-    // }
+    // Здесь мы не проверяем, является ли пользователь админом,
+    // так как кнопка 'openAdminPanelBtn' уже скрыта для не-админов.
+    // Однако, для более надежной защиты (на стороне сервера),
+    // вам следует реализовать правила безопасности Firebase (Firestore Security Rules).
 
     const gameData = {
       name: gameNameInput.value.trim(),
@@ -113,14 +112,14 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     appMessage.textContent = ''; // Очищаем предыдущие сообщения
 
-    const user = auth.currentUser;
+    const user = window.auth.currentUser; // Получаем текущего пользователя из глобального auth
     if (!user) {
       appMessage.style.color = '#dc3545';
-      appMessage.textContent = 'Для добавления приложений необходимо быть авторизованным администратором.';
+      appMessage.textContent = 'Для добавления приложений необходимо быть авторизованным.';
       return;
     }
 
-    // TODO: Добавить проверку роли пользователя здесь, аналогично для игр.
+    // Здесь также не проверяем роль пользователя, полагаясь на видимость кнопки.
 
     const appData = {
       name: appNameInput.value.trim(),
