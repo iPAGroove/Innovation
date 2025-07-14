@@ -29,6 +29,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const authContainer = document.querySelector('.auth-container');
   const profileInfoContainer = document.getElementById('profileInfoContainer');
   const logoutBtn = document.getElementById('logoutBtn');
+  // Добавляем кнопку админ-панели
+  const openAdminPanelBtn = document.getElementById('openAdminPanel');
 
   const loginEmailInput = document.getElementById('loginEmail');
   const loginPasswordInput = document.getElementById('loginPassword');
@@ -43,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loginTab, registerTab, loginForm, registerForm, authContainer,
     profileInfoContainer, logoutBtn, loginEmailInput, loginPasswordInput,
     loginError, registerEmailInput, registerNicknameInput, registerPasswordInput,
-    registerError
+    registerError, openAdminPanelBtn // Добавляем в проверку
   ];
 
   if (requiredElements.some(el => !el)) {
@@ -60,6 +62,8 @@ document.addEventListener("DOMContentLoaded", () => {
     authContainer.classList.remove('transparent-bg');
     loginError.textContent = '';
     registerError.textContent = '';
+    // Скрываем кнопку админ-панели при переключении на формы входа/регистрации
+    openAdminPanelBtn.style.display = 'none';
   }
 
   loginTab.addEventListener('click', () => showAuthForm(false));
@@ -118,13 +122,28 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Обработчик изменения состояния пользователя
-  onAuthStateChanged(auth, (user) => {
-    updateProfileDisplay(user);
+  onAuthStateChanged(auth, async (user) => {
+    let isAdmin = false;
     if (user) {
       console.log('👤 Пользователь авторизован:', user.email);
+      // Проверяем, является ли пользователь администратором по email
+      // ВНИМАНИЕ: Это ПРОСТОЙ пример. Для продакшена лучше использовать Firebase Custom Claims.
+      const adminEmails = ["youradmin@example.com", "anotheradmin@example.com"]; // Замените на реальные админские email-ы
+      if (adminEmails.includes(user.email)) {
+        isAdmin = true;
+      }
+      // Если используете Custom Claims, то логика будет такой:
+      // try {
+      //   const idTokenResult = await user.getIdTokenResult();
+      //   isAdmin = idTokenResult.claims.admin === true;
+      // } catch (error) {
+      //   console.error("Ошибка получения ID токена:", error);
+      // }
     } else {
       console.log('🔒 Пользователь не авторизован');
     }
+    // Передаем статус админа в функцию обновления профиля
+    updateProfileDisplay(user, isAdmin);
   });
 
   function getAuthErrorMessage(code, mode) {
