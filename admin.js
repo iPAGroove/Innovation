@@ -41,15 +41,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const editItemIconUrlInput = document.getElementById('editItemIconUrl');
     const editItemDownloadLinkInput = document.getElementById('editItemDownloadLink');
     const editItemSizeInput = document.getElementById('editItemSize');
-    const editItemMinimaliOSInput = document.getElementById('editItemMinimaliOS');
+    const editItemMinimaliOSInput = document = document.getElementById('editItemMinimaliOS');
     const editItemTypeSelect = document.getElementById('editItemType');
     const deleteItemBtn = document.getElementById('deleteItemBtn');
     const cancelEditBtn = document.getElementById('cancelEditBtn');
     const editMessage = document.getElementById('editMessage');
 
-    // NEW: User Management elements
-    const usersTab = document.getElementById('usersTab');
-    const usersSection = document.getElementById('usersSection');
+    // NEW: User Management elements (теперь относятся к отдельной панели)
+    const usersPanel = document.getElementById('usersPanel'); // Новая панель
+    const openUsersPanelBtn = document.getElementById('openUsersPanel'); // Новая кнопка
+    const closeUsersPanelBtn = document.getElementById('closeUsersPanel'); // Кнопка закрытия
     const usersList = document.getElementById('usersList');
     const editUserForm = document.getElementById('editUserForm');
     const editUserIdInput = document.getElementById('editUserId');
@@ -70,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
         editItemNameInput, editItemIconUrlInput, editItemDownloadLinkInput, editItemSizeInput, editItemMinimaliOSInput,
         editItemTypeSelect, deleteItemBtn, cancelEditBtn, editMessage,
         // NEW user management elements
-        usersTab, usersSection, usersList, editUserForm, editUserIdInput, editUserEmailInput,
+        usersPanel, openUsersPanelBtn, closeUsersPanelBtn, usersList, editUserForm, editUserIdInput, editUserEmailInput,
         editUserNicknameInput, editUserStatusSelect, vipEndDateInput, cancelUserEditBtn, userMessage
     ];
 
@@ -94,8 +95,13 @@ document.addEventListener("DOMContentLoaded", () => {
         if (window.closeMenuPanel) {
             window.closeMenuPanel();
         }
+        // Close users panel if it's open
+        if (usersPanel.classList.contains('active')) {
+            usersPanel.classList.remove('active');
+        }
         adminPanel.classList.add('active');
         document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        document.getElementById('addGameTab').click(); // Активируем первую вкладку по умолчанию
     });
 
     closeAdminPanelBtn.addEventListener('click', () => {
@@ -103,7 +109,30 @@ document.addEventListener("DOMContentLoaded", () => {
         document.body.style.overflow = ''; // Restore background scrolling
     });
 
-    // Function to switch tabs
+    // NEW: Function to open/close users panel
+    openUsersPanelBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        if (window.closeMenuPanel) {
+            window.closeMenuPanel();
+        }
+        // Close admin panel if it's open
+        if (adminPanel.classList.contains('active')) {
+            adminPanel.classList.remove('active');
+        }
+        usersPanel.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        editUserForm.style.display = 'none'; // Hide user edit form
+        userMessage.textContent = ''; // Clear any user messages
+        await loadUsersForEditing(); // Load users when panel opens
+    });
+
+    closeUsersPanelBtn.addEventListener('click', () => {
+        usersPanel.classList.remove('active');
+        document.body.style.overflow = '';
+    });
+
+
+    // Function to switch tabs (for adminPanel only)
     adminTabButtons.forEach(button => {
         button.addEventListener('click', async () => {
             adminTabButtons.forEach(btn => btn.classList.remove('active'));
@@ -119,11 +148,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 editMessage.textContent = ''; // Clear any previous messages
                 await loadItemsForEditing('Games', editGamesList);
                 await loadItemsForEditing('Apps', editAppsList);
-            } else if (targetContentId === 'users') { // NEW: If "Users" tab is clicked
-                editUserForm.style.display = 'none'; // Hide user edit form
-                userMessage.textContent = ''; // Clear any user messages
-                await loadUsersForEditing();
             }
+            // Removed usersTab logic from here
         });
     });
 
@@ -253,7 +279,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 editMessage.textContent = `Ошибка: ${error.message}`;
             }
         }
-        // NEW: Event listener for editing users
+        // NEW: Event listener for editing users (теперь только здесь, так как usersPanel отдельна)
         if (e.target.classList.contains('edit-user-btn')) {
             const userId = e.target.dataset.id;
             userMessage.textContent = '';
@@ -379,7 +405,7 @@ document.addEventListener("DOMContentLoaded", () => {
         editMessage.textContent = '';
     });
 
-    // NEW: Function to load users for editing
+    // NEW: Function to load users for editing (для отдельной панели пользователей)
     async function loadUsersForEditing() {
         usersList.innerHTML = ''; // Clear list
         try {
@@ -475,5 +501,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // Initially show "Add Game" tab
-    document.getElementById('addGameTab').click();
+    // document.getElementById('addGameTab').click(); // Этот вызов теперь происходит при открытии adminPanel
 });
