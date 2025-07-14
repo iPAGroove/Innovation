@@ -1,5 +1,6 @@
 /* admin.css */
 
+/* Общие стили для обеих панелей: adminPanel и usersPanel */
 .admin-panel {
     position: fixed;
     top: 0;
@@ -47,6 +48,7 @@
     color: #dc3545;
 }
 
+/* Стили только для вкладок внутри adminPanel (не для usersPanel) */
 .admin-tabs {
     display: flex;
     margin-bottom: 20px;
@@ -78,6 +80,7 @@
     background: rgba(255, 255, 255, 0.2);
 }
 
+/* Стили для секций (вкладок) внутри adminPanel */
 .admin-section {
     display: none;
     flex-direction: column;
@@ -237,8 +240,18 @@
 }
 
 
-/* Стили для иконки шестеренки в нижней навигации */
-#openAdminPanel svg {
-    width: 24px;
-    height: 24px;
+/* Стили для иконки шестеренки в нижней навигации (и других админ кнопок) */
+#openAdminPanel, #openUsersPanel {
+    /* Эти кнопки уже имеют стиль .profile-btn.free-access-btn */
+    /* Здесь можно добавить специфические отступы, если нужно */
+    margin-top: 15px; /* Отступ от предыдущего элемента */
+    width: 100%; /* Ширина кнопки */
+}
+#openAdminPanel + #openUsersPanel { /* Отступ между двумя новыми кнопками */
+    margin-top: 5px;
+}
+
+/* Стили для самой панели пользователей (использует те же базовые стили .admin-panel) */
+#usersPanel {
+    /* Дополнительные стили, если usersPanel должна чем-то отличаться от adminPanel */
 }
