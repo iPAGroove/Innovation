@@ -1,16 +1,17 @@
 // auth.js
 
 // ========== ИМПОРТЫ ИЗ FIREBASE SDK ==========
-// Эти импорты УДАЛЕНЫ, так как используются глобальные объекты из index.html
-// import {
-//   getAuth,
-//   createUserWithEmailAndPassword,
-//   signInWithEmailAndPassword,
-//   onAuthStateChanged,
-//   signOut,
-//   updateProfile
-// } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut, // 'signOut' is imported but not used in the provided snippet. Keep it if needed elsewhere.
+  signOut, // Теперь используется для кнопки выхода
+  updateProfile
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
+// !!! ИМПОРТ ФУНКЦИИ ИЗ НОВОГО profile.js !!!
 // !!! ИМПОРТ ФУНКЦИИ ИЗ profile.js !!!
 // Убедитесь, что profile.js загружается ДО auth.js в index.html
 import {
@@ -24,13 +25,8 @@ document.addEventListener("DOMContentLoaded", () => {
     console.error("Firebase App не инициализировано в index.html. Функции аутентификации могут не работать.");
     return;
   }
-  // Используем глобальный объект auth, инициализированный в index.html
-  const auth = window.auth;
-  if (!auth) {
-    console.error("Firebase Auth не инициализирован глобально. Проверьте ваш index.html.");
-    return;
-  }
-
+  const auth = getAuth(app);
+  const auth = getAuth(app); // Дополнительно получаем Auth, хотя в window.auth уже есть
 
   // Элементы DOM для форм и статуса
   const loginTab = document.getElementById('loginTab');
@@ -52,6 +48,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const registerPasswordInput = document.getElementById('registerPassword');
   const registerError = document.getElementById('registerError');
 
+  // --- Отладочные логи (можно удалить в продакшене) ---
+  console.log('Элемент loginTab:', loginTab);
+  console.log('Элемент registerTab:', registerTab);
+  console.log('Элемент loginForm:', loginForm);
+  console.log('Элемент registerForm:', registerForm);
+  console.log('Элемент authContainer:', authContainer);
+  console.log('Элемент profileInfoContainer:', profileInfoContainer);
+  // --- Конец отладочных логов ---
   // Проверка существования всех необходимых элементов
   const requiredElements = [
     loginTab, registerTab, loginForm, registerForm, authContainer,
@@ -73,51 +77,69 @@ document.addEventListener("DOMContentLoaded", () => {
    * @param {boolean} isRegister - If true, shows the registration form; otherwise, shows the login form.
    */
   function showAuthForm(isRegister) {
+    // Ensure both forms exist before manipulating
+    if (!loginForm || !registerForm || !loginTab || !registerTab || !authContainer || !profileInfoContainer) {
+      console.error("One or more required DOM elements for authentication forms are missing.");
+      return;
+    }
+
+    // Hide profile container when showing auth forms
     // Скрываем контейнер профиля, когда показываем формы аутентификации
     profileInfoContainer.style.display = 'none';
 
+    // Toggle active classes for tabs and forms
     // Переключаем активные классы для вкладок и форм
     loginTab.classList.toggle('active', !isRegister);
     registerTab.classList.toggle('active', isRegister);
     loginForm.classList.toggle('active', !isRegister);
     registerForm.classList.toggle('active', isRegister);
 
+    // Set display style for forms
     // Устанавливаем стиль display для форм
     loginForm.style.display = isRegister ? 'none' : 'flex';
     registerForm.style.display = isRegister ? 'flex' : 'none';
 
+    // Make auth-container background non-transparent when showing forms
     // Удаляем прозрачный фон auth-контейнера при показе форм
     authContainer.classList.remove('transparent-bg');
 
+    // Show tabs
     // Показываем вкладки
     loginTab.style.display = 'block';
     registerTab.style.display = 'block';
 
+    // Clear any previous error messages
     // Очищаем предыдущие сообщения об ошибках
     loginError.textContent = '';
     registerError.textContent = '';
   }
 
+  // Event listeners for tab switching
   // Слушатели событий для переключения вкладок
   loginTab.addEventListener('click', () => {
+    showAuthForm(false); // Show login form
     showAuthForm(false); // Показать форму входа
   });
 
   registerTab.addEventListener('click', () => {
+    showAuthForm(true); // Show registration form
     showAuthForm(true); // Показать форму регистрации
   });
 
+  // Event listener for LOGIN form submission
   // Слушатель события для отправки формы ВХОДА
   loginForm.addEventListener('submit', async (event) => {
+    event.preventDefault(); // Prevent default form submission
     event.preventDefault(); // Предотвращаем стандартную отправку формы
     const email = loginEmailInput.value.trim();
     const password = loginPasswordInput.value;
+    loginError.textContent = ''; // Clear previous error
     loginError.textContent = ''; // Очищаем предыдущую ошибку
 
     try {
-      // Используем метод объекта auth
-      await auth.signInWithEmailAndPassword(email, password);
+      await signInWithEmailAndPassword(auth, email, password);
       console.log('✅ Пользователь успешно вошел!');
+      // onAuthStateChanged will handle UI updates upon successful login
       // onAuthStateChanged обработает обновления UI при успешном входе
       // Очищаем поля формы
       loginEmailInput.value = '';
@@ -134,6 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
           break;
         case 'auth/user-not-found':
         case 'auth/wrong-password':
+        case 'auth/invalid-credential': // Modern Firebase error for incorrect email/password
         case 'auth/invalid-credential': // Современная ошибка Firebase для неверных данных
           errorMessage = 'Неправильный email или пароль. Пожалуйста, проверьте свои данные.';
           break;
@@ -148,25 +171,28 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Event listener for REGISTRATION form submission
   // Слушатель события для отправки формы РЕГИСТРАЦИИ
   registerForm.addEventListener('submit', async (event) => {
+    event.preventDefault(); // Prevent default form submission
     event.preventDefault(); // Предотвращаем стандартную отправку формы
     const email = registerEmailInput.value.trim();
     const nickname = registerNicknameInput.value.trim();
     const password = registerPasswordInput.value;
+    registerError.textContent = ''; // Clear previous error
     registerError.textContent = ''; // Очищаем предыдущую ошибку
 
     try {
-      // Используем метод объекта auth
-      const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      // Update user profile with nickname if provided
       // Обновляем профиль пользователя с никнеймом, если предоставлен
       if (auth.currentUser && nickname) {
-        // Используем метод объекта auth.currentUser
-        await auth.currentUser.updateProfile({
+        await updateProfile(auth.currentUser, {
           displayName: nickname
         });
       }
       console.log('🎉 Пользователь успешно зарегистрирован!');
+      // onAuthStateChanged will handle UI updates upon successful registration
       // onAuthStateChanged обработает обновления UI при успешной регистрации
       // Очищаем поля формы
       registerEmailInput.value = '';
@@ -193,11 +219,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Observing authentication state changes (login/logout)
   // Слушатель для кнопки ВЫХОД
   logoutBtn.addEventListener('click', async () => {
     try {
-      // Используем метод объекта auth
-      await auth.signOut();
+      await signOut(auth);
       console.log('👋 Пользователь успешно вышел из системы.');
       // onAuthStateChanged обработает обновления UI при выходе
     } catch (error) {
@@ -209,16 +235,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Наблюдение за изменениями состояния аутентификации (вход/выход)
   // Эта функция будет вызвана при каждой загрузке страницы и при каждом изменении состояния входа
-  // Используем метод объекта auth
-  auth.onAuthStateChanged((user) => {
+  onAuthStateChanged(auth, (user) => {
+    // Call the function from profile.js to update profile display
     // Вызываем функцию из profile.js для обновления отображения профиля
     // updateProfileDisplay управляет видимостью authContainer, profileInfoContainer, табов и форм
     updateProfileDisplay(user);
 
     if (user) {
+      // User is signed in
+      console.log('Пользователь вошел в систему:', user.email, user.displayName);
+
+      // Hide auth forms and tabs
+      if (loginForm) loginForm.style.display = 'none';
+      if (registerForm) registerForm.style.display = 'none';
+      if (loginTab) loginTab.style.display = 'none';
+      if (registerTab) registerTab.style.display = 'none';
+
+      // Make auth-container background transparent when logged in
+      if (authContainer) {
+        authContainer.classList.add('transparent-bg');
+      }
+
+      // Ensure profile container is visible
+      if (profileInfoContainer) {
+        profileInfoContainer.style.display = 'flex';
+      }
+
       console.log('Пользователь вошел в систему:', user.email, user.displayName || '[Без никнейма]');
     } else {
+      // User is signed out
       console.log('Пользователь вышел из системы.');
+      // Show auth forms and tabs (default to login form)
+      showAuthForm(false);
+      // showAuthForm already handles removing 'transparent-bg' and hiding 'profileInfoContainer'
       // Показываем формы аутентификации (по умолчанию форму входа)
       // Это уже обрабатывается функцией updateProfileDisplay, но для ясности:
       // showAuthForm(false); // Показываем форму входа
