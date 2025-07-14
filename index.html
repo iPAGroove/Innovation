@@ -15,7 +15,8 @@
   <link rel="stylesheet" href="auth.css">
   <link rel="stylesheet" href="profile.css">
   <link rel="stylesheet" href="admin.css">
-  <link rel="stylesheet" href="modal.css"> </head>
+  <link rel="stylesheet" href="modal.css">
+</head>
 <body>
 
   <video class="video-bg" autoplay muted loop playsinline>
@@ -41,7 +42,7 @@
 
     <div class="category-section"><h2 class="section-title">VIP</h2><div class="horizontal-scroll" id="apps-vip"></div></div>
     <div class="category-section"><h2 class="section-title">FREE</h2><div class="horizontal-scroll" id="apps-free"></div></div>
-    <div class="category-section"><h2 class="section-title">UPDATES</h2><div class="horizontal-scroll" id="apps-updates"></div></div>
+    <div class="category-section"><h2 class="section-title">UPDATES</H2><div class="horizontal-scroll" id="apps-updates"></div></div>
     <div class="category-section"><h2 class="section-title">TOP</H2><div class="horizontal-scroll" id="apps-top"></div></div>
   </div>
 
@@ -102,6 +103,7 @@
               <button id="logoutBtn" class="profile-btn free-access-btn" style="margin-top: 15px; width: 100%;">Выйти</button>
             </div>
             <button id="openAdminPanel" class="profile-btn free-access-btn" style="margin-top: 15px; width: 100%; display: none;">Панель Администратора</button>
+            <button id="openUsersPanel" class="profile-btn free-access-btn" style="margin-top: 5px; width: 100%; display: none;">Панель Пользователей</button>
         </div>
       </div>
       <h2></h2>
@@ -121,7 +123,7 @@
         <button id="addGameTab" class="admin-tab-btn active" data-content="addGame">Добавить игру</button>
         <button id="addAppTab" class="admin-tab-btn" data-content="addApp">Добавить приложение</button>
         <button id="editItemsTab" class="admin-tab-btn" data-content="editItems">Редактировать</button>
-        <button id="usersTab" class="admin-tab-btn" data-content="users">Пользователи</button> </div>
+        </div>
 
       <div id="addGameSection" class="admin-section active">
         <h3>Добавить новую игру</h3>
@@ -192,32 +194,35 @@
           <p id="editMessage" class="admin-message"></p>
         </form>
       </div>
-
-      <div id="usersSection" class="admin-section">
-        <h3>Управление пользователями</h3>
-        <div class="item-list-container">
-          <h4>Список пользователей:</h4>
-          <ul id="usersList" class="edit-list"></ul>
-        </div>
-
-        <form id="editUserForm" class="add-item-form" style="display: none;">
-          <input type="hidden" id="editUserId">
-          <input type="text" id="editUserEmail" placeholder="Email пользователя" disabled>
-          <input type="text" id="editUserNickname" placeholder="Никнейм пользователя">
-          <label for="editUserStatus">Статус:</label>
-          <select id="editUserStatus">
-            <option value="free">Free</option>
-            <option value="vip">VIP</option>
-          </select>
-          <label for="vipEndDate">Дата окончания VIP (ГГГГ-ММ-ДД):</label>
-          <input type="date" id="vipEndDate">
-          <button type="submit">Сохранить изменения</button>
-          <button type="button" id="cancelUserEditBtn" class="cancel-btn">Отмена</button>
-          <p id="userMessage" class="admin-message"></p>
-        </form>
-      </div>
     </div>
   </div>
+
+  <div id="usersPanel" class="admin-panel"> <div class="admin-content">
+      <h2>Управление пользователями</h2>
+      <button class="close-btn" id="closeUsersPanel">×</button>
+      <div class="item-list-container">
+        <h4>Список пользователей:</h4>
+        <ul id="usersList" class="edit-list"></ul>
+      </div>
+
+      <form id="editUserForm" class="add-item-form" style="display: none;">
+        <input type="hidden" id="editUserId">
+        <input type="text" id="editUserEmail" placeholder="Email пользователя" disabled>
+        <input type="text" id="editUserNickname" placeholder="Никнейм пользователя">
+        <label for="editUserStatus">Статус:</label>
+        <select id="editUserStatus">
+          <option value="free">Free</option>
+          <option value="vip">VIP</option>
+        </select>
+        <label for="vipEndDate" style="display: none;">Дата окончания VIP (ГГГГ-ММ-ДД):</label>
+        <input type="date" id="vipEndDate" style="display: none;">
+        <button type="submit">Сохранить изменения</button>
+        <button type="button" id="cancelUserEditBtn" class="cancel-btn">Отмена</button>
+        <p id="userMessage" class="admin-message"></p>
+      </form>
+    </div>
+  </div>
+
 
   <div id="chatModal" class="chat-modal">
     <div class="chat-content">
@@ -307,16 +312,15 @@
     window.getDoc = getDoc;
     window.updateDoc = updateDoc;
     window.deleteDoc = deleteDoc;
-    window.getDocs = getDocs; // Добавляем getDocs
-    window.query = query;     // Добавляем query
-    window.where = where;     // Добавляем where
-    window.collection = collection; // Добавляем collection
+    window.getDocs = getDocs;
+    window.query = query;
+    window.where = where;
+    window.collection = collection;
 
     // Глобальная переменная для хранения VIP-статуса пользователя
     window.currentUserIsVip = false;
     window.currentUserVipEndDate = null; // Дата окончания VIP
 
-    // ОБНОВЛЕННАЯ renderCard - добавляет data-атрибуты и класс для VIP-карточек
     function renderCard(data, isUserVip) {
       const isVipContent = data.type === 'vip';
       const blockedClass = isVipContent && !isUserVip ? ' blocked' : '';
@@ -338,7 +342,7 @@
     }
 
 
-    function loadRealtimeCollection(collName, prefix) {
+    window.loadRealtimeCollection = function(collName, prefix) { // Делаем функцию глобальной
       const containers = {
         vip: document.getElementById(`${prefix}-vip`),
         free: document.getElementById(`${prefix}-free`),
@@ -354,7 +358,6 @@
         snapshot.forEach(doc => {
           const d = doc.data();
           if (containers[d.type]) {
-            // Передаем isUserVip в renderCard
             containers[d.type].innerHTML += renderCard(d, window.currentUserIsVip);
           } else {
             console.warn(`Неизвестный тип '${d.type}' в документе ${doc.id} коллекции ${collName}`);
@@ -368,8 +371,8 @@
       document.getElementById("appsScreen").style.display = "none";
 
       // initial calls - they will be re-rendered when user auth state changes
-      loadRealtimeCollection('Games', 'games');
-      loadRealtimeCollection('Apps', 'apps');
+      window.loadRealtimeCollection('Games', 'games');
+      window.loadRealtimeCollection('Apps', 'apps');
 
       console.log('✅ Реальное время: Игры и Приложения подписаны на Firebase');
     });
@@ -382,5 +385,6 @@
   <script type="module" src="auth.js"></script>
   <script type="module" src="chat.js"></script>
   <script type="module" src="admin.js"></script>
-  <script type="module" src="modal.js"></script> </body>
+  <script type="module" src="modal.js"></script>
+</body>
 </html>
