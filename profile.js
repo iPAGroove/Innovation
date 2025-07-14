@@ -8,8 +8,9 @@ const authContainer = document.querySelector('.auth-container');
 const loginForm = document.getElementById('loginForm');
 const registerForm = document.getElementById('registerForm');
 const openAdminPanelBtn = document.getElementById('openAdminPanel');
-const freeAccessBtn = document.querySelector('.profile-btn.free-access-btn'); // Кнопка "Free Access"
-const upgradeVipBtn = document.querySelector('.profile-btn.upgrade-vip-btn'); // Кнопка "Upgrade to VIP"
+const openUsersPanelBtn = document.getElementById('openUsersPanel'); // НОВАЯ КНОПКА
+const freeAccessBtn = document.querySelector('.profile-btn.free-access-btn');
+const upgradeVipBtn = document.querySelector('.profile-btn.upgrade-vip-btn');
 
 
 // Экспортируемая функция для обновления отображения профиля
@@ -21,11 +22,13 @@ export function updateProfileDisplay(user, isAdmin, isUserVip, vipEndDate) {
         loginForm.style.display = 'none';
         registerForm.style.display = 'none';
 
-        // Отображаем кнопку админ-панели, если пользователь админ
+        // Отображаем кнопки админ-панелей, если пользователь админ
         if (isAdmin) {
             openAdminPanelBtn.style.display = 'block';
+            openUsersPanelBtn.style.display = 'block'; // Показываем кнопку "Панель Пользователей"
         } else {
             openAdminPanelBtn.style.display = 'none';
+            openUsersPanelBtn.style.display = 'none'; // Скрываем обе кнопки, если не админ
         }
 
         // Обновляем текст кнопок Free/VIP
@@ -37,16 +40,16 @@ export function updateProfileDisplay(user, isAdmin, isUserVip, vipEndDate) {
                     const daysLeft = Math.ceil((vipEndDate - now) / (1000 * 60 * 60 * 24));
                     vipText += ` (${daysLeft} дн.)`;
                 } else {
-                    vipText = 'VIP (истек)'; // Дополнительная обработка, хотя VIP-статус уже должен быть сброшен
+                    vipText = 'VIP (истек)';
                 }
             }
             freeAccessBtn.textContent = vipText;
-            freeAccessBtn.style.background = '#007bff'; // Синий для VIP
-            upgradeVipBtn.style.display = 'none'; // Скрываем кнопку апгрейда, если уже VIP
+            freeAccessBtn.style.background = '#007bff';
+            upgradeVipBtn.style.display = 'none';
         } else {
             freeAccessBtn.textContent = 'Free Access';
-            freeAccessBtn.style.background = '#6c757d'; // Серый для Free
-            upgradeVipBtn.style.display = 'block'; // Показываем кнопку апгрейда
+            freeAccessBtn.style.background = '#6c757d';
+            upgradeVipBtn.style.display = 'block';
         }
 
     } else {
@@ -54,7 +57,8 @@ export function updateProfileDisplay(user, isAdmin, isUserVip, vipEndDate) {
         authContainer.classList.remove('transparent-bg');
         loginForm.style.display = 'flex';
         registerForm.style.display = 'none';
-        openAdminPanelBtn.style.display = 'none'; // Скрываем кнопку админ-панели, если не авторизован
+        openAdminPanelBtn.style.display = 'none';
+        openUsersPanelBtn.style.display = 'none'; // Скрываем новую кнопку
     }
 }
 
@@ -65,7 +69,6 @@ document.addEventListener("DOMContentLoaded", () => {
         logoutBtn.addEventListener('click', async () => {
             try {
                 await signOut(window.auth);
-                // После выхода состояние пользователя изменится, и onAuthStateChanged в auth.js обновит UI
             } catch (error) {
                 console.error('Ошибка выхода:', error.message);
                 alert('Не удалось выйти. Попробуйте снова.');
