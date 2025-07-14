@@ -1,9 +1,3 @@
-// chat.js
-
-// Импорт необходимых функций из Firebase Firestore SDK
-// Эти импорты необходимы, потому что chat.js является отдельным модулем,
-// и функции (collection, query, etc.) не становятся глобальными автоматически
-// даже если SDK импортирован в index.html.
 import { collection, query, orderBy, onSnapshot, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -17,158 +11,95 @@ document.addEventListener("DOMContentLoaded", () => {
   const messageInput = document.getElementById('messageInput');
   const sendMessageBtn = document.getElementById('sendMessageBtn');
 
-  let currentUser = null; // Переменная для хранения информации о текущем пользователе
-  let db = null; // Переменная для хранения объекта Firestore
-  let auth = null; // Переменная для хранения объекта Auth
+  let currentUser = null;
+  let db = null;
+  let auth = null;
+  let unsubscribeMessages = null;
 
-  // --- Отладочные логи для кнопки чата (можно удалить после решения проблемы) ---
-  console.log("chat.js загружен.");
-  if (chatBtn) {
-    console.log("Элемент 'openChat' найден:", chatBtn);
-  } else {
-    console.error("Элемент 'openChat' НЕ найден. Проверьте ID в index.html.");
-  }
-  // --- Конец отладочных логов ---
-
-  // Ждем, пока Firebase SDK инициализируется и db/auth станут доступны из глобального scope
   function initializeChat() {
-    // Проверяем наличие window.db и window.auth, которые передаются из index.html
     if (window.db && window.auth) {
-      db = window.db; // Присваиваем глобальный объект Firestore
-      auth = window.auth; // Присваиваем глобальный объект Auth
+      db = window.db;
+      auth = window.auth;
 
-      // Слушатель состояния аутентификации Firebase
-      // Это нужно для получения информации о текущем пользователе в реальном времени
       auth.onAuthStateChanged(user => {
         currentUser = user;
-        // console.log("Current user in chat.js:", currentUser); // Для отладки
         if (currentUser) {
-            // Если пользователь авторизован, включаем поле ввода
-            messageInput.disabled = false;
-            sendMessageBtn.disabled = false;
-            messageInput.placeholder = "Введите ваше сообщение...";
+          messageInput.disabled = false;
+          sendMessageBtn.disabled = false;
+          messageInput.placeholder = "Введите ваше сообщение...";
         } else {
-            // Если пользователь не авторизован, отключаем поле ввода
-            messageInput.disabled = true;
-            sendMessageBtn.disabled = true;
-            messageInput.placeholder = "Войдите, чтобы отправлять сообщения...";
+          messageInput.disabled = true;
+          sendMessageBtn.disabled = true;
+          messageInput.placeholder = "Войдите, чтобы отправлять сообщения...";
         }
       });
 
-      // Функция для загрузки и отображения сообщений в реальном времени
       function loadMessages() {
-        // Создаем запрос к коллекции "chatMessages", упорядочиваем по timestamp
-        const messagesRef = collection(db, 'chatMessages'); // Используем импортированную функцию collection и объект db
-        const q = query(messagesRef, orderBy('timestamp', 'asc')); // Используем импортированные функции query и orderBy
-
-        // Подписываемся на изменения в коллекции в реальном времени
-        onSnapshot(q, (snapshot) => { // Используем импортированную функцию onSnapshot
-          messagesDisplay.innerHTML = ''; // Очищаем текущие сообщения перед обновлением
-          snapshot.forEach(doc => {
-            const message = doc.data();
-            displayMessage(message);
-          });
-          messagesDisplay.scrollTop = messagesDisplay.scrollHeight; // Прокрутить вниз при получении новых сообщений
+        if (unsubscribeMessages) unsubscribeMessages(); // Отписываемся от старого snapshot
+        const messagesRef = collection(db, 'chatMessages');
+        const q = query(messagesRef, orderBy('timestamp', 'asc'));
+        unsubscribeMessages = onSnapshot(q, (snapshot) => {
+          messagesDisplay.innerHTML = '';
+          snapshot.forEach(doc => displayMessage(doc.data()));
+          messagesDisplay.scrollTop = messagesDisplay.scrollHeight;
         });
       }
 
-      // Функция для отображения одного сообщения
       function displayMessage(message) {
         const messageElement = document.createElement('div');
         messageElement.classList.add('message');
 
-        // Определяем имя отправителя. Если displayName отсутствует, используем email.
-        const senderName = message.sender || 'Аноним'; 
+        const senderName = message.sender || 'Аноним';
+        const isOutgoing = currentUser &&
+          ((currentUser.displayName && currentUser.displayName === senderName) ||
+            (!currentUser.displayName && currentUser.email === senderName));
 
-        // Проверяем, является ли сообщение исходящим (от текущего пользователя)
-        // Сравниваем либо по displayName, либо по email, если displayName отсутствует
-        const isOutgoing = currentUser && (currentUser.displayName === senderName || currentUser.email === senderName);
-        // Важно: currentUser может быть null, если пользователь не вошел.
-        const isOutgoing = currentUser && 
-                           ( (currentUser.displayName && currentUser.displayName === senderName) || 
-                             (!currentUser.displayName && currentUser.email === senderName) );
+        messageElement.classList.add(isOutgoing ? 'outgoing' : 'incoming');
 
-        if (isOutgoing) {
-            messageElement.classList.add('outgoing');
-        } else {
-            messageElement.classList.add('incoming');
-        }
+        messageElement.innerHTML = `
+          <span class="message-sender">${senderName}</span>
+          <span class="message-text">${message.text}</span>
+        `;
 
-        const senderSpan = document.createElement('span');
-        senderSpan.classList.add('message-sender');
-        senderSpan.textContent = senderName;
-
-        const textSpan = document.createElement('span');
-        textSpan.classList.add('message-text');
-        textSpan.textContent = message.text;
-
-        messageElement.appendChild(senderSpan);
-        messageElement.appendChild(textSpan);
         messagesDisplay.appendChild(messageElement);
       }
 
-      // Отправка сообщения
       sendMessageBtn.addEventListener('click', async () => {
         const messageText = messageInput.value.trim();
-        if (messageText === '') return; // Не отправлять пустые сообщения
-
+        if (!messageText) return;
         if (!currentUser) {
-          alert('Пожалуйста, войдите в аккаунт, чтобы отправлять сообщения.');
+          alert('Войдите в аккаунт, чтобы отправлять сообщения.');
           return;
         }
-
         try {
-          // Используем displayName пользователя, если доступен, иначе email
           const senderIdentifier = currentUser.displayName || currentUser.email;
-
-          // Добавляем документ в коллекцию 'chatMessages'
-          await addDoc(collection(db, 'chatMessages'), { // Используем импортированные функции addDoc и collection
+          await addDoc(collection(db, 'chatMessages'), {
             sender: senderIdentifier,
             text: messageText,
-            timestamp: serverTimestamp() // Используем импортированную функцию serverTimestamp
+            timestamp: serverTimestamp()
           });
-          messageInput.value = ''; // Очистить поле ввода после отправки
+          messageInput.value = '';
         } catch (error) {
-          console.error("Ошибка при отправке сообщения: ", error);
-          alert("Не удалось отправить сообщение. Пожалуйста, попробуйте еще раз.");
+          console.error('Ошибка отправки:', error);
+          alert('Не удалось отправить сообщение. Попробуйте еще раз.');
         }
       });
 
-      // Открытие модального окна чата
-      chatBtn.addEventListener('click', (event) => {
-        event.preventDefault();
-        chatModal.classList.add('active');
-        activateChatTab('chat'); // Убедимся, что 'chat' вкладка активна при открытии
-        loadMessages(); // Загружаем сообщения при открытии чата
-      });
-      // Добавлена проверка chatBtn на null
       if (chatBtn) {
-        chatBtn.addEventListener('click', (event) => {
-          event.preventDefault();
+        chatBtn.addEventListener('click', (e) => {
+          e.preventDefault();
           chatModal.classList.add('active');
-          activateChatTab('chat'); // Убедимся, что 'chat' вкладка активна при открытии
-          loadMessages(); // Загружаем сообщения при открытии чата
+          activateChatTab('chat');
+          loadMessages();
         });
-      } else {
-        console.error("chatBtn не найден, не удалось прикрепить слушатель события.");
       }
 
-      // Закрытие модального окна чата по кнопке "X"
-      closeChatBtn.addEventListener('click', () => {
-        chatModal.classList.remove('active');
-      });
       if (closeChatBtn) {
         closeChatBtn.addEventListener('click', () => {
           chatModal.classList.remove('active');
         });
       }
 
-      // Закрытие при клике вне окна
-      chatModal.addEventListener('click', (e) => {
-        if (e.target === chatModal) {
-          chatModal.classList.remove('active');
-        }
-      });
       if (chatModal) {
         chatModal.addEventListener('click', (e) => {
           if (e.target === chatModal) {
@@ -177,66 +108,51 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
 
-      // Логика переключения вкладок чата
       chatTabButtons.forEach(button => {
         button.addEventListener('click', () => {
           const chatType = button.dataset.chatType;
           activateChatTab(chatType);
           if (chatType === 'chat') {
-            loadMessages(); // Перезагружаем сообщения, если переключились на вкладку "Chat"
+            loadMessages();
           } else {
-            messagesDisplay.innerHTML = ''; // Очищаем сообщения при переключении на другие вкладки
+            messagesDisplay.innerHTML = '';
           }
         });
       });
 
       function activateChatTab(chatType) {
-        // Деактивируем все кнопки
         chatTabButtons.forEach(btn => btn.classList.remove('active'));
+        const activeBtn = document.querySelector(`.chat-tab-btn[data-chat-type="${chatType}"]`);
+        if (activeBtn) activeBtn.classList.add('active');
 
-        // Активируем нужную кнопку
-        const activeButton = document.querySelector(`.chat-tab-btn[data-chat-type="${chatType}"]`);
-        if (activeButton) {
-          activeButton.classList.add('active');
-        }
-
-        // Отображаем или скрываем поле ввода в зависимости от вкладки
         if (chatType === 'chat') {
-            chatMainArea.style.display = 'flex';
-            messageInput.style.display = 'block';
-            sendMessageBtn.style.display = 'flex';
+          chatMainArea.style.display = 'flex';
+          messageInput.style.display = 'block';
+          sendMessageBtn.style.display = 'flex';
         } else if (chatType === 'support') {
-            chatMainArea.style.display = 'flex';
-            messageInput.style.display = 'none';
-            sendMessageBtn.style.display = 'none';
-            messagesDisplay.innerHTML = `
-              <p>Это раздел поддержки. Вы можете задать свой вопрос здесь.</p>
-              <p>Наши операторы скоро ответят. Пожалуйста, опишите вашу проблему как можно подробнее.</p>
-              `;
+          chatMainArea.style.display = 'flex';
+          messageInput.style.display = 'none';
+          sendMessageBtn.style.display = 'none';
+          messagesDisplay.innerHTML = `
+            <p>Это раздел поддержки. Опишите свою проблему, и мы ответим вам как можно скорее.</p>
+          `;
         } else if (chatType === 'news') {
-            chatMainArea.style.display = 'flex';
-            messageInput.style.display = 'none';
-            sendMessageBtn.style.display = 'none';
-            messagesDisplay.innerHTML = `
-              <p><strong>Последние новости и обновления iPA Groove:</strong></p>
-              <ul>
-                <li><strong>2025-07-13:</strong> Добавлены новые функции в раздел профиля.</li>
-                <li><strong>2025-07-10:</strong> Обновление библиотеки игр и приложений.</li>
-                <li><strong>2025-07-05:</strong> Плановые технические работы завершены успешно.</li>
-                <li><strong>${new Date().getFullYear()}-07-13:</strong> Добавлены новые функции в раздел профиля.</li>
-                <li><strong>${new Date().getFullYear()}-07-10:</strong> Обновление библиотеки игр и приложений.</li>
-                <li><strong>${new Date().getFullYear()}-07-05:</strong> Плановые технические работы завершены успешно.</li>
-              </ul>
-            `;
+          chatMainArea.style.display = 'flex';
+          messageInput.style.display = 'none';
+          sendMessageBtn.style.display = 'none';
+          messagesDisplay.innerHTML = `
+            <p><strong>Новости iPA Groove:</strong></p>
+            <ul>
+              <li><strong>${new Date().toISOString().split('T')[0]}:</strong> Новые обновления и улучшения платформы.</li>
+            </ul>
+          `;
         }
       }
+
     } else {
-      // Если Firebase еще не инициализирован (window.db или window.auth отсутствуют),
-      // пробуем снова через короткий промежуток времени.
       setTimeout(initializeChat, 100);
     }
   }
 
-  // Запускаем инициализацию чата
   initializeChat();
 });
