@@ -7,7 +7,6 @@ import {
     signOut,
     updateProfile
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-// Импортируем addDoc и collection
 import { addDoc, collection, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 
@@ -17,9 +16,9 @@ import { updateProfileDisplay } from './profile.js';
 document.addEventListener("DOMContentLoaded", () => {
     const app = window.firebaseApp;
     const auth = window.auth;
-    const db = window.db; // Получаем db
+    const db = window.db;
 
-    if (!app || !auth || !db) { // Проверяем db
+    if (!app || !auth || !db) {
         console.error("❗ Firebase App, Auth или Firestore не инициализированы в index.html");
         return;
     }
@@ -32,8 +31,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const authContainer = document.querySelector('.auth-container');
     const profileInfoContainer = document.getElementById('profileInfoContainer');
     const logoutBtn = document.getElementById('logoutBtn');
-    // Добавляем кнопку админ-панели
     const openAdminPanelBtn = document.getElementById('openAdminPanel');
+    const openUsersPanelBtn = document.getElementById('openUsersPanel'); // НОВАЯ КНОПКА
 
     const loginEmailInput = document.getElementById('loginEmail');
     const loginPasswordInput = document.getElementById('loginPassword');
@@ -48,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
         loginTab, registerTab, loginForm, registerForm, authContainer,
         profileInfoContainer, logoutBtn, loginEmailInput, loginPasswordInput,
         loginError, registerEmailInput, registerNicknameInput, registerPasswordInput,
-        registerError, openAdminPanelBtn
+        registerError, openAdminPanelBtn, openUsersPanelBtn // Добавлено
     ];
 
     if (requiredElements.some(el => !el)) {
@@ -65,8 +64,8 @@ document.addEventListener("DOMContentLoaded", () => {
         authContainer.classList.remove('transparent-bg');
         loginError.textContent = '';
         registerError.textContent = '';
-        // Скрываем кнопку админ-панели при переключении на формы входа/регистрации
         openAdminPanelBtn.style.display = 'none';
+        openUsersPanelBtn.style.display = 'none'; // Скрываем новую кнопку
     }
 
     loginTab.addEventListener('click', () => showAuthForm(false));
@@ -106,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 await updateProfile(user, { displayName: nickname });
             }
 
-            // NEW: Добавляем запись о пользователе в коллекцию 'users' в Firestore
+            // Добавляем запись о пользователе в коллекцию 'users' в Firestore
             await setDoc(doc(db, "users", user.uid), {
                 email: user.email,
                 nickname: nickname,
@@ -146,12 +145,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (user) {
             console.log('👤 Пользователь авторизован:', user.email);
             // Проверяем, является ли пользователь администратором по email
-            const adminEmails = ["ipagroove@gmail.com"];
-            if (adminEmails.includes(user.email)) {
-                isAdmin = true;
-            }
-
-            // NEW: Получаем VIP-статус пользователя из коллекции 'users'
+            const adminEmails = ["ipagroove@gmail.com"]; // Ваши админские email-ы
+            
+            // NEW: Получаем VIP-статус и статус админа из коллекции 'users'
             try {
                 const userDocRef = doc(db, "users", user.uid);
                 const userDocSnap = await getDoc(userDocRef);
@@ -159,6 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     const userData = userDocSnap.data();
                     isUserVip = userData.isVip || false;
                     vipEndDate = userData.vipEndDate ? userData.vipEndDate.toDate() : null;
+                    isAdmin = userData.isAdmin || adminEmails.includes(user.email); // Теперь isAdmin может быть из Firestore ИЛИ по email
 
                     // Проверяем, не истек ли VIP
                     if (isUserVip && vipEndDate && vipEndDate < new Date()) {
@@ -168,22 +165,25 @@ document.addEventListener("DOMContentLoaded", () => {
                         console.log(`VIP статус пользователя ${user.email} истек и был обновлен на Free.`);
                     }
                 } else {
-                    // Если пользователя нет в коллекции users, создаем его (это может произойти, если пользователь зарегистрировался до введения коллекции 'users')
+                    // Если пользователя нет в коллекции users, создаем его
                     console.warn(`Пользователь ${user.email} не найден в коллекции 'users'. Создаем запись.`);
+                    // Инициализируем isAdmin на основе email, пока не будет явного поля в Firestore
+                    isAdmin = adminEmails.includes(user.email);
                     await setDoc(doc(db, "users", user.uid), {
                         email: user.email,
                         nickname: user.displayName || 'Пользователь',
                         isVip: false,
                         vipEndDate: null,
                         createdAt: new Date(),
-                        lastLogin: new Date()
+                        lastLogin: new Date(),
+                        isAdmin: isAdmin // Сохраняем статус админа в Firestore
                     });
                 }
             } catch (error) {
-                console.error("Ошибка при получении VIP статуса пользователя:", error);
+                console.error("Ошибка при получении VIP/Admin статуса пользователя:", error);
             }
 
-            // NEW: Обновляем lastLogin при каждом входе
+            // Обновляем lastLogin при каждом входе
             try {
                 const userDocRef = doc(db, "users", user.uid);
                 await setDoc(userDocRef, { lastLogin: new Date() }, { merge: true });
@@ -195,14 +195,14 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log('🔒 Пользователь не авторизован');
         }
 
-        // NEW: Обновляем глобальные переменные VIP-статуса
+        // Обновляем глобальные переменные VIP-статуса
         window.currentUserIsVip = isUserVip;
         window.currentUserVipEndDate = vipEndDate;
 
         // Передаем статус админа и VIP в функцию обновления профиля
         updateProfileDisplay(user, isAdmin, isUserVip, vipEndDate);
 
-        // NEW: Перерисовываем карточки после получения VIP-статуса
+        // Перерисовываем карточки после получения VIP-статуса
         window.loadRealtimeCollection('Games', 'games');
         window.loadRealtimeCollection('Apps', 'apps');
     });
