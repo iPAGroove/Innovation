@@ -1,6 +1,6 @@
 // admin.js
 
-import { collection, addDoc, getDocs, doc, getDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+import { collection, addDoc, getDocs, doc, getDoc, updateDoc, deleteDoc, query, where } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     const adminPanel = document.getElementById('adminPanel');
@@ -13,9 +13,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const addGameForm = document.getElementById('addGameForm');
     const gameNameInput = document.getElementById('gameName');
     const gameIconUrlInput = document.getElementById('gameIconUrl');
-    const gameDownloadLinkInput = document.getElementById('gameDownloadLink'); // NEW
-    const gameSizeInput = document.getElementById('gameSize');             // NEW
-    const gameMinimaliOSInput = document.getElementById('gameMinimaliOS'); // NEW
+    const gameDownloadLinkInput = document.getElementById('gameDownloadLink');
+    const gameSizeInput = document.getElementById('gameSize');
+    const gameMinimaliOSInput = document.getElementById('gameMinimaliOS');
     const gameTypeSelect = document.getElementById('gameType');
     const gameMessage = document.getElementById('gameMessage');
 
@@ -23,13 +23,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const addAppForm = document.getElementById('addAppForm');
     const appNameInput = document.getElementById('appName');
     const appIconUrlInput = document.getElementById('appIconUrl');
-    const appDownloadLinkInput = document.getElementById('appDownloadLink'); // NEW
-    const appSizeInput = document.getElementById('appSize');             // NEW
-    const appMinimaliOSInput = document.getElementById('appMinimaliOS'); // NEW
+    const appDownloadLinkInput = document.getElementById('appDownloadLink');
+    const appSizeInput = document.getElementById('appSize');
+    const appMinimaliOSInput = document.getElementById('appMinimaliOS');
     const appTypeSelect = document.getElementById('appType');
     const appMessage = document.getElementById('appMessage');
 
-    // Edit Item elements (NEW SECTION)
+    // Edit Item elements
     const editItemsTab = document.getElementById('editItemsTab');
     const editItemsSection = document.getElementById('editItemsSection');
     const editGamesList = document.getElementById('editGamesList');
@@ -47,6 +47,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const cancelEditBtn = document.getElementById('cancelEditBtn');
     const editMessage = document.getElementById('editMessage');
 
+    // NEW: User Management elements
+    const usersTab = document.getElementById('usersTab');
+    const usersSection = document.getElementById('usersSection');
+    const usersList = document.getElementById('usersList');
+    const editUserForm = document.getElementById('editUserForm');
+    const editUserIdInput = document.getElementById('editUserId');
+    const editUserEmailInput = document.getElementById('editUserEmail');
+    const editUserNicknameInput = document.getElementById('editUserNickname');
+    const editUserStatusSelect = document.getElementById('editUserStatus');
+    const vipEndDateInput = document.getElementById('vipEndDate');
+    const cancelUserEditBtn = document.getElementById('cancelUserEditBtn');
+    const userMessage = document.getElementById('userMessage');
+
 
     // Check for all required elements
     const requiredElements = [
@@ -55,7 +68,10 @@ document.addEventListener("DOMContentLoaded", () => {
         addAppForm, appNameInput, appIconUrlInput, appDownloadLinkInput, appSizeInput, appMinimaliOSInput, appTypeSelect, appMessage,
         editItemsTab, editItemsSection, editGamesList, editAppsList, editItemForm, editItemIdInput, editItemCollectionInput,
         editItemNameInput, editItemIconUrlInput, editItemDownloadLinkInput, editItemSizeInput, editItemMinimaliOSInput,
-        editItemTypeSelect, deleteItemBtn, cancelEditBtn, editMessage
+        editItemTypeSelect, deleteItemBtn, cancelEditBtn, editMessage,
+        // NEW user management elements
+        usersTab, usersSection, usersList, editUserForm, editUserIdInput, editUserEmailInput,
+        editUserNicknameInput, editUserStatusSelect, vipEndDateInput, cancelUserEditBtn, userMessage
     ];
 
     if (requiredElements.some(el => !el)) {
@@ -75,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
     openAdminPanelBtn.addEventListener('click', (e) => {
         e.preventDefault();
         // Close menu panel if it's open
-        if (window.closeMenuPanel) { // Check if the function exists
+        if (window.closeMenuPanel) {
             window.closeMenuPanel();
         }
         adminPanel.classList.add('active');
@@ -89,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Function to switch tabs
     adminTabButtons.forEach(button => {
-        button.addEventListener('click', async () => { // Made async for loadItemsForEditing
+        button.addEventListener('click', async () => {
             adminTabButtons.forEach(btn => btn.classList.remove('active'));
             adminSections.forEach(section => section.classList.remove('active'));
 
@@ -103,6 +119,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 editMessage.textContent = ''; // Clear any previous messages
                 await loadItemsForEditing('Games', editGamesList);
                 await loadItemsForEditing('Apps', editAppsList);
+            } else if (targetContentId === 'users') { // NEW: If "Users" tab is clicked
+                editUserForm.style.display = 'none'; // Hide user edit form
+                userMessage.textContent = ''; // Clear any user messages
+                await loadUsersForEditing();
             }
         });
     });
@@ -122,9 +142,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const gameData = {
             name: gameNameInput.value.trim(),
             iconUrl: gameIconUrlInput.value.trim(),
-            downloadLink: gameDownloadLinkInput.value.trim(), // NEW
-            size: gameSizeInput.value.trim(),                 // NEW
-            minimaliOS: gameMinimaliOSInput.value.trim(),     // NEW
+            downloadLink: gameDownloadLinkInput.value.trim(),
+            size: gameSizeInput.value.trim(),
+            minimaliOS: gameMinimaliOSInput.value.trim(),
             type: gameTypeSelect.value,
             createdAt: new Date(),
             addedBy: user.email
@@ -157,9 +177,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const appData = {
             name: appNameInput.value.trim(),
             iconUrl: appIconUrlInput.value.trim(),
-            downloadLink: appDownloadLinkInput.value.trim(), // NEW
-            size: appSizeInput.value.trim(),                 // NEW
-            minimaliOS: appMinimaliOSInput.value.trim(),     // NEW
+            downloadLink: appDownloadLinkInput.value.trim(),
+            size: appSizeInput.value.trim(),
+            minimaliOS: appMinimaliOSInput.value.trim(),
             type: appTypeSelect.value,
             createdAt: new Date(),
             addedBy: user.email
@@ -233,6 +253,41 @@ document.addEventListener("DOMContentLoaded", () => {
                 editMessage.textContent = `Ошибка: ${error.message}`;
             }
         }
+        // NEW: Event listener for editing users
+        if (e.target.classList.contains('edit-user-btn')) {
+            const userId = e.target.dataset.id;
+            userMessage.textContent = '';
+            try {
+                const userDocRef = doc(db, "users", userId);
+                const userDocSnap = await getDoc(userDocRef);
+                if (userDocSnap.exists()) {
+                    const userData = userDocSnap.data();
+                    editUserIdInput.value = userId;
+                    editUserEmailInput.value = userData.email || '';
+                    editUserNicknameInput.value = userData.nickname || '';
+                    editUserStatusSelect.value = userData.isVip ? 'vip' : 'free';
+                    // Форматируем дату для input[type="date"]
+                    if (userData.vipEndDate) {
+                        const date = userData.vipEndDate.toDate ? userData.vipEndDate.toDate() : new Date(userData.vipEndDate);
+                        vipEndDateInput.value = date.toISOString().split('T')[0];
+                    } else {
+                        vipEndDateInput.value = '';
+                    }
+                    // Показываем/скрываем поле даты в зависимости от статуса
+                    vipEndDateInput.style.display = (editUserStatusSelect.value === 'vip') ? 'block' : 'none';
+                    document.querySelector('label[for="vipEndDate"]').style.display = (editUserStatusSelect.value === 'vip') ? 'block' : 'none';
+
+                    editUserForm.style.display = 'flex';
+                } else {
+                    userMessage.style.color = '#dc3545';
+                    userMessage.textContent = 'Пользователь не найден.';
+                }
+            } catch (error) {
+                console.error("Ошибка загрузки пользователя для редактирования:", error);
+                userMessage.style.color = '#dc3545';
+                userMessage.textContent = `Ошибка: ${error.message}`;
+            }
+        }
     });
 
     // Handle Edit Item form submission
@@ -262,8 +317,8 @@ document.addEventListener("DOMContentLoaded", () => {
             size: editItemSizeInput.value.trim(),
             minimaliOS: editItemMinimaliOSInput.value.trim(),
             type: editItemTypeSelect.value,
-            lastModified: new Date(), // Add timestamp for modification
-            modifiedBy: user.email // Save who modified it
+            lastModified: new Date(),
+            modifiedBy: user.email
         };
 
         try {
@@ -323,6 +378,101 @@ document.addEventListener("DOMContentLoaded", () => {
         editItemForm.style.display = 'none';
         editMessage.textContent = '';
     });
+
+    // NEW: Function to load users for editing
+    async function loadUsersForEditing() {
+        usersList.innerHTML = ''; // Clear list
+        try {
+            const querySnapshot = await getDocs(collection(db, "users"));
+            if (querySnapshot.empty) {
+                usersList.innerHTML = `<li>Нет зарегистрированных пользователей.</li>`;
+                return;
+            }
+            querySnapshot.forEach((userDoc) => {
+                const userData = userDoc.data();
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span>${userData.nickname || userData.email} (${userData.isVip ? 'VIP' + (userData.vipEndDate ? ' до ' + userData.vipEndDate.toDate().toLocaleDateString() : '') : 'Free'})</span>
+                    <div class="item-actions">
+                        <button data-id="${userDoc.id}" class="edit-user-btn">Редактировать</button>
+                    </div>
+                `;
+                usersList.appendChild(li);
+            });
+        } catch (error) {
+            console.error("Ошибка загрузки пользователей:", error);
+            usersList.innerHTML = `<li>Ошибка загрузки пользователей: ${error.message}</li>`;
+        }
+    }
+
+    // NEW: Handle user status change in the form
+    editUserStatusSelect.addEventListener('change', () => {
+        if (editUserStatusSelect.value === 'vip') {
+            vipEndDateInput.style.display = 'block';
+            document.querySelector('label[for="vipEndDate"]').style.display = 'block';
+        } else {
+            vipEndDateInput.style.display = 'none';
+            document.querySelector('label[for="vipEndDate"]').style.display = 'none';
+            vipEndDateInput.value = ''; // Clear date if switching to Free
+        }
+    });
+
+    // NEW: Handle Edit User form submission
+    editUserForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        userMessage.textContent = '';
+
+        const userId = editUserIdInput.value;
+        if (!userId) {
+            userMessage.style.color = '#dc3545';
+            userMessage.textContent = 'Ошибка: не выбран пользователь для редактирования.';
+            return;
+        }
+
+        const nickname = editUserNicknameInput.value.trim();
+        const isVip = editUserStatusSelect.value === 'vip';
+        let vipEndDate = null;
+
+        if (isVip) {
+            if (!vipEndDateInput.value) {
+                userMessage.style.color = '#dc3545';
+                userMessage.textContent = 'Укажите дату окончания VIP статуса.';
+                return;
+            }
+            // Преобразуем дату в объект Date, а затем в Firebase Timestamp
+            vipEndDate = new Date(vipEndDateInput.value);
+            // Убедимся, что дата не в прошлом
+            if (vipEndDate < new Date()) {
+                 userMessage.style.color = '#dc3545';
+                 userMessage.textContent = 'Дата окончания VIP не может быть в прошлом.';
+                 return;
+            }
+        }
+
+        try {
+            const userDocRef = doc(db, "users", userId);
+            await updateDoc(userDocRef, {
+                nickname: nickname,
+                isVip: isVip,
+                vipEndDate: vipEndDate // Firestore автоматически преобразует Date в Timestamp
+            });
+            userMessage.style.color = '#28a745';
+            userMessage.textContent = 'Статус пользователя обновлен успешно!';
+            editUserForm.style.display = 'none'; // Hide the form
+            await loadUsersForEditing(); // Reload user list
+        } catch (error) {
+            console.error("Ошибка обновления статуса пользователя:", error);
+            userMessage.style.color = '#dc3545';
+            userMessage.textContent = `Ошибка: ${error.message}`;
+        }
+    });
+
+    // NEW: Handle Cancel User Edit button click
+    cancelUserEditBtn.addEventListener('click', () => {
+        editUserForm.style.display = 'none';
+        userMessage.textContent = '';
+    });
+
 
     // Initially show "Add Game" tab
     document.getElementById('addGameTab').click();
