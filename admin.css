@@ -1,162 +1,231 @@
 /* admin.css */
 
 .admin-panel {
-  position: fixed;
-  top: 0;
-  right: 0; /* Располагаем справа, чтобы была рядом с меню */
-  width: 320px; /* Ширина панели */
-  height: 100%;
-  background: rgba(0, 0, 0, 0.9); /* Полупрозрачный фон */
-  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
-  transform: translateX(100%); /* Изначально скрыта за пределами экрана */
-  transition: transform 0.3s ease-out;
-  z-index: 1000; /* Выше других элементов */
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  box-sizing: border-box;
-  color: #fff;
-  overflow-y: auto; /* Для скролла, если контента много */
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 350px; /* Увеличена ширина для большего удобства */
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95); /* Чуть темнее */
+    box-shadow: -5px 0 20px rgba(0, 0, 0, 0.7); /* Более выраженная тень */
+    transform: translateX(100%);
+    transition: transform 0.3s ease-out;
+    z-index: 10000; /* Самый высокий z-index, чтобы быть поверх всего */
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box;
+    color: #fff;
+    overflow-y: auto;
 }
 
 .admin-panel.active {
-  transform: translateX(0); /* Показываем панель */
+    transform: translateX(0);
 }
 
 .admin-content h2 {
-  text-align: center;
-  color: #007bff;
-  margin-bottom: 20px;
-  font-size: 22px;
+    text-align: center;
+    color: #007bff;
+    margin-bottom: 20px;
+    font-size: 24px; /* Чуть крупнее */
 }
 
 .admin-panel .close-btn {
-  position: absolute;
-  top: 15px;
-  left: 15px; /* Смещаем кнопку закрытия влево */
-  background: none;
-  border: none;
-  color: #fff;
-  font-size: 30px;
-  cursor: pointer;
-  z-index: 1010;
-  transition: color 0.2s ease;
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 30px;
+    cursor: pointer;
+    z-index: 10100; /* Еще выше, чем панель */
+    transition: color 0.2s ease;
 }
 
 .admin-panel .close-btn:hover {
-  color: #dc3545;
+    color: #dc3545;
 }
 
 .admin-tabs {
-  display: flex;
-  margin-bottom: 20px;
-  border-radius: 8px;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .admin-tab-btn {
-  flex: 1;
-  padding: 10px 15px;
-  border: none;
-  background: transparent;
-  color: #fff;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background 0.3s ease, color 0.3s ease;
-  text-align: center;
-  outline: none;
+    flex: 1;
+    padding: 12px 15px; /* Увеличили паддинг */
+    border: none;
+    background: transparent;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease;
+    text-align: center;
+    outline: none;
 }
 
 .admin-tab-btn.active {
-  background: #007bff;
-  color: #fff;
-  font-weight: bold;
+    background: #007bff;
+    color: #fff;
+    font-weight: bold;
 }
 
 .admin-tab-btn:hover:not(.active) {
-  background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.2);
 }
 
 .admin-section {
-  display: none; /* Изначально скрыты */
-  flex-direction: column;
-  gap: 15px;
-  padding-top: 10px;
+    display: none;
+    flex-direction: column;
+    gap: 15px;
+    padding-top: 10px;
 }
 
 .admin-section.active {
-  display: flex; /* Показываем активную секцию */
+    display: flex;
 }
 
 .admin-section h3 {
-  color: #fff;
-  font-size: 18px;
-  margin-bottom: 15px;
-  text-align: center;
+    color: #fff;
+    font-size: 20px; /* Чуть крупнее */
+    margin-bottom: 15px;
+    text-align: center;
 }
 
 .add-item-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .add-item-form input[type="text"],
+.add-item-form input[type="url"], /* Добавлен тип url */
 .add-item-form select {
-  width: calc(100% - 20px);
-  padding: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 5px;
-  background: rgba(255, 255, 255, 0.05);
-  color: #fff;
-  font-size: 16px;
-  outline: none;
-  box-sizing: border-box;
+    width: calc(100% - 20px);
+    padding: 12px; /* Увеличили паддинг */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    font-size: 16px;
+    outline: none;
+    box-sizing: border-box;
 }
 
 .add-item-form input::placeholder {
-  color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.6);
 }
 
 .add-item-form select {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23ffffff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13%205.7L146.2%20202.7%2018.3%2075.1a17.6%2017.6%200%200%200-25.3%2024.5l142.9%20142.9c.7.7%201.4%201.2%202.1%201.6%201.8%201.3%203.8%202.3%205.9%203.1%202.1.8%204.3%201.2%206.4%201.2s4.3-.4%206.4-1.2c2.1-.8%204.1-1.8%205.9-3.1.7-.4%201.4-.9%202.1-1.6l142.9-142.9c1.9-1.9%202.9-4.2%202.9-6.6s-1-4.7-2.9-6.6c-1.9-1.9-4.2-2.9-6.6-2.9z%22%2F%3E%3C%2Fsvg%3E');
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 12px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23ffffff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13%205.7L146.2%20202.7%2018.3%2075.1a17.6%2017.6%200%200%200-25.3%2024.5l142.9%20142.9c.7.7%201.4%201.2%202.1%201.6%201.8%201.3%203.8%202.3%205.9%203.1%202.1.8%204.3%201.2%206.4%201.2s4.3-.4%206.4-1.2c2.1-.8%204.1-1.8%205.9-3.1.7-.4%201.4-.9%202.1-1.6l142.9-142.9c1.9-1.9%202.9-4.2%202.9-6.6s-1-4.7-2.9-6.6c-1.9-1.9-4.2-2.9-6.6-2.9z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
 }
 
-.add-item-form button[type="submit"] {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 5px;
-  background: #28a745;
-  color: #fff;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s ease;
-  margin-top: 10px;
-  outline: none;
+.add-item-form button[type="submit"],
+.add-item-form button.delete-btn, /* Стили для кнопки удаления */
+.add-item-form button.cancel-btn { /* Стили для кнопки отмены */
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    background: #28a745;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 10px;
+    outline: none;
 }
 
 .add-item-form button[type="submit"]:hover {
-  background: #218838;
+    background: #218838;
 }
 
-.admin-message {
-  color: #fff;
-  font-size: 14px;
-  margin-top: 10px;
-  text-align: center;
+.add-item-form button.delete-btn {
+    background: #dc3545; /* Красный для удаления */
 }
+.add-item-form button.delete-btn:hover {
+    background: #c82333;
+}
+
+.add-item-form button.cancel-btn {
+    background: #6c757d; /* Серый для отмены */
+}
+.add-item-form button.cancel-btn:hover {
+    background: #5a6268;
+}
+
+
+.admin-message {
+    color: #fff;
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* Стили для списков редактирования */
+.item-list-container {
+    margin-top: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 15px;
+}
+
+.item-list-container h4 {
+    color: #007bff;
+    margin-bottom: 10px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.edit-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.edit-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 15px;
+}
+
+.edit-list li:last-child {
+    border-bottom: none;
+}
+
+.edit-list .edit-item-btn {
+    background: #007bff;
+    color: #fff;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    font-size: 14px;
+}
+
+.edit-list .edit-item-btn:hover {
+    background: #0056b3;
+}
+
 
 /* Стили для иконки шестеренки в нижней навигации */
 #openAdminPanel svg {
-  width: 24px; /* Размер SVG */
-  height: 24px;
+    width: 24px; /* Размер SVG */
+    height: 24px;
 }
