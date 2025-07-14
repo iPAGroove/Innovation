@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="auth.css">
   <link rel="stylesheet" href="profile.css">
   <link rel="stylesheet" href="admin.css">
-</head>
+  <link rel="stylesheet" href="modal.css"> </head>
 <body>
 
   <video class="video-bg" autoplay muted loop playsinline>
@@ -120,14 +120,18 @@
       <div class="admin-tabs">
         <button id="addGameTab" class="admin-tab-btn active" data-content="addGame">Добавить игру</button>
         <button id="addAppTab" class="admin-tab-btn" data-content="addApp">Добавить приложение</button>
-        <button id="editItemsTab" class="admin-tab-btn" data-content="editItems">Редактировать</button> </div>
+        <button id="editItemsTab" class="admin-tab-btn" data-content="editItems">Редактировать</button>
+        <button id="usersTab" class="admin-tab-btn" data-content="users">Пользователи</button> </div>
 
       <div id="addGameSection" class="admin-section active">
         <h3>Добавить новую игру</h3>
         <form id="addGameForm" class="add-item-form">
           <input type="text" id="gameName" placeholder="Название игры" required>
           <input type="text" id="gameIconUrl" placeholder="URL иконки" required>
-          <input type="url" id="gameDownloadLink" placeholder="Ссылка на загрузку (IPA/APK/DMG)" required> <input type="text" id="gameSize" placeholder="Размер (например, 1.2 GB)" required> <input type="text" id="gameMinimaliOS" placeholder="Минимальная версия iOS (например, iOS 13.0)" required> <select id="gameType" required>
+          <input type="url" id="gameDownloadLink" placeholder="Ссылка на загрузку (IPA/APK/DMG)" required>
+          <input type="text" id="gameSize" placeholder="Размер (например, 1.2 GB)" required>
+          <input type="text" id="gameMinimaliOS" placeholder="Минимальная версия iOS (например, iOS 13.0)" required>
+          <select id="gameType" required>
             <option value="">Выберите тип</option>
             <option value="vip">VIP</option>
             <option value="free">FREE</option>
@@ -144,7 +148,10 @@
         <form id="addAppForm" class="add-item-form">
           <input type="text" id="appName" placeholder="Название приложения" required>
           <input type="text" id="appIconUrl" placeholder="URL иконки" required>
-          <input type="url" id="appDownloadLink" placeholder="Ссылка на загрузку (IPA/APK/DMG)" required> <input type="text" id="appSize" placeholder="Размер (например, 500 MB)" required> <input type="text" id="appMinimaliOS" placeholder="Минимальная версия iOS (например, iOS 14.0)" required> <select id="appType" required>
+          <input type="url" id="appDownloadLink" placeholder="Ссылка на загрузку (IPA/APK/DMG)" required>
+          <input type="text" id="appSize" placeholder="Размер (например, 500 MB)" required>
+          <input type="text" id="appMinimaliOS" placeholder="Минимальная версия iOS (например, iOS 14.0)" required>
+          <select id="appType" required>
             <option value="">Выберите тип</option>
             <option value="vip">VIP</option>
             <option value="free">FREE</option>
@@ -185,6 +192,30 @@
           <p id="editMessage" class="admin-message"></p>
         </form>
       </div>
+
+      <div id="usersSection" class="admin-section">
+        <h3>Управление пользователями</h3>
+        <div class="item-list-container">
+          <h4>Список пользователей:</h4>
+          <ul id="usersList" class="edit-list"></ul>
+        </div>
+
+        <form id="editUserForm" class="add-item-form" style="display: none;">
+          <input type="hidden" id="editUserId">
+          <input type="text" id="editUserEmail" placeholder="Email пользователя" disabled>
+          <input type="text" id="editUserNickname" placeholder="Никнейм пользователя">
+          <label for="editUserStatus">Статус:</label>
+          <select id="editUserStatus">
+            <option value="free">Free</option>
+            <option value="vip">VIP</option>
+          </select>
+          <label for="vipEndDate">Дата окончания VIP (ГГГГ-ММ-ДД):</label>
+          <input type="date" id="vipEndDate">
+          <button type="submit">Сохранить изменения</button>
+          <button type="button" id="cancelUserEditBtn" class="cancel-btn">Отмена</button>
+          <p id="userMessage" class="admin-message"></p>
+        </form>
+      </div>
     </div>
   </div>
 
@@ -212,6 +243,20 @@
     </div>
   </div>
 
+  <div id="itemDetailModal" class="modal-overlay">
+    <div class="modal-content">
+      <button class="close-modal-btn" id="closeItemDetailModal">×</button>
+      <h2 id="modalItemName"></h2>
+      <img id="modalItemIcon" src="" alt="Item Icon">
+      <p>Размер: <span id="modalItemSize"></span></p>
+      <p>Минимальная iOS: <span id="modalItemMinimaliOS"></span></p>
+      <p class="modal-vip-status">Статус: <span id="modalItemType"></span></p>
+      <button id="modalDownloadBtn" class="modal-download-btn" target="_blank" rel="noopener noreferrer">Скачать</button>
+      <p id="modalVipMessage" class="modal-message" style="display: none; color: #dc3545;">Для скачивания VIP контента необходим VIP статус.</p>
+    </div>
+  </div>
+
+
   <nav class="bottom-nav">
     <a href="#" class="nav-item" id="openGames" title="Games">
       <svg viewBox="0 0 24 24" fill="none">
@@ -236,8 +281,8 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-    import { getFirestore, collection, onSnapshot, addDoc, getDoc, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+    import { getFirestore, collection, onSnapshot, addDoc, getDoc, doc, updateDoc, deleteDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-analytics.js";
 
     const firebaseConfig = {
@@ -258,23 +303,40 @@
     window.firebaseApp = app;
     window.db = db;
     window.auth = auth;
-    window.addDoc = addDoc; // Делаем addDoc доступным для admin.js
-    window.getDoc = getDoc; // Добавляем getDoc
-    window.updateDoc = updateDoc; // Добавляем updateDoc
-    window.deleteDoc = deleteDoc; // Добавляем deleteDoc
+    window.addDoc = addDoc;
+    window.getDoc = getDoc;
+    window.updateDoc = updateDoc;
+    window.deleteDoc = deleteDoc;
+    window.getDocs = getDocs; // Добавляем getDocs
+    window.query = query;     // Добавляем query
+    window.where = where;     // Добавляем where
+    window.collection = collection; // Добавляем collection
 
-    function renderCard(data) {
+    // Глобальная переменная для хранения VIP-статуса пользователя
+    window.currentUserIsVip = false;
+    window.currentUserVipEndDate = null; // Дата окончания VIP
+
+    // ОБНОВЛЕННАЯ renderCard - добавляет data-атрибуты и класс для VIP-карточек
+    function renderCard(data, isUserVip) {
+      const isVipContent = data.type === 'vip';
+      const blockedClass = isVipContent && !isUserVip ? ' blocked' : '';
+      const vipTag = isVipContent ? '<span class="vip-tag">VIP</span>' : '';
+
       return `
-        <div class="icon-card">
+        <div class="icon-card${blockedClass}"
+             data-name="${data.name}"
+             data-iconurl="${data.iconUrl}"
+             data-downloadlink="${data.downloadLink || ''}"
+             data-size="${data.size || 'N/A'}"
+             data-minimalios="${data.minimaliOS || 'N/A'}"
+             data-type="${data.type}"
+             data-is-vip-content="${isVipContent}">
           <img src="${data.iconUrl}" alt="${data.name}">
           <span>${data.name}</span>
-          <div class="details">
-              <p>Размер: ${data.size || 'N/A'}</p>
-              <p>iOS: ${data.minimaliOS || 'N/A'}</p>
-              ${data.downloadLink ? `<a href="${data.downloadLink}" target="_blank" class="download-link">Скачать</a>` : ''}
-          </div>
+          ${vipTag}
         </div>`;
     }
+
 
     function loadRealtimeCollection(collName, prefix) {
       const containers = {
@@ -292,7 +354,8 @@
         snapshot.forEach(doc => {
           const d = doc.data();
           if (containers[d.type]) {
-            containers[d.type].innerHTML += renderCard(d);
+            // Передаем isUserVip в renderCard
+            containers[d.type].innerHTML += renderCard(d, window.currentUserIsVip);
           } else {
             console.warn(`Неизвестный тип '${d.type}' в документе ${doc.id} коллекции ${collName}`);
           }
@@ -304,6 +367,7 @@
       document.getElementById("gamesScreen").style.display = "block";
       document.getElementById("appsScreen").style.display = "none";
 
+      // initial calls - they will be re-rendered when user auth state changes
       loadRealtimeCollection('Games', 'games');
       loadRealtimeCollection('Apps', 'apps');
 
@@ -318,5 +382,5 @@
   <script type="module" src="auth.js"></script>
   <script type="module" src="chat.js"></script>
   <script type="module" src="admin.js"></script>
-</body>
+  <script type="module" src="modal.js"></script> </body>
 </html>
