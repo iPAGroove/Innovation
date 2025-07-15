@@ -1,118 +1,117 @@
 /* auth.css */
+#authModal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(30,32,36,0.48);
+  backdrop-filter: blur(7px) brightness(0.9);
+  transition: opacity 0.25s;
+}
 
-/* Общие стили для контейнера аутентификации/профиля */
 .auth-container {
-    background: rgba(0, 0, 0, 0.7);
-    border-radius: 10px;
-    padding: 20px; /* Отступы для форм входа/регистрации */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-    max-width: 420px; /* Ограничиваем ширину форм */
-    width: 100%; /* Занимает 100% доступной ширины до max-width */
-    margin: 20px auto;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    color: white;
-    transition: background 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease, gap 0.3s ease, max-width 0.3s ease;
+  background: linear-gradient(135deg, rgba(40,45,60,0.97) 80%, #3341be 100%);
+  border-radius: 22px;
+  box-shadow: 0 8px 38px 0 rgba(52,64,127,0.14);
+  padding: 36px 28px 28px 28px;
+  min-width: 340px;
+  max-width: 94vw;
+  animation: showForm 0.38s cubic-bezier(.29,1.32,.5,1.08);
 }
 
-/* Стили, которые применяются, когда auth-container используется для ПРОФИЛЯ */
-.auth-container.transparent-bg {
-    background: transparent;
-    box-shadow: none;
-    padding: 0; /* Убираем внутренний padding */
-    gap: 0;
-    max-width: none; /* СБРОСИТЬ ВСЕ ОГРАНИЧЕНИЯ ШИРИНЫ ОТ РОДИТЕЛЯ */
-    width: 100%; /* Занять всю доступную ширину */
-    margin: 0; /* Убираем auto margin, чтобы не было лишних центрирований, когда он для профиля */
+@keyframes showForm {
+  from { transform: translateY(44px) scale(0.92); opacity: 0;}
+  to   { transform: translateY(0) scale(1); opacity: 1;}
 }
 
-/* Стили для вкладок (Войти/Регистрация) */
 .auth-tabs {
-    display: flex;
-    width: 100%;
-    border-radius: 8px;
-    overflow: hidden;
-    background: rgba(255, 255, 255, 0.1);
+  display: flex;
+  gap: 16px;
+  margin-bottom: 28px;
+  justify-content: center;
 }
 
-.auth-tab { /* ИЗМЕНЕНО С .auth-tab-btn */
-    flex: 1;
-    padding: 10px 15px;
-    border: none;
-    background: transparent;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.3s ease, color 0.3s ease;
-    text-align: center;
-    outline: none;
+.auth-tabs button {
+  font-family: 'Montserrat',sans-serif;
+  font-weight: 600;
+  background: none;
+  border: none;
+  color: #c0c7ff;
+  font-size: 18px;
+  padding: 0 0 3px 0;
+  border-bottom: 2.5px solid transparent;
+  cursor: pointer;
+  transition: color 0.18s, border-color 0.21s;
 }
 
-.auth-tab.active { /* ИЗМЕНЕНО С .auth-tab-btn.active */
-    background: #007bff;
-    color: #fff;
-    font-weight: bold;
+.auth-tabs button.active {
+  color: #fff;
+  border-bottom: 2.5px solid #6277f8;
 }
 
-.auth-tab:hover:not(.active) { /* ИЗМЕНЕНО С .auth-tab-btn:hover */
-    background: rgba(255, 255, 255, 0.2);
-}
-
-/* Стили для форм (Вход/Регистрация) */
 .auth-form {
-    display: none;
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
-    padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.auth-form.active {
-    display: flex;
+.auth-form input {
+  background: rgba(33,37,53,0.85);
+  border: none;
+  border-radius: 13px;
+  padding: 13px 16px;
+  color: #d2d8ff;
+  font-size: 16px;
+  transition: background 0.15s, box-shadow 0.17s;
+  box-shadow: 0 2px 9px 0 rgba(39,51,126,0.06);
+  outline: none;
 }
 
-.auth-form input[type="email"],
-.auth-form input[type="password"],
-.auth-form input[type="text"] {
-    width: calc(100% - 20px); /* Учитываем padding */
-    padding: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 5px;
-    background: rgba(255, 255, 255, 0.05);
-    color: #fff;
-    font-size: 16px;
-    outline: none;
-    box-sizing: border-box; /* Важно для корректного расчета ширины с padding */
-}
-
-.auth-form input::placeholder {
-    color: rgba(255, 255, 255, 0.6);
+.auth-form input:focus {
+  background: #3d4ca2;
+  color: #fff;
 }
 
 .auth-form button[type="submit"] {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 5px;
-    background: #28a745;
-    color: #fff;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    margin-top: 10px;
-    outline: none;
+  background: linear-gradient(100deg, #556bf6 30%, #647bfa 80%);
+  color: #fff;
+  border: none;
+  border-radius: 13px;
+  font-size: 18px;
+  padding: 13px 0;
+  font-family: 'Montserrat',sans-serif;
+  font-weight: 700;
+  margin-top: 10px;
+  cursor: pointer;
+  box-shadow: 0 2px 18px 0 rgba(71,97,255,0.10);
+  transition: background 0.2s, transform 0.16s;
 }
 
 .auth-form button[type="submit"]:hover {
-    background: #218838;
+  background: linear-gradient(110deg, #6277f8 10%, #445bd8 90%);
+  transform: scale(1.04);
 }
 
-.auth-error {
-    color: #dc3545;
-    font-size: 14px;
-    margin-top: 5px;
-    text-align: center;
+.auth-message {
+  text-align: center;
+  color: #ef7e7e;
+  margin-top: 4px;
+  font-size: 14px;
+  min-height: 18px;
+}
+
+/* Адаптив для мобилок */
+@media (max-width: 480px) {
+  .auth-container {
+    min-width: unset;
+    width: 98vw;
+    padding: 18vw 4vw 8vw 4vw;
+  }
+  .auth-form input,
+  .auth-form button[type="submit"] {
+    font-size: 16px;
+    padding: 13px 7vw;
+  }
 }
