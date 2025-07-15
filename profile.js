@@ -5,19 +5,17 @@ import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.10
 
 const profileNicknameDisplay = document.getElementById('profileNicknameDisplay');
 const profileInfoContainer = document.getElementById('profileInfoContainer');
-// const authContainer = document.querySelector('.auth-container'); // Больше не нужен напрямую здесь
-// const loginForm = document.getElementById('loginForm'); // Больше не нужен напрямую здесь
-// const registerForm = document.getElementById('registerForm'); // Больше не нужен напрямую здесь
 const openAdminPanelBtn = document.getElementById('openAdminPanel');
 const openUsersPanelBtn = document.getElementById('openUsersPanel');
-const freeAccessBtn = document.querySelector('.profile-btn.free-access-btn');
-const upgradeVipBtn = document.querySelector('.profile-btn.upgrade-vip-btn');
+const freeAccessBtn = document.getElementById('freeAccessBtn'); // Изменен с querySelector на getElementById
+const upgradeVipBtn = document.getElementById('upgradeVipBtn'); // Изменен с querySelector на getElementById
 
+// ОЧЕНЬ ВАЖНО: Убедитесь, что эти элементы найдены в HTML
 const accountSettingsLink = document.querySelector('.account-settings-link');
 const arrowDownIcon = document.querySelector('.account-settings-link .arrow-down');
 const profileCard = document.querySelector('.profile-card'); // Элемент, который будет расширяться
 
-// Элементы для редактирования профиля (убедитесь, что они есть в index.html)
+// Элементы для редактирования профиля
 const editProfileNicknameInput = document.getElementById('editProfileNickname');
 const saveProfileBtn = document.getElementById('saveProfileBtn');
 const logoutBtn = document.getElementById('logoutBtn'); // Кнопка выхода, теперь в профиле
@@ -25,88 +23,76 @@ const logoutBtn = document.getElementById('logoutBtn'); // Кнопка выхо
 // Экспортируемая функция для обновления отображения профиля
 export function updateProfileDisplay(user, isAdmin, isUserVip, vipEndDate) {
     if (user) {
-        // Устанавливаем никнейм из Firebase Auth displayName, затем из Firestore, затем email
-        let displayName = user.displayName;
-        if (!displayName && window.db) { // Проверяем, инициализирован ли db перед обращением к Firestore
-            const userDocRef = doc(window.db, "users", user.uid);
-            getDoc(userDocRef).then(docSnap => {
-                if (docSnap.exists() && docSnap.data().nickname) {
-                    profileNicknameDisplay.textContent = docSnap.data().nickname;
-                } else {
-                    profileNicknameDisplay.textContent = user.email;
-                }
-            }).catch(error => {
-                console.error("Ошибка при получении никнейма пользователя из Firestore:", error);
-                profileNicknameDisplay.textContent = user.email;
-            });
-        } else {
-            profileNicknameDisplay.textContent = displayName || user.email;
-        }
+        profileNicknameDisplay.textContent = user.displayName || user.email;
 
-        profileInfoContainer.style.display = 'block';
-        // authContainer.classList.add('transparent-bg'); // Не нужно здесь
-
-        // Отображаем кнопки админ-панелей, если пользователь админ
-        if (isAdmin) {
-            if (openAdminPanelBtn) openAdminPanelBtn.style.display = 'block';
-            if (openUsersPanelBtn) openUsersPanelBtn.style.display = 'block';
-        } else {
-            if (openAdminPanelBtn) openAdminPanelBtn.style.display = 'none';
-            if (openUsersPanelBtn) openUsersPanelBtn.style.display = 'none';
-        }
-
-        // Обновляем текст кнопок Free/VIP
         if (isUserVip) {
-            let vipText = 'VIP';
+            freeAccessBtn.style.display = 'none';
+            upgradeVipBtn.textContent = '👑 VIP Access';
+            upgradeVipBtn.style.background = '#8A2BE2'; // Фиолетовый
+            upgradeVipBtn.style.color = '#fff';
+            // Если VIP, показать дату окончания
             if (vipEndDate) {
-                const now = new Date();
-                if (vipEndDate > now) {
-                    const daysLeft = Math.ceil((vipEndDate - now) / (1000 * 60 * 60 * 24));
-                    vipText += ` (${daysLeft} дн.)`;
-                } else {
-                    vipText = 'VIP (истек)';
-                    // Дополнительно можно обновить статус пользователя в Firestore здесь, если не сделано в auth.js
-                }
+                const date = new Date(vipEndDate.seconds * 1000);
+                upgradeVipBtn.textContent += ` (до ${date.toLocaleDateString()})`;
             }
-            if (freeAccessBtn) {
-                freeAccessBtn.textContent = vipText;
-                freeAccessBtn.style.background = '#28a745'; // Зеленый для VIP
-            }
-            if (upgradeVipBtn) upgradeVipBtn.style.display = 'none';
         } else {
-            if (freeAccessBtn) {
-                freeAccessBtn.textContent = 'Free Access';
-                freeAccessBtn.style.background = '#007bff'; // Синий для Free
-            }
-            if (upgradeVipBtn) upgradeVipBtn.style.display = 'block';
+            freeAccessBtn.style.display = 'inline-block';
+            upgradeVipBtn.textContent = '⚡ Upgrade to VIP';
+            upgradeVipBtn.style.background = '#ffc107'; // Желтый
+            upgradeVipBtn.style.color = '#333';
+        }
+
+        if (isAdmin) {
+            openAdminPanelBtn.style.display = 'block';
+            openUsersPanelBtn.style.display = 'block';
+        } else {
+            openAdminPanelBtn.style.display = 'none';
+            openUsersPanelBtn.style.display = 'none';
         }
 
         // При авторизации, сбрасываем состояние expanded
-        profileCard.classList.remove('expanded');
+        if (profileCard) {
+            profileCard.classList.remove('expanded');
+        }
         if (arrowDownIcon) arrowDownIcon.classList.remove('rotate');
         if (editProfileNicknameInput) editProfileNicknameInput.style.display = 'none';
         if (saveProfileBtn) saveProfileBtn.style.display = 'none';
-        if (logoutBtn) logoutBtn.style.display = 'none'; // Скрываем кнопку выхода по умолчанию
+        if (logoutBtn) logoutBtn.style.display = 'none'; // Скрываем кнопку выхода по умолчанию при входе
+        
+        // Показываем основной контейнер профиля
+        if (profileInfoContainer) profileInfoContainer.style.display = 'flex'; // Используем 'flex' так как profile-info-container flex-direction: column
+        
+        // Обновляем доступность карточек в играх/приложениях
+        window.currentUserIsVip = isUserVip;
+        window.currentUserVipEndDate = vipEndDate; // Обновляем глобальную переменную
+        // Перезагружаем коллекции, чтобы применились новые статусы VIP
+        window.loadRealtimeCollection('Games', 'games');
+        window.loadRealtimeCollection('Apps', 'apps');
 
     } else {
-        profileInfoContainer.style.display = 'none';
-        // authContainer.classList.remove('transparent-bg'); // Не нужно здесь
-        // loginForm.style.display = 'flex'; // Не нужно здесь
-        // registerForm.style.display = 'none'; // Не нужно здесь
+        // Пользователь не авторизован
+        if (profileInfoContainer) profileInfoContainer.style.display = 'none';
         if (openAdminPanelBtn) openAdminPanelBtn.style.display = 'none';
         if (openUsersPanelBtn) openUsersPanelBtn.style.display = 'none';
-        if (logoutBtn) logoutBtn.style.display = 'none'; // Скрываем кнопку выхода при выходе
+
+        window.currentUserIsVip = false; // Сбрасываем статус VIP
+        window.currentUserVipEndDate = null;
+        // Перезагружаем коллекции, чтобы VIP-контент стал заблокированным
+        window.loadRealtimeCollection('Games', 'games');
+        window.loadRealtimeCollection('Apps', 'apps');
     }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Слушатель для кнопки выхода (перенесен сюда)
+    // Слушатель для кнопки выхода
     if (logoutBtn) {
         logoutBtn.addEventListener('click', async () => {
             try {
                 await signOut(window.auth);
-                // После выхода, DOM-элементы должны быть обновлены через onAuthStateChanged в auth.js
-                // Нет необходимости вручную скрывать/показывать здесь
+                // После выхода, DOM-элементы будут обновлены через onAuthStateChanged в auth.js
+                // Дополнительно сбросим состояние меню, если оно было открыто
+                const menuPanel = document.getElementById('menuPanel');
+                if (menuPanel) menuPanel.classList.remove('open');
             } catch (error) {
                 console.error('Ошибка выхода:', error.message);
                 alert('Не удалось выйти. Попробуйте снова.');
@@ -117,26 +103,26 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Слушатель для ссылки "Account Settings"
-    if (accountSettingsLink) {
+    if (accountSettingsLink && profileCard && arrowDownIcon && editProfileNicknameInput && saveProfileBtn && logoutBtn) {
         accountSettingsLink.addEventListener('click', (e) => {
             e.preventDefault();
             profileCard.classList.toggle('expanded');
-            if (arrowDownIcon) arrowDownIcon.classList.toggle('rotate');
+            arrowDownIcon.classList.toggle('rotate');
 
             const isExpanded = profileCard.classList.contains('expanded');
 
-            // Переключаем видимость полей редактирования и кнопки сохранения/выхода
-            if (editProfileNicknameInput) editProfileNicknameInput.style.display = isExpanded ? 'block' : 'none';
-            if (saveProfileBtn) saveProfileBtn.style.display = isExpanded ? 'block' : 'none';
-            if (logoutBtn) logoutBtn.style.display = isExpanded ? 'block' : 'none'; // Показываем кнопку выхода при расширении
+            // Переключаем видимость полей редактирования и кнопок
+            editProfileNicknameInput.style.display = isExpanded ? 'block' : 'none';
+            saveProfileBtn.style.display = isExpanded ? 'block' : 'none';
+            logoutBtn.style.display = isExpanded ? 'block' : 'none'; // Показываем кнопку выхода при расширении
 
             // Предзаполняем поле никнейма, если пользователь авторизован
-            if (isExpanded && window.auth && window.auth.currentUser && editProfileNicknameInput) {
+            if (isExpanded && window.auth && window.auth.currentUser) {
                 editProfileNicknameInput.value = window.auth.currentUser.displayName || '';
             }
         });
     } else {
-        console.warn("Ссылка 'account-settings-link' не найдена.");
+        console.warn("Один или несколько элементов для 'Account Settings' не найдены: accountSettingsLink, profileCard, arrowDownIcon, editProfileNicknameInput, saveProfileBtn, logoutBtn.");
     }
 
     // Слушатель для кнопки "Save Profile"
@@ -161,15 +147,23 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             try {
-                // Обновляем displayName в Firebase Auth
+                // Обновляем никнейм в Firebase Authentication
                 await firebaseUpdateProfile(user, { displayName: newNickname });
+                
                 // Обновляем никнейм в Firestore коллекции 'users'
                 await updateDoc(doc(window.db, "users", user.uid), {
                     nickname: newNickname,
                     lastModifiedAt: new Date()
                 });
+                
                 profileNicknameDisplay.textContent = newNickname; // Обновляем отображение никнейма
                 alert('Профиль успешно обновлен!');
+                // После сохранения можно автоматически свернуть профиль, если хотите
+                // profileCard.classList.remove('expanded');
+                // arrowDownIcon.classList.remove('rotate');
+                // editProfileNicknameInput.style.display = 'none';
+                // saveProfileBtn.style.display = 'none';
+                // logoutBtn.style.display = 'none'; // Скрываем кнопку выхода после сохранения, если сворачиваем
             } catch (error) {
                 console.error("Ошибка при обновлении профиля:", error);
                 alert('Не удалось обновить профиль: ' + error.message);
@@ -177,5 +171,19 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     } else {
         console.warn("Кнопка 'saveProfileBtn' не найдена.");
+    }
+
+    // Слушатели для кнопок Free Access и Upgrade to VIP
+    if (freeAccessBtn) {
+        freeAccessBtn.addEventListener('click', () => {
+            alert('Вы уже пользуетесь бесплатным доступом!');
+            // Здесь можно добавить логику, если что-то должно происходить при клике на "Free Access"
+        });
+    }
+    if (upgradeVipBtn) {
+        upgradeVipBtn.addEventListener('click', () => {
+            alert('Функционал оплаты VIP доступа пока не реализован.');
+            // Здесь будет логика для перехода на страницу оплаты или модального окна
+        });
     }
 });
