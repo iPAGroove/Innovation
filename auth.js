@@ -31,7 +31,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const profileInfoContainer = document.getElementById('profileInfoContainer');
     const logoutBtn = document.getElementById('logoutBtn');
     const openAdminPanelBtn = document.getElementById('openAdminPanel');
-    const openUsersPanelBtn = document.getElementById('openUsersPanel'); // NEW BUTTON
+    const openUsersPanelBtn = document.getElementById('openUsersPanel');
+
+    // NEW: Authentication tab container (to hide it)
+    const authTabs = document.querySelector('.auth-tabs');
 
     const loginEmailInput = document.getElementById('loginEmail');
     const loginPasswordInput = document.getElementById('loginPassword');
@@ -46,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
         loginTab, registerTab, loginForm, registerForm, authContainer,
         profileInfoContainer, logoutBtn, loginEmailInput, loginPasswordInput,
         loginError, registerEmailInput, registerNicknameInput, registerPasswordInput,
-        registerError, openAdminPanelBtn, openUsersPanelBtn
+        registerError, openAdminPanelBtn, openUsersPanelBtn, authTabs // Added authTabs
     ];
 
     if (requiredElements.some(el => !el)) {
@@ -61,6 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function showAuthForm(isRegister) {
         profileInfoContainer.style.display = 'none';
+        authTabs.style.display = 'flex'; // Ensure tabs are visible
         loginTab.classList.toggle('active', !isRegister);
         registerTab.classList.toggle('active', isRegister);
         loginForm.style.display = isRegister ? 'none' : 'flex';
@@ -69,10 +73,10 @@ document.addEventListener("DOMContentLoaded", () => {
         loginError.textContent = '';
         registerError.textContent = '';
 
-        // Ensure buttons are hidden when showing auth/register form
+        // Ensure admin/users/logout buttons are hidden when auth forms are active
         if (openAdminPanelBtn) openAdminPanelBtn.style.display = 'none';
         if (openUsersPanelBtn) openUsersPanelBtn.style.display = 'none';
-        if (logoutBtn) logoutBtn.style.display = 'none'; // Ensure logout button is hidden
+        if (logoutBtn) logoutBtn.style.display = 'none';
     }
 
     loginTab.addEventListener('click', () => showAuthForm(false));
@@ -152,6 +156,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (user) {
             console.log('👤 User authenticated:', user.email);
+            // Hide auth forms and tabs, show profile info
+            authTabs.style.display = 'none';
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'none';
+            profileInfoContainer.style.display = 'block';
+
             const adminEmails = ["ipagroove@gmail.com"]; // Your admin emails
 
             try {
@@ -198,6 +208,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         } else {
             console.log('🔒 User not authenticated');
+            // Show auth forms and tabs, hide profile info
+            authTabs.style.display = 'flex';
+            loginTab.click(); // Show login form by default
+            profileInfoContainer.style.display = 'none';
         }
 
         // Update global VIP status variables
