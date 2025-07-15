@@ -154,8 +154,8 @@ document.addEventListener("DOMContentLoaded", () => {
             authTabs.style.display = 'none';
             loginForm.style.display = 'none';
             registerForm.style.display = 'none';
-            profileInfoContainer.style.display = 'block'; // Убедимся, что контейнер профиля виден
-
+            profileInfoContainer.style.display = 'flex'; // ИЗМЕНЕНО: теперь устанавливаем 'flex'
+            
             // Проверяем, является ли пользователь администратором по email (как запасной вариант)
             const adminEmails = ["ipagroove@gmail.com"]; // Ваши админские email-ы
 
