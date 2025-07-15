@@ -13,8 +13,7 @@
     <link rel="stylesheet" href="menu.css">
     <link rel="stylesheet" href="chat.css">
     <link rel="stylesheet" href="auth.css">
-    <link rel="stylesheet" href="profile.css">
-    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="profile.css"> <link rel="stylesheet" href="admin.css">
     <link rel="stylesheet" href="modal.css">
 </head>
 <body>
@@ -99,9 +98,9 @@
                                     <path d="M7 10L12 15L17 10H7Z" fill="currentColor"/>
                                 </svg>
                             </a>
-                            <input type="text" id="editProfileNickname" placeholder="New Nickname" style="display: none; margin-top: 10px;">
-                            <button id="saveProfileBtn" class="profile-btn free-access-btn" style="display: none; margin-top: 5px;">Save Profile</button>
-                            <button id="logoutBtn" class="profile-btn free-access-btn" style="margin-top: 15px; width: 100%; display: none;">Sign Out</button>
+                            <input type="text" id="editProfileNickname" placeholder="New Nickname" style="display: none;">
+                            <button id="saveProfileBtn" class="profile-btn free-access-btn" style="display: none;">Save Profile</button>
+                            <button id="logoutBtn" class="profile-btn free-access-btn" style="display: none;">Sign Out</button>
                         </div>
                     </div>
                     <button id="openAdminPanel" class="profile-btn free-access-btn" style="margin-top: 15px; width: 100%; display: none;">ADD G/A</button>
@@ -310,6 +309,7 @@
         const auth = getAuth(app);
         const analytics = getAnalytics(app);
 
+        // Make Firebase instances globally accessible
         window.firebaseApp = app;
         window.db = db;
         window.auth = auth;
@@ -322,9 +322,9 @@
         window.where = where;
         window.collection = collection;
 
-        // Global variable to store user's VIP status
+        // Global variable to store user's VIP status and end date
         window.currentUserIsVip = false;
-        window.currentUserVipEndDate = null; // VIP end date
+        window.currentUserVipEndDate = null;
 
         // Updated renderCard function to support multiple types and Hack Features
         function renderCard(data, isUserVip) {
@@ -349,8 +349,8 @@
                 </div>`;
         }
 
-
-        window.loadRealtimeCollection = function(collName, prefix) { // Make function global
+        // Global function to load items for games/apps sections
+        window.loadRealtimeCollection = function(collName, prefix) {
             const containers = {
                 vip: document.getElementById(`${prefix}-vip`),
                 free: document.getElementById(`${prefix}-free`),
@@ -366,7 +366,7 @@
 
                 snapshot.forEach(doc => {
                     const d = doc.data();
-                    const types = Array.isArray(d.type) ? d.type : [d.type]; // Ensure it's an array
+                    const types = Array.isArray(d.type) ? d.type : [d.type];
 
                     types.forEach(type => {
                         if (containers[type]) {
@@ -389,7 +389,6 @@
 
             console.log('✅ Realtime: Games and Apps subscribed to Firebase');
         });
-
     </script>
 
     <script src="script.js"></script>
