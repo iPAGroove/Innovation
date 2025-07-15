@@ -6,7 +6,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 20px; /* Отступ снизу, чтобы отделить от кнопок админа, которые теперь после него */
+    margin-bottom: 20px; /* Отступ снизу, чтобы отделить от кнопки "Добавить" */
 }
 
 /* Основная карточка профиля, которая будет расширяться/сжиматься */
@@ -23,7 +23,7 @@
     max-height: 200px; /* Начальная высота, чтобы скрыть элементы ниже "Account Settings" */
     overflow: hidden; /* Скрывает содержимое, которое выходит за пределы max-height */
     transition: max-height 0.3s ease-out; /* Плавный переход для max-height */
-    
+
     /* Добавлено для лучшего контроля внутренних элементов */
     display: flex;
     flex-direction: column;
@@ -183,7 +183,7 @@
     transform: rotate(180deg);
 }
 
-/* НОВЫЙ КОНТЕЙНЕР ДЛЯ СКРЫВАЕМОГО СОДЕРЖИМОГО НАСТРОЕК */
+/* Контейнер для скрываемого содержимого настроек */
 .account-settings-content {
     display: none; /* Изначально скрыт, управляется JS */
     flex-direction: column;
@@ -202,7 +202,6 @@
     font-size: 15px;
     outline: none;
     box-sizing: border-box;
-    /* display: none; будет управляться JS при раскрытии */
 }
 
 #editProfileNickname::placeholder {
@@ -214,9 +213,8 @@
     width: 100%;
     padding: 8px 12px;
     font-size: 15px;
-    margin-top: 0; /* Уже было 0, но важно, т.к. gap в .account-settings-content */
+    margin-top: 0;
     box-sizing: border-box;
-    /* display: none; будет управляться JS при раскрытии */
 }
 
 #saveProfileBtn {
@@ -235,10 +233,37 @@
     background: #c82333;
 }
 
-/* Стили для кнопок админа - теперь они ВНЕ .profile-card, но ВНУТРИ .menu-content */
-/* Они будут отображаться после profile-info-container */
-#openAdminPanel,
-#openUsersPanel {
+/* Стили для новой кнопки "Добавить" в профиле обычного пользователя */
+.add-button {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 15px;
+    background: #28a745; /* Зеленый цвет */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    box-sizing: border-box;
+    margin-top: 20px; /* Отступ от блока профиля */
+    display: flex; /* Чтобы иконка и текст были в ряд */
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Отступ между иконкой и текстом */
+}
+
+.add-button:hover {
+    background: #218838;
+}
+
+.add-button svg {
+    width: 24px; /* Размер иконки */
+    height: 24px;
+    fill: currentColor; /* Цвет иконки как у текста кнопки */
+}
+
+/* Стили для кнопок админа - теперь они внутри admin-panel */
+.admin-control-btn {
     width: 100%; /* Занимают всю ширину */
     padding: 10px 12px;
     font-size: 15px;
@@ -249,10 +274,11 @@
     cursor: pointer;
     transition: background 0.3s ease;
     box-sizing: border-box;
-    margin-top: 10px; /* Отступ от предыдущего блока (profile-info-container или другой кнопки админа) */
+    margin-top: 10px; /* Отступ между кнопками админа */
 }
 
-#openAdminPanel:hover,
-#openUsersPanel:hover {
+.admin-control-btn:hover {
     background: #5a6268;
 }
+
+/* Убедимся, что в admin.css тоже есть эти стили для .admin-control-btn */
