@@ -5,7 +5,7 @@
     top: 0;
     right: -100%; /* Initially off-screen to the right */
     width: 100%; /* Full width on mobile or when open fullscreen */
-    max-width: 450px; /* ИЗМЕНЕНО: Увеличена максимальная ширина панели, например, до 450px */
+    max-width: 450px; /* Увеличена максимальная ширина панели */
     height: calc(100% - 60px); /* Height adjusted for bottom navigation */
     bottom: 60px;
     background: rgba(20, 20, 20, 0.95);
