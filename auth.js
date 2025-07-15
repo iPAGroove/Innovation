@@ -4,7 +4,7 @@ import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     onAuthStateChanged,
-    signOut,
+    signOut, // ХотяsignOut вызывается из profile.js, лучше оставить здесь для полной картины
     updateProfile
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 import { addDoc, collection, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
@@ -33,7 +33,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // logoutBtn теперь управляется profile.js, но здесь мы можем его использовать, если нужно скрыть при показе форм логина/регистрации
     const logoutBtn = document.getElementById('logoutBtn'); // Убедимся, что она доступна
     const openAdminPanelBtn = document.getElementById('openAdminPanel');
-    const openUsersPanelBtn = document.getElementById('openUsersPanel'); // НОВАЯ КНОПКА
+    const openUsersPanelBtn = document.getElementById('openUsersPanel');
+    const addButton = document.getElementById('addButton'); // НОВАЯ КНОПКА "Добавить"
+
 
     // Добавляем ссылку на контейнер с вкладками аутентификации
     const authTabs = document.querySelector('.auth-tabs');
@@ -51,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
         loginTab, registerTab, loginForm, registerForm, authContainer,
         profileInfoContainer, logoutBtn, loginEmailInput, loginPasswordInput,
         loginError, registerEmailInput, registerNicknameInput, registerPasswordInput,
-        registerError, openAdminPanelBtn, openUsersPanelBtn, authTabs
+        registerError, openAdminPanelBtn, openUsersPanelBtn, authTabs, addButton // Добавляем addButton в проверку
     ];
 
     if (requiredElements.some(el => !el)) {
@@ -75,10 +77,11 @@ document.addEventListener("DOMContentLoaded", () => {
         loginError.textContent = '';
         registerError.textContent = '';
 
-        // Скрываем кнопки админ/пользователей/выхода при показе формы авторизации/регистрации
+        // Скрываем кнопки админ/пользователей/выхода/добавить при показе формы авторизации/регистрации
         if (openAdminPanelBtn) openAdminPanelBtn.style.display = 'none';
         if (openUsersPanelBtn) openUsersPanelBtn.style.display = 'none';
         if (logoutBtn) logoutBtn.style.display = 'none'; // Также скрываем кнопку выхода
+        if (addButton) addButton.style.display = 'none'; // Скрываем кнопку "Добавить"
     }
 
     loginTab.addEventListener('click', () => showAuthForm(false));
@@ -139,9 +142,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Выход (кнопка выхода теперь обрабатывается в profile.js)
-    // logoutBtn.addEventListener('click', async () => { /* ... */ });
-
     // Обработчик изменения состояния пользователя
     onAuthStateChanged(auth, async (user) => {
         let isAdmin = false;
@@ -155,9 +155,6 @@ document.addEventListener("DOMContentLoaded", () => {
             loginForm.style.display = 'none';
             registerForm.style.display = 'none';
             profileInfoContainer.style.display = 'flex'; // ИЗМЕНЕНО: теперь устанавливаем 'flex'
-            
-            // Проверяем, является ли пользователь администратором по email (как запасной вариант)
-            const adminEmails = ["ipagroove@gmail.com"]; // Ваши админские email-ы
 
             // Получаем VIP-статус и статус админа из коллекции 'users'
             try {
@@ -166,21 +163,27 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (userDocSnap.exists()) {
                     const userData = userDocSnap.data();
                     isUserVip = userData.isVip || false;
-                    vipEndDate = userData.vipEndDate ? userData.vipEndDate.toDate() : null;
-                    // isAdmin теперь берется из Firestore в первую очередь, затем из списка email
-                    isAdmin = userData.isAdmin || adminEmails.includes(user.email);
+                    vipEndDate = userData.vipEndDate || null; // Получаем Timestamp или null
+                    isAdmin = userData.isAdmin || false; // Берем из Firestore
+                    console.log(`User ${user.email} from Firestore: isAdmin=${isAdmin}, isVip=${isUserVip}, vipEndDate=${vipEndDate}`);
 
                     // Проверяем, не истек ли VIP
-                    if (isUserVip && vipEndDate && vipEndDate < new Date()) {
-                        isUserVip = false; // VIP истек
-                        // Опционально: обновить статус в базе данных на Free
-                        await setDoc(userDocRef, { isVip: false, vipEndDate: null }, { merge: true });
-                        console.log(`VIP статус пользователя ${user.email} истек и был обновлен на Free.`);
+                    if (isUserVip && vipEndDate) {
+                        const now = new Date();
+                        const endDate = vipEndDate.toDate(); // Преобразуем Timestamp в Date
+                        if (endDate < now) {
+                            isUserVip = false; // VIP истек
+                            // Опционально: обновить статус в базе данных на Free
+                            await setDoc(userDocRef, { isVip: false, vipEndDate: null }, { merge: true });
+                            console.log(`VIP статус пользователя ${user.email} истек и был обновлен на Free.`);
+                        }
                     }
                 } else {
                     // Если пользователя нет в коллекции users, создаем его
                     console.warn(`Пользователь ${user.email} не найден в коллекции 'users'. Создаем запись.`);
-                    isAdmin = adminEmails.includes(user.email); // Инициализируем isAdmin на основе email
+                    // Проверяем, является ли пользователь админом по email (запасной вариант для новых пользователей)
+                    const adminEmails = ["ipagroove@gmail.com"]; // Ваши админские email-ы
+                    isAdmin = adminEmails.includes(user.email);
                     await setDoc(doc(db, "users", user.uid), {
                         email: user.email,
                         nickname: user.displayName || 'Пользователь',
@@ -213,7 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Обновляем глобальные переменные VIP-статуса
         window.currentUserIsVip = isUserVip;
-        window.currentUserVipEndDate = vipEndDate;
+        window.currentUserVipEndDate = vipEndDate ? vipEndDate.toDate() : null; // Убеждаемся, что это Date объект
 
         // Передаем статус админа и VIP в функцию обновления профиля
         updateProfileDisplay(user, isAdmin, isUserVip, vipEndDate);
