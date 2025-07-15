@@ -50,8 +50,8 @@
         <div class="menu-content">
             <div class="auth-container">
                 <div class="auth-tabs">
-                    <button id="loginTab" class="auth-tab active" data-form="login">Sign In</button>
-                    <button id="registerTab" class="auth-tab" data-form="register">Sign Up</button>
+                    <button id="loginTab" class="auth-tab-btn active" data-form="login">Sign In</button>
+                    <button id="registerTab" class="auth-tab-btn" data-form="register">Sign Up</button>
                 </div>
 
                 <form id="loginForm" class="auth-form active">
@@ -78,8 +78,8 @@
                             <div class="profile-details">
                                 <span id="profileNicknameDisplay" class="profile-title">Loading...</span>
                                 <div class="profile-buttons">
-                                    <button class="profile-btn free-access-btn" id="freeAccessBtn">Free Access</button>
-                                    <button class="profile-btn upgrade-vip-btn" id="upgradeVipBtn">⚡ Upgrade to VIP</button>
+                                    <button class="profile-btn free-access-btn">Free Access</button>
+                                    <button class="profile-btn upgrade-vip-btn">⚡ Upgrade to VIP</button>
                                 </div>
                             </div>
                         </div>
@@ -99,23 +99,12 @@
                                     <path d="M7 10L12 15L17 10H7Z" fill="currentColor"/>
                                 </svg>
                             </a>
-                            <div class="account-settings-content">
-                                <input type="text" id="editProfileNickname" placeholder="New Nickname" style="display: none;">
-                                <button id="saveProfileBtn" class="profile-btn free-access-btn" style="display: none;">Save Profile</button>
-                                <button id="logoutBtn" class="profile-btn free-access-btn" style="display: none;">Sign Out</button>
-                            </div>
+                            <button id="logoutBtn" class="profile-btn free-access-btn" style="margin-top: 15px; width: 100%; display: none;">Sign Out</button>
                         </div>
                     </div>
+                    <button id="openAdminPanel" class="profile-btn free-access-btn" style="margin-top: 15px; width: 100%; display: none;">ADD G/A</button>
+                    <button id="openUsersPanel" class="profile-btn free-access-btn" style="margin-top: 5px; width: 100%; display: none;">STATUS USERS</button>
                 </div>
-                <button id="openAdminPanel" class="profile-btn free-access-btn" style="display: none;">ADD G/A</button>
-                <button id="openUsersPanel" class="profile-btn free-access-btn" style="display: none;">STATUS USERS</button>
-                <button id="addButton" class="add-button" style="display: none;">
-                    <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 4C11.4477 4 11 4.44772 11 5V11H5C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13H11V19C11 19.5523 11.4477 20 12 20C12.5523 20 13 19.5523 13 19V13H19C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11H13V5C13 4.44772 12.5523 4 12 4Z"/>
-                    </svg>
-                    Добавить
-                </button>
-
             </div>
             <h2></h2>
             <ul class="menu-links">
@@ -130,8 +119,6 @@
         <div class="admin-content">
             <h2>Admin Panel</h2>
             <button class="close-btn" id="closeAdminPanel">×</button>
-            <button id="openAdminPanel" class="profile-btn free-access-btn admin-control-btn">ADD G/A</button>
-            <button id="openUsersPanel" class="profile-btn free-access-btn admin-control-btn">STATUS USERS</button>
             <div class="admin-tabs">
                 <button id="addGameTab" class="admin-tab-btn active" data-content="addGame">Add Game</button>
                 <button id="addAppTab" class="admin-tab-btn" data-content="addApp">Add App</button>
@@ -321,7 +308,6 @@
         const auth = getAuth(app);
         const analytics = getAnalytics(app);
 
-        // Make Firebase instances globally accessible
         window.firebaseApp = app;
         window.db = db;
         window.auth = auth;
@@ -334,9 +320,9 @@
         window.where = where;
         window.collection = collection;
 
-        // Global variable to store user's VIP status and end date
+        // Global variable to store user's VIP status
         window.currentUserIsVip = false;
-        window.currentUserVipEndDate = null;
+        window.currentUserVipEndDate = null; // VIP end date
 
         // Updated renderCard function to support multiple types and Hack Features
         function renderCard(data, isUserVip) {
@@ -347,22 +333,22 @@
 
             return `
                 <div class="icon-card${blockedClass}"
-                    data-name="${data.name}"
-                    data-iconurl="${data.iconUrl}"
-                    data-downloadlink="${data.downloadLink || ''}"
-                    data-size="${data.size || 'N/A'}"
-                    data-minimalios="${data.minimaliOS || 'N/A'}"
-                    data-hackfeatures="${data.hackFeatures || 'N/A'}"
-                    data-type="${JSON.stringify(typesArray)}"
-                    data-is-vip-content="${isVipContent}">
+                     data-name="${data.name}"
+                     data-iconurl="${data.iconUrl}"
+                     data-downloadlink="${data.downloadLink || ''}"
+                     data-size="${data.size || 'N/A'}"
+                     data-minimalios="${data.minimaliOS || 'N/A'}"
+                     data-hackfeatures="${data.hackFeatures || 'N/A'}"
+                     data-type="${JSON.stringify(typesArray)}"
+                     data-is-vip-content="${isVipContent}">
                     <img src="${data.iconUrl}" alt="${data.name}">
                     <span>${data.name}</span>
                     ${vipTag}
                 </div>`;
         }
 
-        // Global function to load items for games/apps sections
-        window.loadRealtimeCollection = function(collName, prefix) {
+
+        window.loadRealtimeCollection = function(collName, prefix) { // Make function global
             const containers = {
                 vip: document.getElementById(`${prefix}-vip`),
                 free: document.getElementById(`${prefix}-free`),
@@ -378,7 +364,7 @@
 
                 snapshot.forEach(doc => {
                     const d = doc.data();
-                    const types = Array.isArray(d.type) ? d.type : [d.type];
+                    const types = Array.isArray(d.type) ? d.type : [d.type]; // Ensure it's an array
 
                     types.forEach(type => {
                         if (containers[type]) {
@@ -401,6 +387,7 @@
 
             console.log('✅ Realtime: Games and Apps subscribed to Firebase');
         });
+
     </script>
 
     <script src="script.js"></script>
