@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>iPA Groove</title>
@@ -50,22 +50,22 @@
         <div class="menu-content">
             <div class="auth-container">
                 <div class="auth-tabs">
-                    <button id="loginTab" class="auth-tab-btn active" data-form="login">Войти</button>
-                    <button id="registerTab" class="auth-tab-btn" data-form="register">Регистрация</button>
+                    <button id="loginTab" class="auth-tab-btn active" data-form="login">Sign In</button>
+                    <button id="registerTab" class="auth-tab-btn" data-form="register">Sign Up</button>
                 </div>
 
                 <form id="loginForm" class="auth-form active">
                     <input type="email" id="loginEmail" placeholder="Email" autocomplete="email">
-                    <input type="password" id="loginPassword" placeholder="Пароль" autocomplete="current-password">
-                    <button id="loginBtn" type="submit">Войти</button>
+                    <input type="password" id="loginPassword" placeholder="Password" autocomplete="current-password">
+                    <button id="loginBtn" type="submit">Sign In</button>
                     <p id="loginError" class="auth-error"></p>
                 </form>
 
                 <form id="registerForm" class="auth-form">
                     <input type="email" id="registerEmail" placeholder="Email" autocomplete="email">
-                    <input type="text" id="registerNickname" placeholder="Никнейм" autocomplete="nickname">
-                    <input type="password" id="registerPassword" placeholder="Пароль" autocomplete="new-password">
-                    <button id="registerBtn" type="submit">Зарегистрироваться</button>
+                    <input type="text" id="registerNickname" placeholder="Nickname" autocomplete="nickname">
+                    <input type="password" id="registerPassword" placeholder="Password" autocomplete="new-password">
+                    <button id="registerBtn" type="submit">Sign Up</button>
                     <p id="registerError" class="auth-error"></p>
                 </form>
 
@@ -76,7 +76,7 @@
                                 <img src="images/ipa_groove_avatar.png" alt="iPA Groove Avatar" class="profile-avatar">
                             </div>
                             <div class="profile-details">
-                                <span id="profileNicknameDisplay" class="profile-title">Загрузка...</span>
+                                <span id="profileNicknameDisplay" class="profile-title">Loading...</span>
                                 <div class="profile-buttons">
                                     <button class="profile-btn free-access-btn">Free Access</button>
                                     <button class="profile-btn upgrade-vip-btn">⚡ Upgrade to VIP</button>
@@ -99,11 +99,11 @@
                                     <path d="M7 10L12 15L17 10H7Z" fill="currentColor"/>
                                 </svg>
                             </a>
+                            <button id="logoutBtn" class="profile-btn free-access-btn" style="margin-top: 15px; width: 100%; display: none;">Sign Out</button>
                         </div>
-                        <button id="logoutBtn" class="profile-btn free-access-btn" style="margin-top: 15px; width: 100%;">Выйти</button>
                     </div>
-                    <button id="openAdminPanel" class="profile-btn free-access-btn" style="margin-top: 15px; width: 100%; display: none;">Панель Администратора</button>
-                    <button id="openUsersPanel" class="profile-btn free-access-btn" style="margin-top: 5px; width: 100%; display: none;">Панель Пользователей</button>
+                    <button id="openAdminPanel" class="profile-btn free-access-btn" style="margin-top: 15px; width: 100%; display: none;">ADD G/A</button>
+                    <button id="openUsersPanel" class="profile-btn free-access-btn" style="margin-top: 5px; width: 100%; display: none;">STATUS USERS</button>
                 </div>
             </div>
             <h2></h2>
@@ -117,80 +117,81 @@
 
     <div id="adminPanel" class="admin-panel">
         <div class="admin-content">
-            <h2>Панель администратора</h2>
+            <h2>Admin Panel</h2>
             <button class="close-btn" id="closeAdminPanel">×</button>
             <div class="admin-tabs">
-                <button id="addGameTab" class="admin-tab-btn active" data-content="addGame">Добавить игру</button>
-                <button id="addAppTab" class="admin-tab-btn" data-content="addApp">Добавить приложение</button>
-                <button id="editItemsTab" class="admin-tab-btn" data-content="editItems">Редактировать</button>
+                <button id="addGameTab" class="admin-tab-btn active" data-content="addGame">Add Game</button>
+                <button id="addAppTab" class="admin-tab-btn" data-content="addApp">Add App</button>
+                <button id="editItemsTab" class="admin-tab-btn" data-content="editItems">Edit Items</button>
             </div>
 
             <div id="addGameSection" class="admin-section active">
-                <h3>Добавить новую игру</h3>
+                <h3>Add New Game</h3>
                 <form id="addGameForm" class="add-item-form">
-                    <input type="text" id="gameName" placeholder="Название игры" required>
-                    <input type="text" id="gameIconUrl" placeholder="URL иконки" required>
-                    <input type="url" id="gameDownloadLink" placeholder="Ссылка на загрузку (IPA/APK/DMG)" required>
-                    <input type="text" id="gameSize" placeholder="Размер (например, 1.2 GB)" required>
-                    <input type="text" id="gameMinimaliOS" placeholder="Минимальная версия iOS (например, iOS 13.0)" required>
-                    <select id="gameType" required>
-                        <option value="">Выберите тип</option>
+                    <input type="text" id="gameName" placeholder="Game Name" required>
+                    <input type="text" id="gameIconUrl" placeholder="Icon URL" required>
+                    <input type="url" id="gameDownloadLink" placeholder="Download Link (IPA/APK/DMG)" required>
+                    <input type="text" id="gameSize" placeholder="Size (e.g., 1.2 GB)" required>
+                    <input type="text" id="gameMinimaliOS" placeholder="Minimum iOS Version (e.g., iOS 13.0)" required>
+                    <input type="text" id="gameHackFeatures" placeholder="Hack Features (e.g., Unlimited Coins)" >
+                    <select id="gameType" multiple required>
                         <option value="vip">VIP</option>
                         <option value="free">FREE</option>
                         <option value="updates">UPDATES</option>
                         <option value="top">TOP</option>
                     </select>
-                    <button type="submit">Добавить игру</button>
+                    <button type="submit">Add Game</button>
                     <p id="gameMessage" class="admin-message"></p>
                 </form>
             </div>
 
             <div id="addAppSection" class="admin-section">
-                <h3>Добавить новое приложение</h3>
+                <h3>Add New App</h3>
                 <form id="addAppForm" class="add-item-form">
-                    <input type="text" id="appName" placeholder="Название приложения" required>
-                    <input type="text" id="appIconUrl" placeholder="URL иконки" required>
-                    <input type="url" id="appDownloadLink" placeholder="Ссылка на загрузку (IPA/APK/DMG)" required>
-                    <input type="text" id="appSize" placeholder="Размер (например, 500 MB)" required>
-                    <input type="text" id="appMinimaliOS" placeholder="Минимальная версия iOS (например, iOS 14.0)" required>
-                    <select id="appType" required>
-                        <option value="">Выберите тип</option>
+                    <input type="text" id="appName" placeholder="App Name" required>
+                    <input type="text" id="appIconUrl" placeholder="Icon URL" required>
+                    <input type="url" id="appDownloadLink" placeholder="Download Link (IPA/APK/DMG)" required>
+                    <input type="text" id="appSize" placeholder="Size (e.g., 500 MB)" required>
+                    <input type="text" id="appMinimaliOS" placeholder="Minimum iOS Version (e.g., iOS 14.0)" required>
+                    <input type="text" id="appHackFeatures" placeholder="Hack Features (e.g., Ad-free)" >
+                    <select id="appType" multiple required>
                         <option value="vip">VIP</option>
                         <option value="free">FREE</option>
                         <option value="updates">UPDATES</option>
                         <option value="top">TOP</option>
                     </select>
-                    <button type="submit">Добавить приложение</button>
+                    <button type="submit">Add App</button>
                     <p id="appMessage" class="admin-message"></p>
                 </form>
             </div>
 
             <div id="editItemsSection" class="admin-section">
-                <h3>Редактировать игры/приложения</h3>
+                <h3>Edit Games/Apps</h3>
                 <div class="item-list-container">
-                    <h4>Игры:</h4>
+                    <h4>Games:</h4>
                     <ul id="editGamesList" class="edit-list"></ul>
-                    <h4>Приложения:</h4>
+                    <h4>Apps:</h4>
                     <ul id="editAppsList" class="edit-list"></ul>
                 </div>
 
                 <form id="editItemForm" class="add-item-form" style="display: none;">
                     <input type="hidden" id="editItemId">
                     <input type="hidden" id="editItemCollection">
-                    <input type="text" id="editItemName" placeholder="Название" required>
-                    <input type="text" id="editItemIconUrl" placeholder="URL иконки" required>
-                    <input type="url" id="editItemDownloadLink" placeholder="Ссылка на загрузку" required>
-                    <input type="text" id="editItemSize" placeholder="Размер" required>
-                    <input type="text" id="editItemMinimaliOS" placeholder="Минимальная iOS" required>
-                    <select id="editItemType" required>
+                    <input type="text" id="editItemName" placeholder="Name" required>
+                    <input type="text" id="editItemIconUrl" placeholder="Icon URL" required>
+                    <input type="url" id="editItemDownloadLink" placeholder="Download Link" required>
+                    <input type="text" id="editItemSize" placeholder="Size" required>
+                    <input type="text" id="editItemMinimaliOS" placeholder="Minimum iOS" required>
+                    <input type="text" id="editItemHackFeatures" placeholder="Hack Features" >
+                    <select id="editItemType" multiple required>
                         <option value="vip">VIP</option>
                         <option value="free">FREE</option>
                         <option value="updates">UPDATES</option>
                         <option value="top">TOP</option>
                     </select>
-                    <button type="submit">Сохранить изменения</button>
-                    <button type="button" id="deleteItemBtn" class="delete-btn">Удалить</button>
-                    <button type="button" id="cancelEditBtn" class="cancel-btn">Отмена</button>
+                    <button type="submit">Save Changes</button>
+                    <button type="button" id="deleteItemBtn" class="delete-btn">Delete</button>
+                    <button type="button" id="cancelEditBtn" class="cancel-btn">Cancel</button>
                     <p id="editMessage" class="admin-message"></p>
                 </form>
             </div>
@@ -199,26 +200,26 @@
 
     <div id="usersPanel" class="admin-panel">
         <div class="admin-content">
-            <h2>Управление пользователями</h2>
+            <h2>User Management</h2>
             <button class="close-btn" id="closeUsersPanel">×</button>
             <div class="item-list-container">
-                <h4>Список пользователей:</h4>
+                <h4>User List:</h4>
                 <ul id="usersList" class="edit-list"></ul>
             </div>
 
             <form id="editUserForm" class="add-item-form" style="display: none;">
                 <input type="hidden" id="editUserId">
-                <input type="text" id="editUserEmail" placeholder="Email пользователя" disabled>
-                <input type="text" id="editUserNickname" placeholder="Никнейм пользователя">
-                <label for="editUserStatus">Статус:</label>
+                <input type="text" id="editUserEmail" placeholder="User Email" disabled>
+                <input type="text" id="editUserNickname" placeholder="User Nickname">
+                <label for="editUserStatus">Status:</label>
                 <select id="editUserStatus">
                     <option value="free">Free</option>
                     <option value="vip">VIP</option>
                 </select>
-                <label for="vipEndDate" style="display: none;">Дата окончания VIP (ГГГГ-ММ-ДД):</label>
+                <label for="vipEndDate" style="display: none;">VIP End Date (YYYY-MM-DD):</label>
                 <input type="date" id="vipEndDate" style="display: none;">
-                <button type="submit">Сохранить изменения</button>
-                <button type="button" id="cancelUserEditBtn" class="cancel-btn">Отмена</button>
+                <button type="submit">Save Changes</button>
+                <button type="button" id="cancelUserEditBtn" class="cancel-btn">Cancel</button>
                 <p id="userMessage" class="admin-message"></p>
             </form>
         </div>
@@ -238,7 +239,7 @@
                 <div id="messagesDisplay" class="messages-display">
                 </div>
                 <div class="chat-input-area">
-                    <textarea id="messageInput" class="message-input" placeholder="Введите ваше сообщение..."></textarea>
+                    <textarea id="messageInput" class="message-input" placeholder="Type your message..."></textarea>
                     <button id="sendMessageBtn" class="send-message-btn">
                         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M20 4L3 11L10 14L20 4ZM20 4L13 21L10 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -254,11 +255,12 @@
             <button class="close-modal-btn" id="closeItemDetailModal">×</button>
             <h2 id="modalItemName"></h2>
             <img id="modalItemIcon" src="" alt="Item Icon">
-            <p>Размер: <span id="modalItemSize"></span></p>
-            <p>Минимальная iOS: <span id="modalItemMinimaliOS"></span></p>
-            <p class="modal-vip-status">Статус: <span id="modalItemType"></span></p>
-            <button id="modalDownloadBtn" class="modal-download-btn" target="_blank" rel="noopener noreferrer">Скачать</button>
-            <p id="modalVipMessage" class="modal-message" style="display: none; color: #dc3545;">Для скачивания VIP контента необходим VIP статус.</p>
+            <p>Size: <span id="modalItemSize"></span></p>
+            <p>Minimum iOS: <span id="modalItemMinimaliOS"></span></p>
+            <p>Hack Features: <span id="modalItemHackFeatures">N/A</span></p>
+            <p class="modal-vip-status">Status: <span id="modalItemType"></span></p>
+            <button id="modalDownloadBtn" class="modal-download-btn" target="_blank" rel="noopener noreferrer">Download</button>
+            <p id="modalVipMessage" class="modal-message" style="display: none; color: #dc3545;">VIP content requires VIP status to download.</p>
         </div>
     </div>
 
@@ -318,12 +320,14 @@
         window.where = where;
         window.collection = collection;
 
-        // Глобальная переменная для хранения VIP-статуса пользователя
+        // Global variable to store user's VIP status
         window.currentUserIsVip = false;
-        window.currentUserVipEndDate = null; // Дата окончания VIP
+        window.currentUserVipEndDate = null; // VIP end date
 
+        // Updated renderCard function to support multiple types and Hack Features
         function renderCard(data, isUserVip) {
-            const isVipContent = data.type === 'vip';
+            const typesArray = Array.isArray(data.type) ? data.type : [data.type];
+            const isVipContent = typesArray.includes('vip');
             const blockedClass = isVipContent && !isUserVip ? ' blocked' : '';
             const vipTag = isVipContent ? '<span class="vip-tag">VIP</span>' : '';
 
@@ -334,7 +338,8 @@
                      data-downloadlink="${data.downloadLink || ''}"
                      data-size="${data.size || 'N/A'}"
                      data-minimalios="${data.minimaliOS || 'N/A'}"
-                     data-type="${data.type}"
+                     data-hackfeatures="${data.hackFeatures || 'N/A'}"
+                     data-type="${JSON.stringify(typesArray)}"
                      data-is-vip-content="${isVipContent}">
                     <img src="${data.iconUrl}" alt="${data.name}">
                     <span>${data.name}</span>
@@ -343,7 +348,7 @@
         }
 
 
-        window.loadRealtimeCollection = function(collName, prefix) { // Делаем функцию глобальной
+        window.loadRealtimeCollection = function(collName, prefix) { // Make function global
             const containers = {
                 vip: document.getElementById(`${prefix}-vip`),
                 free: document.getElementById(`${prefix}-free`),
@@ -352,17 +357,22 @@
             };
 
             onSnapshot(collection(db, collName), (snapshot) => {
+                // Clear all containers first
                 Object.values(containers).forEach(container => {
                     if (container) container.innerHTML = '';
                 });
 
                 snapshot.forEach(doc => {
                     const d = doc.data();
-                    if (containers[d.type]) {
-                        containers[d.type].innerHTML += renderCard(d, window.currentUserIsVip);
-                    } else {
-                        console.warn(`Неизвестный тип '${d.type}' в документе ${doc.id} коллекции ${collName}`);
-                    }
+                    const types = Array.isArray(d.type) ? d.type : [d.type]; // Ensure it's an array
+
+                    types.forEach(type => {
+                        if (containers[type]) {
+                            containers[type].innerHTML += renderCard(d, window.currentUserIsVip);
+                        } else {
+                            console.warn(`Unknown type '${type}' in document ${doc.id} collection ${collName}`);
+                        }
+                    });
                 });
             });
         }
@@ -375,7 +385,7 @@
             window.loadRealtimeCollection('Games', 'games');
             window.loadRealtimeCollection('Apps', 'apps');
 
-            console.log('✅ Реальное время: Игры и Приложения подписаны на Firebase');
+            console.log('✅ Realtime: Games and Apps subscribed to Firebase');
         });
 
     </script>
