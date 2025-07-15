@@ -1,4 +1,4 @@
-/* Убираем отступы */
+/* Сброс стилей */
 * {
   margin: 0;
   padding: 0;
@@ -8,7 +8,8 @@
 html, body {
   height: 100%;
   overflow: hidden;
-  font-family: sans-serif;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background: black;
 }
 
 /* Видео фон */
@@ -28,5 +29,16 @@ html, body {
   z-index: 1;
   color: white;
   text-align: center;
-  padding-top: 30%;
+  padding-top: 40vh;
+}
+
+.content h1 {
+  font-size: 2.4em;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.content p {
+  font-size: 1.2em;
+  opacity: 0.8;
 }
