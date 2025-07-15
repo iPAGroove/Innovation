@@ -1,48 +1,36 @@
-/* profile.css */
+/* Новый стиль блока профиля под мобильный дизайн */
 
-/* Стили для всего контейнера профиля (внутри menu-panel) */
-.profile-info-container {
+.profile-card {
+    background: linear-gradient(135deg, #22243a 0%, #23243a 100%);
+    border-radius: 18px;
+    padding: 28px 18px 28px 18px;
     width: 100%;
-    display: flex; /* Для расположения profile-card и кнопок админа */
+    max-width: 360px;
+    box-shadow: 0 6px 32px rgba(0,0,0,0.22);
+    color: #fff;
+    margin: 0 auto;
+    position: relative;
+    display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px; /* Промежуток между profile-card и кнопками админа */
-}
-
-/* Основная карточка профиля, которая будет расширяться/сжиматься */
-.profile-card {
-    background: rgba(40, 40, 40, 0.8); /* Темный фон для карточки */
-    border-radius: 10px;
-    padding: 20px;
-    width: 100%; /* Занимает всю доступную ширину */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    color: white;
-    box-sizing: border-box; /* Включаем padding в расчет ширины */
-
-    /* Важно для начального скрытия и анимации расширения */
-    max-height: 200px; /* Начальная высота, чтобы скрыть элементы ниже "Account Settings" */
-    overflow: hidden; /* Скрывает содержимое, которое выходит за пределы max-height */
-    transition: max-height 0.3s ease-out; /* Плавный переход для max-height */
-}
-
-.profile-card.expanded {
-    max-height: 700px; /* УВЕЛИЧЕНА! Если этого недостаточно, попробуйте больше. */
 }
 
 .profile-header {
     display: flex;
     align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
+    gap: 16px;
+    width: 100%;
+    margin-bottom: 16px;
 }
 
 .profile-avatar-wrapper {
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     overflow: hidden;
-    border: 3px solid #007bff; /* Граница аватара */
-    flex-shrink: 0; /* Не сжимать аватар */
+    border: 2.5px solid #3ecc6b;
+    flex-shrink: 0;
+    background: #fff;
 }
 
 .profile-avatar {
@@ -55,186 +43,111 @@
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 8px;
+    align-items: flex-start;
 }
 
 .profile-title {
-    font-size: 24px;
-    font-weight: bold;
+    font-size: 22px;
+    font-weight: 700;
     color: #fff;
+    line-height: 1;
     margin-bottom: 5px;
-    word-break: break-word; /* Для длинных никнеймов */
+    word-break: break-word;
 }
 
 .profile-buttons {
     display: flex;
-    gap: 10px;
-    flex-wrap: wrap; /* Перенос кнопок на новую строку, если не хватает места */
+    flex-direction: row;
+    gap: 8px;
+    margin-top: 2px;
 }
 
 .profile-btn {
-    padding: 8px 15px;
+    padding: 7px 17px;
     border: none;
-    border-radius: 5px;
-    font-size: 14px;
-    font-weight: bold;
+    border-radius: 7px;
+    font-size: 15px;
+    font-weight: 600;
     cursor: pointer;
-    transition: background 0.3s ease;
-    white-space: nowrap; /* Чтобы текст кнопки не переносился */
+    white-space: nowrap;
+    box-shadow: 0 1.5px 8px 0 rgba(34,245,122,0.10);
+    transition: background 0.22s, color 0.22s, box-shadow 0.19s;
 }
 
+/* Кнопка Free Access */
 .free-access-btn {
-    background: #5cb85c; /* Зеленый */
+    background: #38d47a;
     color: #fff;
+    box-shadow: 0 1px 6px 0 rgba(44, 255, 148, 0.15);
 }
 
-.free-access-btn:hover {
-    background: #4cae4c;
-}
-
+/* Кнопка VIP с градиентом */
 .upgrade-vip-btn {
-    background: #ffc107; /* Желтый */
-    color: #333; /* Темный текст для контраста */
+    background: linear-gradient(90deg, #ffba36 0%, #ff6636 100%);
+    color: #fff;
+    box-shadow: 0 1px 6px 0 rgba(255, 162, 34, 0.15);
 }
 
 .upgrade-vip-btn:hover {
-    background: #e0a800;
+    background: linear-gradient(90deg, #ffae00 0%, #e82e47 100%);
 }
 
 .community-stats {
-    background: rgba(255, 255, 255, 0.05);
+    background: transparent;
     border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 20px;
+    padding: 6px 0 0 0;
+    margin-bottom: 0;
+    width: 100%;
     text-align: center;
 }
 
 .stats-title {
-    font-size: 16px;
-    color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 10px;
-    text-transform: uppercase;
+    font-size: 15.5px;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 9px;
+    letter-spacing: 0.1em;
+    opacity: 0.95;
 }
 
-.stat-item {
+.stat-downloads {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: 5px 0 15px 0;
 }
 
-.stat-number {
+.downloads-logo {
+    width: 52px;
+    height: 52px;
+    margin-bottom: 2px;
+    border-radius: 15px;
+    background: linear-gradient(120deg, #6aeaff 20%, #a7ffbf 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 36px;
+    color: #1a1e2e;
+    font-weight: 900;
+    user-select: none;
+}
+
+.downloads-label {
+    font-size: 27px;
     font-weight: bold;
-    color: #007bff; /* Синий для числа */
-    line-height: 1; /* Убираем лишний интервал */
+    background: linear-gradient(90deg, #85d8ff 0%, #27fdc1 75%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    letter-spacing: 0.11em;
+    font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+    margin-top: -4px;
+    margin-bottom: 2px;
 }
 
-.stat-text {
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.8);
-    margin-top: 5px;
-}
-
-/* Стили для ссылки Account Settings и ее содержимого */
 .account-settings-link-wrapper {
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 10px; /* Промежуток между элементами внутри wrapper */
-    margin-top: 10px; /* Отступ от предыдущего блока */
-}
-
-.account-settings-link {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 12px 15px;
-    background: #007bff; /* Синяя кнопка */
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: bold;
-    transition: background 0.3s ease;
-    box-sizing: border-box; /* Важно для padding */
-}
-
-.account-settings-link:hover {
-    background: #0056b3;
-}
-
-.account-settings-link svg {
-    width: 24px;
-    height: 24px;
-    fill: currentColor; /* Цвет SVG будет как у текста */
-}
-
-.account-settings-link .arrow-down {
-    transition: transform 0.3s ease;
-}
-
-.account-settings-link .arrow-down.rotate {
-    transform: rotate(180deg);
-}
-
-/* Стили для полей ввода никнейма и кнопок сохранения/выхода */
-#editProfileNickname {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 5px;
-    background: rgba(255, 255, 255, 0.05);
-    color: #fff;
-    font-size: 16px;
-    outline: none;
-    box-sizing: border-box;
-}
-
-#editProfileNickname::placeholder {
-    color: rgba(255, 255, 255, 0.6);
-}
-
-#saveProfileBtn,
-#logoutBtn {
-    width: 100%;
-    /* Используем основные стили .profile-btn, добавляем специфичные */
-    padding: 10px 15px;
-    margin-top: 0; /* Убираем стандартный margin-top, так как gap в wrapper */
-    box-sizing: border-box;
-}
-
-#saveProfileBtn {
-    background: #28a745; /* Зеленый */
-}
-
-#saveProfileBtn:hover {
-    background: #218838;
-}
-
-#logoutBtn {
-    background: #dc3545; /* Красный */
-}
-
-#logoutBtn:hover {
-    background: #c82333;
-}
-
-/* Стили для кнопок админа */
-#openAdminPanel,
-#openUsersPanel {
-    width: 100%;
-    padding: 12px 15px;
-    font-size: 16px;
-    background: #6c757d; /* Серый */
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    box-sizing: border-box;
-}
-
-#openAdminPanel:hover,
-#openUsersPanel:hover {
-    background: #5a6268;
+    margin-top: 12px;
 }
