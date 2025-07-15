@@ -6,33 +6,139 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* gap: 15px; НЕТ, ТУТ НЕ НУЖЕН GAP, Т.К. КНОПКИ ВЫНЕСЕНЫ */
-    margin-bottom: 20px; /* Добавим отступ снизу, чтобы отделить от кнопок админа */
+    margin-bottom: 20px; /* Отступ снизу, чтобы отделить от кнопок админа, которые теперь после него */
 }
 
 /* Основная карточка профиля, которая будет расширяться/сжиматься */
 .profile-card {
-    background: rgba(40, 40, 40, 0.8);
+    background: rgba(40, 40, 40, 0.8); /* Темный фон для карточки */
     border-radius: 10px;
-    padding: 15px;
-    width: 100%;
+    padding: 15px; /* УМЕНЬШЕНО: с 20px */
+    width: 100%; /* Занимает всю доступную ширину */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     color: white;
-    box-sizing: border-box;
+    box-sizing: border-box; /* Включаем padding в расчет ширины */
+
+    /* Важно для начального скрытия и анимации расширения */
     max-height: 200px; /* Начальная высота, чтобы скрыть элементы ниже "Account Settings" */
-    overflow: hidden;
-    transition: max-height 0.3s ease-out;
-    /* Убедимся, что внутренние элементы flex-контейнера тоже имеют свои отступы, а не полагаются на gap родителя */
-    display: flex; /* Добавим display: flex; flex-direction: column; если еще нет */
+    overflow: hidden; /* Скрывает содержимое, которое выходит за пределы max-height */
+    transition: max-height 0.3s ease-out; /* Плавный переход для max-height */
+    
+    /* Добавлено для лучшего контроля внутренних элементов */
+    display: flex;
     flex-direction: column;
-    gap: 10px; /* Добавим gap для внутренних секций profile-card */
+    gap: 10px; /* Промежутки между основными секциями profile-card */
 }
 
 .profile-card.expanded {
-    max-height: 800px; /* Оставим 800px, чтобы было достаточно места */
+    max-height: 800px; /* Увеличено, чтобы наверняка всё поместилось */
 }
 
-/* ... (остальные стили для .profile-header, .profile-avatar-wrapper, .profile-title, .profile-buttons, .profile-btn, .community-stats, .stats-title, .stat-item, .stat-number, .stat-text) ... */
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* УМЕНЬШЕНО: с 15px */
+    margin-bottom: 15px; /* УМЕНЬШЕНО: с 20px */
+}
+
+.profile-avatar-wrapper {
+    width: 60px; /* УМЕНЬШЕНО: с 80px */
+    height: 60px; /* УМЕНЬШЕНО: с 80px */
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #007bff; /* Граница аватара */
+    flex-shrink: 0; /* Не сжимать аватар */
+}
+
+.profile-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-details {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px; /* УМЕНЬШЕНО: с 5px */
+}
+
+.profile-title {
+    font-size: 20px; /* УМЕНЬШЕНО: с 24px */
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 3px; /* УМЕНЬШЕНО: с 5px */
+    word-break: break-word; /* Для длинных никнеймов */
+}
+
+.profile-buttons {
+    display: flex;
+    gap: 8px; /* УМЕНЬШЕНО: с 10px */
+    flex-wrap: wrap; /* Перенос кнопок на новую строку, если не хватает места */
+}
+
+.profile-btn {
+    padding: 6px 12px; /* УМЕНЬШЕНО: с 8px 15px */
+    border: none;
+    border-radius: 5px;
+    font-size: 13px; /* УМЕНЬШЕНО: с 14px */
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    white-space: nowrap; /* Чтобы текст кнопки не переносился */
+}
+
+.free-access-btn {
+    background: #5cb85c; /* Зеленый */
+    color: #fff;
+}
+
+.free-access-btn:hover {
+    background: #4cae4c;
+}
+
+.upgrade-vip-btn {
+    background: #ffc107; /* Желтый */
+    color: #333; /* Темный текст для контраста */
+}
+
+.upgrade-vip-btn:hover {
+    background: #e0a800;
+}
+
+.community-stats {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 10px; /* УМЕНЬШЕНО: с 15px */
+    margin-bottom: 0; /* Убираем margin-bottom, так как родительский gap будет управлять отступами */
+    text-align: center;
+}
+
+.stats-title {
+    font-size: 14px; /* УМЕНЬШЕНО: с 16px */
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 8px; /* УМЕНЬШЕНО: с 10px */
+    text-transform: uppercase;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stat-number {
+    font-size: 30px; /* УМЕНЬШЕНО: с 36px */
+    font-weight: bold;
+    color: #007bff; /* Синий для числа */
+    line-height: 1; /* Убираем лишний интервал */
+}
+
+.stat-text {
+    font-size: 12px; /* УМЕНЬШЕНО: с 14px */
+    color: rgba(255, 255, 255, 0.8);
+    margin-top: 3px; /* УМЕНЬШЕНО: с 5px */
+}
 
 /* Стили для ссылки Account Settings и ее содержимого */
 .account-settings-link-wrapper {
@@ -40,7 +146,7 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-    margin-top: 10px; /* УВЕЛИЧЕНО до 10px для лучшего разделения */
+    margin-top: 10px; /* Отступ от предыдущего блока */
 }
 
 .account-settings-link {
@@ -49,7 +155,7 @@
     align-items: center;
     width: 100%;
     padding: 10px 12px;
-    background: #007bff;
+    background: #007bff; /* Синяя кнопка */
     color: white;
     text-decoration: none;
     border-radius: 8px;
@@ -59,16 +165,33 @@
     font-size: 15px;
 }
 
-/* Добавим контейнер для скрываемых элементов под Account Settings, если его еще нет в HTML */
-/* ИЛИ просто убедитесь, что эти элементы имеют gap между собой */
-/* Если вы используете account-settings-content как в предыдущем примере, добавьте ему gap */
-.account-settings-content {
-    display: flex;
-    flex-direction: column;
-    gap: 10px; /* Отступ между полем никнейма, кнопками сохранения/выхода */
+.account-settings-link:hover {
+    background: #0056b3;
 }
 
-/* Стили для полей ввода никнейма и кнопок сохранения/выхода */
+.account-settings-link svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.account-settings-link .arrow-down {
+    transition: transform 0.3s ease;
+}
+
+.account-settings-link .arrow-down.rotate {
+    transform: rotate(180deg);
+}
+
+/* НОВЫЙ КОНТЕЙНЕР ДЛЯ СКРЫВАЕМОГО СОДЕРЖИМОГО НАСТРОЕК */
+.account-settings-content {
+    display: none; /* Изначально скрыт, управляется JS */
+    flex-direction: column;
+    gap: 10px; /* Отступы между полями ввода и кнопками */
+    width: 100%;
+}
+
+/* Кнопки сохранения/выхода и поле никнейма находятся внутри account-settings-content */
 #editProfileNickname {
     width: 100%;
     padding: 8px;
@@ -79,7 +202,7 @@
     font-size: 15px;
     outline: none;
     box-sizing: border-box;
-    /* Управляется JS */
+    /* display: none; будет управляться JS при раскрытии */
 }
 
 #editProfileNickname::placeholder {
@@ -91,9 +214,9 @@
     width: 100%;
     padding: 8px 12px;
     font-size: 15px;
-    margin-top: 0; /* Уже было 0, но важно */
+    margin-top: 0; /* Уже было 0, но важно, т.к. gap в .account-settings-content */
     box-sizing: border-box;
-    /* Управляется JS */
+    /* display: none; будет управляться JS при раскрытии */
 }
 
 #saveProfileBtn {
@@ -112,7 +235,8 @@
     background: #c82333;
 }
 
-/* Стили для кнопок админа - теперь они будут вне profile-card */
+/* Стили для кнопок админа - теперь они ВНЕ .profile-card, но ВНУТРИ .menu-content */
+/* Они будут отображаться после profile-info-container */
 #openAdminPanel,
 #openUsersPanel {
     width: 100%; /* Занимают всю ширину */
@@ -125,7 +249,7 @@
     cursor: pointer;
     transition: background 0.3s ease;
     box-sizing: border-box;
-    margin-top: 10px; /* Отступ от предыдущего блока (profile-info-container) */
+    margin-top: 10px; /* Отступ от предыдущего блока (profile-info-container или другой кнопки админа) */
 }
 
 #openAdminPanel:hover,
