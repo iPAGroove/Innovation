@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const editItemIconUrlInput = document.getElementById('editItemIconUrl');
     const editItemDownloadLinkInput = document.getElementById('editItemDownloadLink');
     const editItemSizeInput = document.getElementById('editItemSize');
-    const editItemMinimaliOSInput = document = document.getElementById('editItemMinimaliOS');
+    const editItemMinimaliOSInput = document.getElementById('editItemMinimaliOS'); // ИСПРАВЛЕНО ЗДЕСЬ!
     const editItemTypeSelect = document.getElementById('editItemType');
     const deleteItemBtn = document.getElementById('deleteItemBtn');
     const cancelEditBtn = document.getElementById('cancelEditBtn');
@@ -61,7 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const cancelUserEditBtn = document.getElementById('cancelUserEditBtn');
     const userMessage = document.getElementById('userMessage');
 
-
     // Check for all required elements
     const requiredElements = [
         adminPanel, openAdminPanelBtn, closeAdminPanelBtn,
@@ -76,6 +75,12 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
 
     if (requiredElements.some(el => !el)) {
+        // Добавлено более детальное логирование отсутствующих элементов
+        requiredElements.forEach(el => {
+            if (!el) {
+                console.error(`❗ Отсутствует DOM элемент с ID: ${el ? el.id : 'undefined'}`);
+            }
+        });
         console.error("❗ Отсутствуют обязательные DOM элементы для admin.js. Проверьте index.html.");
         return;
     }
@@ -292,18 +297,23 @@ document.addEventListener("DOMContentLoaded", () => {
                     editUserEmailInput.value = userData.email || '';
                     editUserNicknameInput.value = userData.nickname || '';
                     editUserStatusSelect.value = userData.isVip ? 'vip' : 'free';
-                    // Форматируем дату для input[type="date"]
-                    if (userData.vipEndDate) {
-                        const date = userData.vipEndDate.toDate ? userData.vipEndDate.toDate() : new Date(userData.vipEndDate);
-                        vipEndDateInput.value = date.toISOString().split('T')[0];
+                    // Show/hide VIP end date input based on status
+                    if (editUserStatusSelect.value === 'vip') {
+                        vipEndDateInput.style.display = 'block';
+                        vipEndDateInput.previousElementSibling.style.display = 'block'; // Label
+                        if (userData.vipEndDate) {
+                            // Convert Firebase Timestamp to YYYY-MM-DD for input type="date"
+                            const date = userData.vipEndDate.toDate();
+                            vipEndDateInput.value = date.toISOString().split('T')[0];
+                        } else {
+                            vipEndDateInput.value = '';
+                        }
                     } else {
+                        vipEndDateInput.style.display = 'none';
+                        vipEndDateInput.previousElementSibling.style.display = 'none';
                         vipEndDateInput.value = '';
                     }
-                    // Показываем/скрываем поле даты в зависимости от статуса
-                    vipEndDateInput.style.display = (editUserStatusSelect.value === 'vip') ? 'block' : 'none';
-                    document.querySelector('label[for="vipEndDate"]').style.display = (editUserStatusSelect.value === 'vip') ? 'block' : 'none';
-
-                    editUserForm.style.display = 'flex';
+                    editUserForm.style.display = 'flex'; // Show the user edit form
                 } else {
                     userMessage.style.color = '#dc3545';
                     userMessage.textContent = 'Пользователь не найден.';
@@ -320,19 +330,13 @@ document.addEventListener("DOMContentLoaded", () => {
     editItemForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         editMessage.textContent = '';
-
         const itemId = editItemIdInput.value;
         const itemCollection = editItemCollectionInput.value;
-        if (!itemId || !itemCollection) {
-            editMessage.style.color = '#dc3545';
-            editMessage.textContent = 'Ошибка: не выбран элемент для редактирования.';
-            return;
-        }
-
         const user = auth.currentUser;
+
         if (!user) {
             editMessage.style.color = '#dc3545';
-            editMessage.textContent = 'Для редактирования необходимо быть авторизованным.';
+            editMessage.textContent = 'Для редактирования элементов необходимо быть авторизованным.';
             return;
         }
 
@@ -343,163 +347,141 @@ document.addEventListener("DOMContentLoaded", () => {
             size: editItemSizeInput.value.trim(),
             minimaliOS: editItemMinimaliOSInput.value.trim(),
             type: editItemTypeSelect.value,
-            lastModified: new Date(),
-            modifiedBy: user.email
+            lastModifiedAt: new Date(),
+            lastModifiedBy: user.email
         };
 
         try {
-            const docRef = doc(db, itemCollection, itemId);
-            await updateDoc(docRef, updatedData);
+            await updateDoc(doc(db, itemCollection, itemId), updatedData);
             editMessage.style.color = '#28a745';
-            editMessage.textContent = 'Изменения сохранены успешно!';
+            editMessage.textContent = 'Элемент успешно обновлен!';
             editItemForm.style.display = 'none'; // Hide the form
-            // Reload the lists to reflect changes
-            if (itemCollection === 'Games') {
-                await loadItemsForEditing('Games', editGamesList);
-            } else {
-                await loadItemsForEditing('Apps', editAppsList);
-            }
+            // Reload the lists
+            await loadItemsForEditing('Games', editGamesList);
+            await loadItemsForEditing('Apps', editAppsList);
         } catch (error) {
-            console.error("Ошибка сохранения изменений:", error);
+            console.error("Ошибка при обновлении элемента:", error);
             editMessage.style.color = '#dc3545';
             editMessage.textContent = `Ошибка: ${error.message}`;
         }
     });
 
-    // Handle Delete Item button click
+    // Handle Delete Item button
     deleteItemBtn.addEventListener('click', async () => {
-        const confirmDelete = confirm('Вы уверены, что хотите удалить этот элемент? Это действие необратимо.');
+        const confirmDelete = confirm('Вы уверены, что хотите удалить этот элемент?');
         if (!confirmDelete) return;
 
+        editMessage.textContent = '';
         const itemId = editItemIdInput.value;
         const itemCollection = editItemCollectionInput.value;
 
-        if (!itemId || !itemCollection) {
-            editMessage.style.color = '#dc3545';
-            editMessage.textContent = 'Ошибка: не выбран элемент для удаления.';
-            return;
-        }
-
         try {
-            const docRef = doc(db, itemCollection, itemId);
-            await deleteDoc(docRef);
+            await deleteDoc(doc(db, itemCollection, itemId));
             editMessage.style.color = '#28a745';
             editMessage.textContent = 'Элемент успешно удален!';
-            editItemForm.style.display = 'none'; // Hide form after deletion
-            // Reload the lists to reflect deletion
-            if (itemCollection === 'Games') {
-                await loadItemsForEditing('Games', editGamesList);
-            } else {
-                await loadItemsForEditing('Apps', editAppsList);
-            }
+            editItemForm.style.display = 'none'; // Hide the form
+            // Reload the lists
+            await loadItemsForEditing('Games', editGamesList);
+            await loadItemsForEditing('Apps', editAppsList);
         } catch (error) {
-            console.error("Ошибка удаления элемента:", error);
+            console.error("Ошибка при удалении элемента:", error);
             editMessage.style.color = '#dc3545';
             editMessage.textContent = `Ошибка: ${error.message}`;
         }
     });
 
-    // Handle Cancel Edit button click
+    // Handle Cancel Edit button
     cancelEditBtn.addEventListener('click', () => {
         editItemForm.style.display = 'none';
         editMessage.textContent = '';
     });
 
-    // NEW: Function to load users for editing (для отдельной панели пользователей)
+    // --- User Management Logic (для usersPanel) ---
+
+    // Function to load users for editing/deleting
     async function loadUsersForEditing() {
         usersList.innerHTML = ''; // Clear list
         try {
             const querySnapshot = await getDocs(collection(db, "users"));
             if (querySnapshot.empty) {
-                usersList.innerHTML = `<li>Нет зарегистрированных пользователей.</li>`;
+                usersList.innerHTML = `<li>Нет пользователей для отображения.</li>`;
                 return;
             }
-            querySnapshot.forEach((userDoc) => {
-                const userData = userDoc.data();
+            querySnapshot.forEach((doc) => {
+                const user = doc.data();
                 const li = document.createElement('li');
                 li.innerHTML = `
-                    <span>${userData.nickname || userData.email} (${userData.isVip ? 'VIP' + (userData.vipEndDate ? ' до ' + userData.vipEndDate.toDate().toLocaleDateString() : '') : 'Free'})</span>
+                    <span>${user.nickname || user.email} (${user.isVip ? 'VIP' : 'Free'})</span>
                     <div class="item-actions">
-                        <button data-id="${userDoc.id}" class="edit-user-btn">Редактировать</button>
+                        <button data-id="${doc.id}" class="edit-user-btn">Редактировать</button>
                     </div>
                 `;
                 usersList.appendChild(li);
             });
         } catch (error) {
-            console.error("Ошибка загрузки пользователей:", error);
-            usersList.innerHTML = `<li>Ошибка загрузки пользователей: ${error.message}</li>`;
+            console.error("Ошибка загрузки пользователей для редактирования:", error);
+            usersList.innerHTML = `<li>Ошибка загрузки: ${error.message}</li>`;
         }
     }
 
-    // NEW: Handle user status change in the form
-    editUserStatusSelect.addEventListener('change', () => {
-        if (editUserStatusSelect.value === 'vip') {
-            vipEndDateInput.style.display = 'block';
-            document.querySelector('label[for="vipEndDate"]').style.display = 'block';
-        } else {
-            vipEndDateInput.style.display = 'none';
-            document.querySelector('label[for="vipEndDate"]').style.display = 'none';
-            vipEndDateInput.value = ''; // Clear date if switching to Free
-        }
-    });
-
-    // NEW: Handle Edit User form submission
+    // Handle Edit User form submission
     editUserForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         userMessage.textContent = '';
-
         const userId = editUserIdInput.value;
-        if (!userId) {
+        const user = auth.currentUser;
+
+        if (!user) {
             userMessage.style.color = '#dc3545';
-            userMessage.textContent = 'Ошибка: не выбран пользователь для редактирования.';
+            userMessage.textContent = 'Для редактирования пользователей необходимо быть авторизованным.';
             return;
         }
 
-        const nickname = editUserNicknameInput.value.trim();
         const isVip = editUserStatusSelect.value === 'vip';
         let vipEndDate = null;
 
-        if (isVip) {
-            if (!vipEndDateInput.value) {
-                userMessage.style.color = '#dc3545';
-                userMessage.textContent = 'Укажите дату окончания VIP статуса.';
-                return;
-            }
-            // Преобразуем дату в объект Date, а затем в Firebase Timestamp
+        if (isVip && vipEndDateInput.value) {
             vipEndDate = new Date(vipEndDateInput.value);
-            // Убедимся, что дата не в прошлом
-            if (vipEndDate < new Date()) {
-                 userMessage.style.color = '#dc3545';
-                 userMessage.textContent = 'Дата окончания VIP не может быть в прошлом.';
-                 return;
-            }
+            // Добавляем один день, чтобы включить весь выбранный день
+            vipEndDate.setDate(vipEndDate.getDate() + 1);
         }
 
+        const updatedUserData = {
+            nickname: editUserNicknameInput.value.trim(),
+            isVip: isVip,
+            vipEndDate: vipEndDate,
+            lastModifiedAt: new Date(),
+            lastModifiedBy: user.email
+        };
+
         try {
-            const userDocRef = doc(db, "users", userId);
-            await updateDoc(userDocRef, {
-                nickname: nickname,
-                isVip: isVip,
-                vipEndDate: vipEndDate // Firestore автоматически преобразует Date в Timestamp
-            });
+            await updateDoc(doc(db, "users", userId), updatedUserData);
             userMessage.style.color = '#28a745';
-            userMessage.textContent = 'Статус пользователя обновлен успешно!';
+            userMessage.textContent = 'Данные пользователя успешно обновлены!';
             editUserForm.style.display = 'none'; // Hide the form
-            await loadUsersForEditing(); // Reload user list
+            await loadUsersForEditing(); // Reload the users list
         } catch (error) {
-            console.error("Ошибка обновления статуса пользователя:", error);
+            console.error("Ошибка при обновлении пользователя:", error);
             userMessage.style.color = '#dc3545';
             userMessage.textContent = `Ошибка: ${error.message}`;
         }
     });
 
-    // NEW: Handle Cancel User Edit button click
+    // Handle VIP End Date visibility
+    editUserStatusSelect.addEventListener('change', () => {
+        if (editUserStatusSelect.value === 'vip') {
+            vipEndDateInput.style.display = 'block';
+            vipEndDateInput.previousElementSibling.style.display = 'block'; // Label
+        } else {
+            vipEndDateInput.style.display = 'none';
+            vipEndDateInput.previousElementSibling.style.display = 'none';
+            vipEndDateInput.value = ''; // Clear date if not VIP
+        }
+    });
+
+    // Handle Cancel User Edit button
     cancelUserEditBtn.addEventListener('click', () => {
         editUserForm.style.display = 'none';
         userMessage.textContent = '';
     });
-
-
-    // Initially show "Add Game" tab
-    // document.getElementById('addGameTab').click(); // Этот вызов теперь происходит при открытии adminPanel
 });
