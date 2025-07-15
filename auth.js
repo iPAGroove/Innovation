@@ -4,11 +4,10 @@ import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     onAuthStateChanged,
-    signOut, // ХотяsignOut вызывается из profile.js, лучше оставить здесь для полной картины
+    signOut,
     updateProfile
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 import { addDoc, collection, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
-
 
 // Импорт функции обновления профиля из profile.js
 import { updateProfileDisplay } from './profile.js';
@@ -30,14 +29,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const registerForm = document.getElementById('registerForm');
     const authContainer = document.querySelector('.auth-container');
     const profileInfoContainer = document.getElementById('profileInfoContainer');
-    // logoutBtn теперь управляется profile.js, но здесь мы можем его использовать, если нужно скрыть при показе форм логина/регистрации
-    const logoutBtn = document.getElementById('logoutBtn'); // Убедимся, что она доступна
+    const logoutBtn = document.getElementById('logoutBtn');
     const openAdminPanelBtn = document.getElementById('openAdminPanel');
     const openUsersPanelBtn = document.getElementById('openUsersPanel');
-    const addButton = document.getElementById('addButton'); // НОВАЯ КНОПКА "Добавить"
+    const addButton = document.getElementById('addButton'); // Ссылка на кнопку "Добавить"
 
-
-    // Добавляем ссылку на контейнер с вкладками аутентификации
     const authTabs = document.querySelector('.auth-tabs');
 
     const loginEmailInput = document.getElementById('loginEmail');
@@ -53,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
         loginTab, registerTab, loginForm, registerForm, authContainer,
         profileInfoContainer, logoutBtn, loginEmailInput, loginPasswordInput,
         loginError, registerEmailInput, registerNicknameInput, registerPasswordInput,
-        registerError, openAdminPanelBtn, openUsersPanelBtn, authTabs, addButton // Добавляем addButton в проверку
+        registerError, openAdminPanelBtn, openUsersPanelBtn, authTabs, addButton
     ];
 
     if (requiredElements.some(el => !el)) {
@@ -67,80 +63,83 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function showAuthForm(isRegister) {
-        profileInfoContainer.style.display = 'none';
-        authTabs.style.display = 'flex'; // Показываем табы
-        loginTab.classList.toggle('active', !isRegister);
-        registerTab.classList.toggle('active', isRegister);
-        loginForm.style.display = isRegister ? 'none' : 'flex';
-        registerForm.style.display = isRegister ? 'flex' : 'none';
-        authContainer.classList.remove('transparent-bg'); // Убираем прозрачность, чтобы форма была видна
-        loginError.textContent = '';
-        registerError.textContent = '';
+        if (profileInfoContainer) profileInfoContainer.style.display = 'none';
+        if (authTabs) authTabs.style.display = 'flex';
+        if (loginTab) loginTab.classList.toggle('active', !isRegister);
+        if (registerTab) registerTab.classList.toggle('active', isRegister);
+        if (loginForm) loginForm.style.display = isRegister ? 'none' : 'flex';
+        if (registerForm) registerForm.style.display = isRegister ? 'flex' : 'none';
+        if (authContainer) authContainer.classList.remove('transparent-bg');
+        if (loginError) loginError.textContent = '';
+        if (registerError) registerError.textContent = '';
 
-        // Скрываем кнопки админ/пользователей/выхода/добавить при показе формы авторизации/регистрации
+        // Скрываем все кнопки, которые должны быть видны только при авторизации
         if (openAdminPanelBtn) openAdminPanelBtn.style.display = 'none';
         if (openUsersPanelBtn) openUsersPanelBtn.style.display = 'none';
-        if (logoutBtn) logoutBtn.style.display = 'none'; // Также скрываем кнопку выхода
+        if (logoutBtn) logoutBtn.style.display = 'none';
         if (addButton) addButton.style.display = 'none'; // Скрываем кнопку "Добавить"
     }
 
-    loginTab.addEventListener('click', () => showAuthForm(false));
-    registerTab.addEventListener('click', () => showAuthForm(true));
+    if (loginTab) loginTab.addEventListener('click', () => showAuthForm(false));
+    if (registerTab) registerTab.addEventListener('click', () => showAuthForm(true));
 
     // Логин
-    loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const email = loginEmailInput.value.trim();
-        const password = loginPasswordInput.value;
-        loginError.textContent = '';
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = loginEmailInput.value.trim();
+            const password = loginPasswordInput.value;
+            if (loginError) loginError.textContent = '';
 
-        try {
-            await signInWithEmailAndPassword(auth, email, password);
-            console.log('✅ Пользователь вошел в систему');
-            loginEmailInput.value = '';
-            loginPasswordInput.value = '';
-        } catch (error) {
-            console.error('❌ Ошибка входа:', error.code);
-            loginError.textContent = getAuthErrorMessage(error.code, 'login');
-        }
-    });
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                console.log('✅ Пользователь вошел в систему');
+                if (loginEmailInput) loginEmailInput.value = '';
+                if (loginPasswordInput) loginPasswordInput.value = '';
+            } catch (error) {
+                console.error('❌ Ошибка входа:', error.code);
+                if (loginError) loginError.textContent = getAuthErrorMessage(error.code, 'login');
+            }
+        });
+    }
 
     // Регистрация
-    registerForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const email = registerEmailInput.value.trim();
-        const nickname = registerNicknameInput.value.trim();
-        const password = registerPasswordInput.value;
-        registerError.textContent = '';
+    if (registerForm) {
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = registerEmailInput.value.trim();
+            const nickname = registerNicknameInput.value.trim();
+            const password = registerPasswordInput.value;
+            if (registerError) registerError.textContent = '';
 
-        try {
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
 
-            if (user && nickname) {
-                await updateProfile(user, { displayName: nickname });
+                if (user && nickname) {
+                    await updateProfile(user, { displayName: nickname });
+                }
+
+                await setDoc(doc(db, "users", user.uid), {
+                    email: user.email,
+                    nickname: nickname,
+                    isVip: false,
+                    vipEndDate: null,
+                    createdAt: new Date(),
+                    lastLogin: new Date(),
+                    isAdmin: false
+                });
+
+                console.log('🎉 Пользователь зарегистрирован и добавлен в коллекцию users');
+                if (registerEmailInput) registerEmailInput.value = '';
+                if (registerNicknameInput) registerNicknameInput.value = '';
+                if (registerPasswordInput) registerPasswordInput.value = '';
+            } catch (error) {
+                console.error('❌ Ошибка регистрации:', error.code);
+                if (registerError) registerError.textContent = getAuthErrorMessage(error.code, 'register');
             }
-
-            // Добавляем запись о пользователе в коллекцию 'users' в Firestore
-            await setDoc(doc(db, "users", user.uid), {
-                email: user.email,
-                nickname: nickname,
-                isVip: false, // По дефолту Free
-                vipEndDate: null, // Нет даты окончания VIP
-                createdAt: new Date(),
-                lastLogin: new Date(),
-                isAdmin: false // По дефолту не админ
-            });
-
-            console.log('🎉 Пользователь зарегистрирован и добавлен в коллекцию users');
-            registerEmailInput.value = '';
-            registerNicknameInput.value = '';
-            registerPasswordInput.value = '';
-        } catch (error) {
-            console.error('❌ Ошибка регистрации:', error.code);
-            registerError.textContent = getAuthErrorMessage(error.code, 'register');
-        }
-    });
+        });
+    }
 
     // Обработчик изменения состояния пользователя
     onAuthStateChanged(auth, async (user) => {
@@ -150,39 +149,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (user) {
             console.log('👤 Пользователь авторизован:', user.email);
-            // Скрываем табы авторизации/регистрации, показываем контейнер профиля
-            authTabs.style.display = 'none';
-            loginForm.style.display = 'none';
-            registerForm.style.display = 'none';
-            profileInfoContainer.style.display = 'flex'; // ИЗМЕНЕНО: теперь устанавливаем 'flex'
+            if (authTabs) authTabs.style.display = 'none';
+            if (loginForm) loginForm.style.display = 'none';
+            if (registerForm) registerForm.style.display = 'none';
+            if (profileInfoContainer) profileInfoContainer.style.display = 'flex';
 
-            // Получаем VIP-статус и статус админа из коллекции 'users'
             try {
                 const userDocRef = doc(db, "users", user.uid);
                 const userDocSnap = await getDoc(userDocRef);
                 if (userDocSnap.exists()) {
                     const userData = userDocSnap.data();
                     isUserVip = userData.isVip || false;
-                    vipEndDate = userData.vipEndDate || null; // Получаем Timestamp или null
-                    isAdmin = userData.isAdmin || false; // Берем из Firestore
+                    vipEndDate = userData.vipEndDate || null;
+                    isAdmin = userData.isAdmin || false;
                     console.log(`User ${user.email} from Firestore: isAdmin=${isAdmin}, isVip=${isUserVip}, vipEndDate=${vipEndDate}`);
 
-                    // Проверяем, не истек ли VIP
                     if (isUserVip && vipEndDate) {
                         const now = new Date();
-                        const endDate = vipEndDate.toDate(); // Преобразуем Timestamp в Date
+                        const endDate = vipEndDate.toDate();
                         if (endDate < now) {
-                            isUserVip = false; // VIP истек
-                            // Опционально: обновить статус в базе данных на Free
+                            isUserVip = false;
                             await setDoc(userDocRef, { isVip: false, vipEndDate: null }, { merge: true });
                             console.log(`VIP статус пользователя ${user.email} истек и был обновлен на Free.`);
                         }
                     }
                 } else {
-                    // Если пользователя нет в коллекции users, создаем его
                     console.warn(`Пользователь ${user.email} не найден в коллекции 'users'. Создаем запись.`);
-                    // Проверяем, является ли пользователь админом по email (запасной вариант для новых пользователей)
-                    const adminEmails = ["ipagroove@gmail.com"]; // Ваши админские email-ы
+                    const adminEmails = ["ipagroove@gmail.com"];
                     isAdmin = adminEmails.includes(user.email);
                     await setDoc(doc(db, "users", user.uid), {
                         email: user.email,
@@ -191,14 +184,13 @@ document.addEventListener("DOMContentLoaded", () => {
                         vipEndDate: null,
                         createdAt: new Date(),
                         lastLogin: new Date(),
-                        isAdmin: isAdmin // Сохраняем статус админа в Firestore
+                        isAdmin: isAdmin
                     });
                 }
             } catch (error) {
                 console.error("Ошибка при получении VIP/Admin статуса пользователя:", error);
             }
 
-            // Обновляем lastLogin при каждом входе
             try {
                 const userDocRef = doc(db, "users", user.uid);
                 await setDoc(userDocRef, { lastLogin: new Date() }, { merge: true });
@@ -208,42 +200,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
         } else {
             console.log('🔒 Пользователь не авторизован');
-            // Показываем табы авторизации/регистрации, скрываем контейнер профиля
-            authTabs.style.display = 'flex';
-            loginTab.click(); // Показываем форму входа по умолчанию
-            profileInfoContainer.style.display = 'none';
+            if (authTabs) authTabs.style.display = 'flex';
+            if (loginTab) loginTab.click();
+            if (profileInfoContainer) profileInfoContainer.style.display = 'none';
         }
 
-        // Обновляем глобальные переменные VIP-статуса
         window.currentUserIsVip = isUserVip;
-        window.currentUserVipEndDate = vipEndDate ? vipEndDate.toDate() : null; // Убеждаемся, что это Date объект
+        window.currentUserVipEndDate = vipEndDate ? (vipEndDate.toDate ? vipEndDate.toDate() : vipEndDate) : null;
 
-        // Передаем статус админа и VIP в функцию обновления профиля
-        updateProfileDisplay(user, isAdmin, isUserVip, vipEndDate);
+        // Вызываем функцию обновления профиля из profile.js
+        updateProfileDisplay(user, isAdmin, isUserVip, window.currentUserVipEndDate);
 
         // Перерисовываем карточки после получения VIP-статуса
-        window.loadRealtimeCollection('Games', 'games');
-        window.loadRealtimeCollection('Apps', 'apps');
+        if (window.loadRealtimeCollection) {
+            window.loadRealtimeCollection('Games', 'games');
+            window.loadRealtimeCollection('Apps', 'apps');
+        } else {
+            console.warn("Функция window.loadRealtimeCollection не определена. Карточки могут не обновиться.");
+        }
     });
 
     function getAuthErrorMessage(code, mode) {
         switch (code) {
-            case 'auth/invalid-email':
-                return 'Некорректный email.';
-            case 'auth/user-disabled':
-                return 'Аккаунт отключен.';
+            case 'auth/invalid-email': return 'Некорректный email.';
+            case 'auth/user-disabled': return 'Аккаунт отключен.';
             case 'auth/user-not-found':
             case 'auth/wrong-password':
-            case 'auth/invalid-credential':
-                return mode === 'login' ? 'Неверный email или пароль.' : 'Ошибка регистрации.';
-            case 'auth/email-already-in-use':
-                return 'Email уже зарегистрирован.';
-            case 'auth/weak-password':
-                return 'Пароль должен быть не менее 6 символов.';
-            case 'auth/too-many-requests':
-                return 'Слишком много попыток. Попробуйте позже.';
-            default:
-                return `Неизвестная ошибка (${code}).`;
+            case 'auth/invalid-credential': return mode === 'login' ? 'Неверный email или пароль.' : 'Ошибка регистрации.';
+            case 'auth/email-already-in-use': return 'Email уже зарегистрирован.';
+            case 'auth/weak-password': return 'Пароль должен быть не менее 6 символов.';
+            case 'auth/too-many-requests': return 'Слишком много попыток. Попробуйте позже.';
+            default: return `Неизвестная ошибка (${code}).`;
         }
     }
 });
