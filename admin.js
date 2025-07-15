@@ -16,7 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const gameDownloadLinkInput = document.getElementById('gameDownloadLink');
     const gameSizeInput = document.getElementById('gameSize');
     const gameMinimaliOSInput = document.getElementById('gameMinimaliOS');
-    const gameHackFeaturesInput = document.getElementById('gameHackFeatures'); // NEW
     const gameTypeSelect = document.getElementById('gameType');
     const gameMessage = document.getElementById('gameMessage');
 
@@ -27,7 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const appDownloadLinkInput = document.getElementById('appDownloadLink');
     const appSizeInput = document.getElementById('appSize');
     const appMinimaliOSInput = document.getElementById('appMinimaliOS');
-    const appHackFeaturesInput = document.getElementById('appHackFeatures'); // NEW
     const appTypeSelect = document.getElementById('appType');
     const appMessage = document.getElementById('appMessage');
 
@@ -43,17 +41,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const editItemIconUrlInput = document.getElementById('editItemIconUrl');
     const editItemDownloadLinkInput = document.getElementById('editItemDownloadLink');
     const editItemSizeInput = document.getElementById('editItemSize');
-    const editItemMinimaliOSInput = document.getElementById('editItemMinimaliOS');
-    const editItemHackFeaturesInput = document.getElementById('editItemHackFeatures'); // NEW
+    const editItemMinimaliOSInput = document.getElementById('editItemMinimaliOS'); // ИСПРАВЛЕНО ЗДЕСЬ!
     const editItemTypeSelect = document.getElementById('editItemType');
     const deleteItemBtn = document.getElementById('deleteItemBtn');
     const cancelEditBtn = document.getElementById('cancelEditBtn');
     const editMessage = document.getElementById('editMessage');
 
-    // User Management elements
-    const usersPanel = document.getElementById('usersPanel');
-    const openUsersPanelBtn = document.getElementById('openUsersPanel');
-    const closeUsersPanelBtn = document.getElementById('closeUsersPanel');
+    // NEW: User Management elements (теперь относятся к отдельной панели)
+    const usersPanel = document.getElementById('usersPanel'); // Новая панель
+    const openUsersPanelBtn = document.getElementById('openUsersPanel'); // Новая кнопка
+    const closeUsersPanelBtn = document.getElementById('closeUsersPanel'); // Кнопка закрытия
     const usersList = document.getElementById('usersList');
     const editUserForm = document.getElementById('editUserForm');
     const editUserIdInput = document.getElementById('editUserId');
@@ -61,29 +58,30 @@ document.addEventListener("DOMContentLoaded", () => {
     const editUserNicknameInput = document.getElementById('editUserNickname');
     const editUserStatusSelect = document.getElementById('editUserStatus');
     const vipEndDateInput = document.getElementById('vipEndDate');
-    const vipEndDateLabel = vipEndDateInput.previousElementSibling; // Label for VIP End Date
     const cancelUserEditBtn = document.getElementById('cancelUserEditBtn');
     const userMessage = document.getElementById('userMessage');
 
     // Check for all required elements
     const requiredElements = [
         adminPanel, openAdminPanelBtn, closeAdminPanelBtn,
-        addGameForm, gameNameInput, gameIconUrlInput, gameDownloadLinkInput, gameSizeInput, gameMinimaliOSInput, gameHackFeaturesInput, gameTypeSelect, gameMessage,
-        addAppForm, appNameInput, appIconUrlInput, appDownloadLinkInput, appSizeInput, appMinimaliOSInput, appHackFeaturesInput, appTypeSelect, appMessage,
+        addGameForm, gameNameInput, gameIconUrlInput, gameDownloadLinkInput, gameSizeInput, gameMinimaliOSInput, gameTypeSelect, gameMessage,
+        addAppForm, appNameInput, appIconUrlInput, appDownloadLinkInput, appSizeInput, appMinimaliOSInput, appTypeSelect, appMessage,
         editItemsTab, editItemsSection, editGamesList, editAppsList, editItemForm, editItemIdInput, editItemCollectionInput,
-        editItemNameInput, editItemIconUrlInput, editItemDownloadLinkInput, editItemSizeInput, editItemMinimaliOSInput, editItemHackFeaturesInput,
+        editItemNameInput, editItemIconUrlInput, editItemDownloadLinkInput, editItemSizeInput, editItemMinimaliOSInput,
         editItemTypeSelect, deleteItemBtn, cancelEditBtn, editMessage,
+        // NEW user management elements
         usersPanel, openUsersPanelBtn, closeUsersPanelBtn, usersList, editUserForm, editUserIdInput, editUserEmailInput,
-        editUserNicknameInput, editUserStatusSelect, vipEndDateInput, vipEndDateLabel, cancelUserEditBtn, userMessage
+        editUserNicknameInput, editUserStatusSelect, vipEndDateInput, cancelUserEditBtn, userMessage
     ];
 
     if (requiredElements.some(el => !el)) {
+        // Добавлено более детальное логирование отсутствующих элементов
         requiredElements.forEach(el => {
             if (!el) {
-                console.error(`❗ Missing DOM element: ${el ? el.id : 'undefined element (check console for missing element details)'}`);
+                console.error(`❗ Отсутствует DOM элемент с ID: ${el ? el.id : 'undefined'}`);
             }
         });
-        console.error("❗ Missing required DOM elements for admin.js. Please check index.html.");
+        console.error("❗ Отсутствуют обязательные DOM элементы для admin.js. Проверьте index.html.");
         return;
     }
 
@@ -91,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const auth = window.auth; // Get auth from global window object
 
     if (!db || !auth) {
-        console.error("❗ Firestore (db) or Auth not initialized. Ensure firebaseApp is initialized before admin.js");
+        console.error("❗ Firestore (db) или Auth не инициализированы. Убедитесь, что firebaseApp инициализируется до admin.js");
         return;
     }
 
@@ -108,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         adminPanel.classList.add('active');
         document.body.style.overflow = 'hidden'; // Prevent background scrolling
-        document.getElementById('addGameTab').click(); // Activate first tab by default
+        document.getElementById('addGameTab').click(); // Активируем первую вкладку по умолчанию
     });
 
     closeAdminPanelBtn.addEventListener('click', () => {
@@ -138,6 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.body.style.overflow = '';
     });
 
+
     // Function to switch tabs (for adminPanel only)
     adminTabButtons.forEach(button => {
         button.addEventListener('click', async () => {
@@ -155,15 +154,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 await loadItemsForEditing('Games', editGamesList);
                 await loadItemsForEditing('Apps', editAppsList);
             }
+            // Removed usersTab logic from here
         });
     });
-
-    // Helper to get selected options from a multiple select
-    function getSelectedOptions(selectElement) {
-        return Array.from(selectElement.options)
-                    .filter(option => option.selected)
-                    .map(option => option.value);
-    }
 
     // Handle Add Game form submission
     addGameForm.addEventListener('submit', async (e) => {
@@ -173,7 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const user = auth.currentUser;
         if (!user) {
             gameMessage.style.color = '#dc3545';
-            gameMessage.textContent = 'You must be logged in to add games.';
+            gameMessage.textContent = 'Для добавления игр необходимо быть авторизованным.';
             return;
         }
 
@@ -183,8 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
             downloadLink: gameDownloadLinkInput.value.trim(),
             size: gameSizeInput.value.trim(),
             minimaliOS: gameMinimaliOSInput.value.trim(),
-            hackFeatures: gameHackFeaturesInput.value.trim(), // NEW field
-            type: getSelectedOptions(gameTypeSelect), // Use helper for multiple select
+            type: gameTypeSelect.value,
             createdAt: new Date(),
             addedBy: user.email
         };
@@ -192,12 +184,12 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             await addDoc(collection(db, "Games"), gameData);
             gameMessage.style.color = '#28a745';
-            gameMessage.textContent = 'Game successfully added!';
+            gameMessage.textContent = 'Игра успешно добавлена!';
             addGameForm.reset(); // Clear the form
         } catch (error) {
-            console.error("Error adding game:", error);
+            console.error("Ошибка при добавлении игры:", error);
             gameMessage.style.color = '#dc3545';
-            gameMessage.textContent = `Error: ${error.message}`;
+            gameMessage.textContent = `Ошибка: ${error.message}`;
         }
     });
 
@@ -209,7 +201,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const user = auth.currentUser;
         if (!user) {
             appMessage.style.color = '#dc3545';
-            appMessage.textContent = 'You must be logged in to add apps.';
+            appMessage.textContent = 'Для добавления приложений необходимо быть авторизованным.';
             return;
         }
 
@@ -219,8 +211,7 @@ document.addEventListener("DOMContentLoaded", () => {
             downloadLink: appDownloadLinkInput.value.trim(),
             size: appSizeInput.value.trim(),
             minimaliOS: appMinimaliOSInput.value.trim(),
-            hackFeatures: appHackFeaturesInput.value.trim(), // NEW field
-            type: getSelectedOptions(appTypeSelect), // Use helper for multiple select
+            type: appTypeSelect.value,
             createdAt: new Date(),
             addedBy: user.email
         };
@@ -228,12 +219,12 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             await addDoc(collection(db, "Apps"), appData);
             appMessage.style.color = '#28a745';
-            appMessage.textContent = 'App successfully added!';
+            appMessage.textContent = 'Приложение успешно добавлено!';
             addAppForm.reset(); // Clear the form
         } catch (error) {
-            console.error("Error adding app:", error);
+            console.error("Ошибка при добавлении приложения:", error);
             appMessage.style.color = '#dc3545';
-            appMessage.textContent = `Error: ${error.message}`;
+            appMessage.textContent = `Ошибка: ${error.message}`;
         }
     });
 
@@ -243,7 +234,7 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             const querySnapshot = await getDocs(collection(db, collectionName));
             if (querySnapshot.empty) {
-                listElement.innerHTML = `<li>No items to display.</li>`;
+                listElement.innerHTML = `<li>Нет элементов для отображения.</li>`;
                 return;
             }
             querySnapshot.forEach((doc) => {
@@ -252,14 +243,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 li.innerHTML = `
                     <span>${item.name}</span>
                     <div class="item-actions">
-                        <button data-id="${doc.id}" data-collection="${collectionName}" class="edit-item-btn">Edit</button>
+                        <button data-id="${doc.id}" data-collection="${collectionName}" class="edit-item-btn">Редактировать</button>
                     </div>
                 `;
                 listElement.appendChild(li);
             });
         } catch (error) {
-            console.error(`Error loading ${collectionName} for editing:`, error);
-            listElement.innerHTML = `<li>Error loading: ${error.message}</li>`;
+            console.error(`Ошибка загрузки ${collectionName} для редактирования:`, error);
+            listElement.innerHTML = `<li>Ошибка загрузки: ${error.message}</li>`;
         }
     }
 
@@ -281,25 +272,19 @@ document.addEventListener("DOMContentLoaded", () => {
                     editItemDownloadLinkInput.value = data.downloadLink || '';
                     editItemSizeInput.value = data.size || '';
                     editItemMinimaliOSInput.value = data.minimaliOS || '';
-                    editItemHackFeaturesInput.value = data.hackFeatures || ''; // NEW field
-
-                    // Set selected options for multiple select
-                    Array.from(editItemTypeSelect.options).forEach(option => {
-                        option.selected = (Array.isArray(data.type) && data.type.includes(option.value)) || (!Array.isArray(data.type) && data.type === option.value);
-                    });
-
+                    editItemTypeSelect.value = data.type || 'free'; // Default to 'free' if type is missing
                     editItemForm.style.display = 'flex'; // Show the edit form
                 } else {
                     editMessage.style.color = '#dc3545';
-                    editMessage.textContent = 'Item not found.';
+                    editMessage.textContent = 'Элемент не найден.';
                 }
             } catch (error) {
-                console.error("Error loading item for editing:", error);
+                console.error("Ошибка загрузки элемента для редактирования:", error);
                 editMessage.style.color = '#dc3545';
-                editMessage.textContent = `Error: ${error.message}`;
+                editMessage.textContent = `Ошибка: ${error.message}`;
             }
         }
-        // Event listener for editing users
+        // NEW: Event listener for editing users (теперь только здесь, так как usersPanel отдельна)
         if (e.target.classList.contains('edit-user-btn')) {
             const userId = e.target.dataset.id;
             userMessage.textContent = '';
@@ -315,7 +300,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     // Show/hide VIP end date input based on status
                     if (editUserStatusSelect.value === 'vip') {
                         vipEndDateInput.style.display = 'block';
-                        vipEndDateLabel.style.display = 'block'; // Label
+                        vipEndDateInput.previousElementSibling.style.display = 'block'; // Label
                         if (userData.vipEndDate) {
                             // Convert Firebase Timestamp to YYYY-MM-DD for input type="date"
                             const date = userData.vipEndDate.toDate();
@@ -325,18 +310,18 @@ document.addEventListener("DOMContentLoaded", () => {
                         }
                     } else {
                         vipEndDateInput.style.display = 'none';
-                        vipEndDateLabel.style.display = 'none';
+                        vipEndDateInput.previousElementSibling.style.display = 'none';
                         vipEndDateInput.value = '';
                     }
                     editUserForm.style.display = 'flex'; // Show the user edit form
                 } else {
                     userMessage.style.color = '#dc3545';
-                    userMessage.textContent = 'User not found.';
+                    userMessage.textContent = 'Пользователь не найден.';
                 }
             } catch (error) {
-                console.error("Error loading user for editing:", error);
+                console.error("Ошибка загрузки пользователя для редактирования:", error);
                 userMessage.style.color = '#dc3545';
-                userMessage.textContent = `Error: ${error.message}`;
+                userMessage.textContent = `Ошибка: ${error.message}`;
             }
         }
     });
@@ -351,7 +336,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!user) {
             editMessage.style.color = '#dc3545';
-            editMessage.textContent = 'You must be logged in to edit items.';
+            editMessage.textContent = 'Для редактирования элементов необходимо быть авторизованным.';
             return;
         }
 
@@ -361,8 +346,7 @@ document.addEventListener("DOMContentLoaded", () => {
             downloadLink: editItemDownloadLinkInput.value.trim(),
             size: editItemSizeInput.value.trim(),
             minimaliOS: editItemMinimaliOSInput.value.trim(),
-            hackFeatures: editItemHackFeaturesInput.value.trim(), // NEW field
-            type: getSelectedOptions(editItemTypeSelect), // Use helper for multiple select
+            type: editItemTypeSelect.value,
             lastModifiedAt: new Date(),
             lastModifiedBy: user.email
         };
@@ -370,24 +354,21 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             await updateDoc(doc(db, itemCollection, itemId), updatedData);
             editMessage.style.color = '#28a745';
-            editMessage.textContent = 'Item successfully updated!';
+            editMessage.textContent = 'Элемент успешно обновлен!';
             editItemForm.style.display = 'none'; // Hide the form
             // Reload the lists
             await loadItemsForEditing('Games', editGamesList);
             await loadItemsForEditing('Apps', editAppsList);
-            // Re-render items on main screens
-            window.loadRealtimeCollection('Games', 'games');
-            window.loadRealtimeCollection('Apps', 'apps');
         } catch (error) {
-            console.error("Error updating item:", error);
+            console.error("Ошибка при обновлении элемента:", error);
             editMessage.style.color = '#dc3545';
-            editMessage.textContent = `Error: ${error.message}`;
+            editMessage.textContent = `Ошибка: ${error.message}`;
         }
     });
 
     // Handle Delete Item button
     deleteItemBtn.addEventListener('click', async () => {
-        const confirmDelete = confirm('Are you sure you want to delete this item?');
+        const confirmDelete = confirm('Вы уверены, что хотите удалить этот элемент?');
         if (!confirmDelete) return;
 
         editMessage.textContent = '';
@@ -397,18 +378,15 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             await deleteDoc(doc(db, itemCollection, itemId));
             editMessage.style.color = '#28a745';
-            editMessage.textContent = 'Item successfully deleted!';
+            editMessage.textContent = 'Элемент успешно удален!';
             editItemForm.style.display = 'none'; // Hide the form
             // Reload the lists
             await loadItemsForEditing('Games', editGamesList);
             await loadItemsForEditing('Apps', editAppsList);
-            // Re-render items on main screens
-            window.loadRealtimeCollection('Games', 'games');
-            window.loadRealtimeCollection('Apps', 'apps');
         } catch (error) {
-            console.error("Error deleting item:", error);
+            console.error("Ошибка при удалении элемента:", error);
             editMessage.style.color = '#dc3545';
-            editMessage.textContent = `Error: ${error.message}`;
+            editMessage.textContent = `Ошибка: ${error.message}`;
         }
     });
 
@@ -418,7 +396,7 @@ document.addEventListener("DOMContentLoaded", () => {
         editMessage.textContent = '';
     });
 
-    // --- User Management Logic (for usersPanel) ---
+    // --- User Management Logic (для usersPanel) ---
 
     // Function to load users for editing/deleting
     async function loadUsersForEditing() {
@@ -426,7 +404,7 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             const querySnapshot = await getDocs(collection(db, "users"));
             if (querySnapshot.empty) {
-                usersList.innerHTML = `<li>No users to display.</li>`;
+                usersList.innerHTML = `<li>Нет пользователей для отображения.</li>`;
                 return;
             }
             querySnapshot.forEach((doc) => {
@@ -435,14 +413,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 li.innerHTML = `
                     <span>${user.nickname || user.email} (${user.isVip ? 'VIP' : 'Free'})</span>
                     <div class="item-actions">
-                        <button data-id="${doc.id}" class="edit-user-btn">Edit</button>
+                        <button data-id="${doc.id}" class="edit-user-btn">Редактировать</button>
                     </div>
                 `;
                 usersList.appendChild(li);
             });
         } catch (error) {
-            console.error("Error loading users for editing:", error);
-            usersList.innerHTML = `<li>Error loading: ${error.message}</li>`;
+            console.error("Ошибка загрузки пользователей для редактирования:", error);
+            usersList.innerHTML = `<li>Ошибка загрузки: ${error.message}</li>`;
         }
     }
 
@@ -455,67 +433,49 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!user) {
             userMessage.style.color = '#dc3545';
-            userMessage.textContent = 'You must be logged in to edit users.';
+            userMessage.textContent = 'Для редактирования пользователей необходимо быть авторизованным.';
             return;
         }
 
         const isVip = editUserStatusSelect.value === 'vip';
         let vipEndDate = null;
 
-        if (isVip) {
-            const dateValue = vipEndDateInput.value;
-            if (dateValue) {
-                vipEndDate = new Date(dateValue);
-                // Ensure date is valid and in the future
-                if (isNaN(vipEndDate.getTime()) || vipEndDate < new Date()) {
-                    userMessage.style.color = '#dc3545';
-                    userMessage.textContent = 'Please enter a valid future VIP end date.';
-                    return;
-                }
-            } else {
-                userMessage.style.color = '#dc3545';
-                userMessage.textContent = 'VIP status requires an end date.';
-                return;
-            }
+        if (isVip && vipEndDateInput.value) {
+            vipEndDate = new Date(vipEndDateInput.value);
+            // Добавляем один день, чтобы включить весь выбранный день
+            vipEndDate.setDate(vipEndDate.getDate() + 1);
         }
 
         const updatedUserData = {
             nickname: editUserNicknameInput.value.trim(),
             isVip: isVip,
             vipEndDate: vipEndDate,
-            lastModifiedByAdmin: user.email,
-            lastModifiedAt: new Date()
+            lastModifiedAt: new Date(),
+            lastModifiedBy: user.email
         };
 
         try {
             await updateDoc(doc(db, "users", userId), updatedUserData);
             userMessage.style.color = '#28a745';
-            userMessage.textContent = 'User successfully updated!';
-            editUserForm.style.display = 'none';
-            await loadUsersForEditing(); // Reload users list
-            // Force re-render of content if the current user's VIP status changed
-            if (userId === auth.currentUser.uid) {
-                window.currentUserIsVip = isVip;
-                window.currentUserVipEndDate = vipEndDate;
-                window.loadRealtimeCollection('Games', 'games');
-                window.loadRealtimeCollection('Apps', 'apps');
-            }
+            userMessage.textContent = 'Данные пользователя успешно обновлены!';
+            editUserForm.style.display = 'none'; // Hide the form
+            await loadUsersForEditing(); // Reload the users list
         } catch (error) {
-            console.error("Error updating user:", error);
+            console.error("Ошибка при обновлении пользователя:", error);
             userMessage.style.color = '#dc3545';
-            userMessage.textContent = `Error: ${error.message}`;
+            userMessage.textContent = `Ошибка: ${error.message}`;
         }
     });
 
-    // Event listener for VIP status select to show/hide VIP End Date input
+    // Handle VIP End Date visibility
     editUserStatusSelect.addEventListener('change', () => {
         if (editUserStatusSelect.value === 'vip') {
             vipEndDateInput.style.display = 'block';
-            vipEndDateLabel.style.display = 'block';
+            vipEndDateInput.previousElementSibling.style.display = 'block'; // Label
         } else {
             vipEndDateInput.style.display = 'none';
-            vipEndDateLabel.style.display = 'none';
-            vipEndDateInput.value = ''; // Clear date when switching to free
+            vipEndDateInput.previousElementSibling.style.display = 'none';
+            vipEndDateInput.value = ''; // Clear date if not VIP
         }
     });
 
