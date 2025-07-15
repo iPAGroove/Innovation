@@ -1,34 +1,43 @@
 /* admin.css */
 
-/* Общие стили для обеих панелей: adminPanel и usersPanel */
 .admin-panel {
     position: fixed;
     top: 0;
+    right: -100%; /* Initially off-screen to the right */
+    width: 100%;
+    max-width: 450px;
+    height: calc(100% - 60px);
+    bottom: 60px;
+    background: rgba(20, 20, 20, 0.95);
+    backdrop-filter: blur(12px);
+    transition: right 0.3s ease;
+    z-index: 10000; /* Higher than menu-panel */
+    display: flex; /* Важно для центрирования содержимого */
+    flex-direction: column;
+}
+
+.admin-panel.show {
     right: 0;
-    width: 350px;
+}
+
+.admin-content {
+    padding: 20px;
+    color: white;
+    width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.95);
-    box-shadow: -5px 0 20px rgba(0, 0, 0, 0.7);
-    transform: translateX(100%);
-    transition: transform 0.3s ease-out;
-    z-index: 10000;
+    overflow-y: auto;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    padding: 20px;
-    box-sizing: border-box;
-    color: #fff;
-    overflow-y: auto;
+    align-items: center; /* Центрирование содержимого */
+    gap: 15px; /* Отступы между элементами в админ-панели */
 }
 
-.admin-panel.active {
-    transform: translateX(0);
-}
-
-.admin-content h2 {
-    text-align: center;
-    color: #007bff;
-    margin-bottom: 20px;
+.admin-panel h2 {
+    font-family: 'Montserrat', sans-serif;
     font-size: 24px;
+    margin-bottom: 10px;
+    color: #007bff;
 }
 
 .admin-panel .close-btn {
@@ -37,55 +46,54 @@
     left: 15px;
     background: none;
     border: none;
-    color: #fff;
+    color: white;
     font-size: 30px;
     cursor: pointer;
-    z-index: 10100;
-    transition: color 0.2s ease;
+    z-index: 10;
 }
 
-.admin-panel .close-btn:hover {
-    color: #dc3545;
-}
-
-/* Стили только для вкладок внутри adminPanel (не для usersPanel) */
 .admin-tabs {
     display: flex;
-    margin-bottom: 20px;
+    width: 100%;
+    justify-content: space-around;
+    background: rgba(0, 0, 0, 0.2);
     border-radius: 8px;
-    overflow: hidden;
-    background: rgba(255, 255, 255, 0.1);
+    padding: 5px;
+    margin-bottom: 20px;
 }
 
 .admin-tab-btn {
     flex: 1;
-    padding: 12px 15px;
+    padding: 10px;
+    background: none;
     border: none;
-    background: transparent;
-    color: #fff;
-    font-size: 16px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 15px;
+    font-weight: bold;
     cursor: pointer;
-    transition: background 0.3s ease, color 0.3s ease;
-    text-align: center;
-    outline: none;
+    border-radius: 6px;
+    transition: all 0.3s ease;
 }
 
 .admin-tab-btn.active {
     background: #007bff;
-    color: #fff;
-    font-weight: bold;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 123, 255, 0.3);
 }
 
 .admin-tab-btn:hover:not(.active) {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
 }
 
-/* Стили для секций (вкладок) внутри adminPanel */
 .admin-section {
-    display: none;
+    width: 100%;
+    background: rgba(40, 40, 40, 0.8);
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    display: none; /* Controlled by JS */
     flex-direction: column;
-    gap: 15px;
-    padding-top: 10px;
+    gap: 10px;
 }
 
 .admin-section.active {
@@ -93,9 +101,9 @@
 }
 
 .admin-section h3 {
-    color: #fff;
-    font-size: 20px;
+    font-size: 18px;
     margin-bottom: 15px;
+    color: #fff;
     text-align: center;
 }
 
@@ -107,98 +115,86 @@
 
 .add-item-form input[type="text"],
 .add-item-form input[type="url"],
-.add-item-form input[type="email"], /* Для email пользователя */
-.add-item-form input[type="date"],  /* Для даты VIP */
+.add-item-form input[type="email"],
+.add-item-form input[type="date"],
 .add-item-form select {
-    width: calc(100% - 20px);
-    padding: 12px;
+    width: 100%;
+    padding: 10px;
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 5px;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.1);
     color: #fff;
     font-size: 16px;
     outline: none;
     box-sizing: border-box;
 }
 
-.add-item-form label { /* Стиль для меток */
-    color: #fff;
-    font-size: 14px;
-    margin-bottom: -5px;
-    margin-top: 5px;
-}
-
-
 .add-item-form input::placeholder {
     color: rgba(255, 255, 255, 0.6);
 }
 
-.add-item-form select {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23ffffff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13%205.7L146.2%20202.7%2018.3%2075.1a17.6%2017.6%200%200%200-25.3%2024.5l142.9%20142.9c.7.7%201.4%201.2%202.1%201.6%201.8%201.3%203.8%202.3%205.9%203.1%202.1.8%204.3%201.2%206.4%201.2s4.3-.4%206.4-1.2c2.1-.8%204.1-1.8%205.9-3.1.7-.4%201.4-.9%202.1-1.6l142.9-142.9c1.9-1.9%202.9-4.2%202.9-6.6s-1-4.7-2.9-6.6c-1.9-1.9-4.2-2.9-6.6-2.9z%22%2F%3E%3C%2Fsvg%3E');
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 12px;
+.add-item-form select option {
+    background: #333; /* Darker background for options */
+    color: #fff;
 }
 
 .add-item-form button[type="submit"],
-.add-item-form button.delete-btn,
-.add-item-form button.cancel-btn {
-    width: 100%;
-    padding: 12px;
+.add-item-form .delete-btn,
+.add-item-form .cancel-btn {
+    padding: 10px 15px;
     border: none;
     border-radius: 5px;
-    background: #28a745;
-    color: #fff;
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 16px;
     cursor: pointer;
     transition: background 0.3s ease;
-    margin-top: 10px;
-    outline: none;
+    color: white;
+}
+
+.add-item-form button[type="submit"] {
+    background: #007bff;
 }
 
 .add-item-form button[type="submit"]:hover {
-    background: #218838;
+    background: #0056b3;
 }
 
-.add-item-form button.delete-btn {
+.add-item-form .delete-btn {
     background: #dc3545;
 }
-.add-item-form button.delete-btn:hover {
+
+.add-item-form .delete-btn:hover {
     background: #c82333;
 }
 
-.add-item-form button.cancel-btn {
+.add-item-form .cancel-btn {
     background: #6c757d;
 }
-.add-item-form button.cancel-btn:hover {
+
+.add-item-form .cancel-btn:hover {
     background: #5a6268;
 }
 
 .admin-message {
-    color: #fff;
-    font-size: 14px;
-    margin-top: 10px;
     text-align: center;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #fff;
 }
 
-/* Стили для списков редактирования */
 .item-list-container {
-    margin-top: 20px;
+    width: 100%;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 8px;
-    padding: 15px;
-    max-height: 300px; /* Ограничиваем высоту */
-    overflow-y: auto; /* Добавляем скролл */
+    padding: 10px;
+    margin-bottom: 15px;
+    max-height: 300px; /* Ограничим высоту списка, чтобы он прокручивался */
+    overflow-y: auto;
 }
 
 .item-list-container h4 {
-    color: #007bff;
-    margin-bottom: 10px;
+    color: rgba(255, 255, 255, 0.8);
     font-size: 16px;
+    margin-bottom: 10px;
     text-align: center;
 }
 
@@ -214,7 +210,6 @@
     align-items: center;
     padding: 8px 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    color: #fff;
     font-size: 15px;
 }
 
@@ -222,36 +217,38 @@
     border-bottom: none;
 }
 
-.edit-list .edit-item-btn,
-.edit-list .edit-user-btn { /* Добавлено для кнопки редактирования пользователя */
-    background: #007bff;
-    color: #fff;
+.edit-list button {
+    background: #17a2b8; /* Инфо-цвет для кнопки редактирования */
+    color: white;
     border: none;
-    padding: 6px 10px;
-    border-radius: 4px;
+    border-radius: 5px;
+    padding: 5px 10px;
     cursor: pointer;
-    transition: background 0.2s ease;
-    font-size: 14px;
+    transition: background 0.3s ease;
+    font-size: 13px;
 }
 
-.edit-list .edit-item-btn:hover,
-.edit-list .edit-user-btn:hover {
-    background: #0056b3;
+.edit-list button:hover {
+    background: #138496;
 }
 
-
-/* Стили для иконки шестеренки в нижней навигации (и других админ кнопок) */
-#openAdminPanel, #openUsersPanel {
-    /* Эти кнопки уже имеют стиль .profile-btn.free-access-btn */
-    /* Здесь можно добавить специфические отступы, если нужно */
-    margin-top: 15px; /* Отступ от предыдущего элемента */
-    width: 100%; /* Ширина кнопки */
+/* Стили для кнопок ADD G/A и STATUS USERS внутри admin-panel */
+/* Они уже описаны в profile.css, но для ясности могут быть добавлены и сюда,
+   или мы можем использовать общий класс, как admin-control-btn */
+.admin-control-btn { /* Добавлен этот класс в HTML */
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 15px;
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    box-sizing: border-box;
+    margin-top: 10px; /* Отступ между кнопками в админ-панели */
 }
-#openAdminPanel + #openUsersPanel { /* Отступ между двумя новыми кнопками */
-    margin-top: 5px;
-}
 
-/* Стили для самой панели пользователей (использует те же базовые стили .admin-panel) */
-#usersPanel {
-    /* Дополнительные стили, если usersPanel должна чем-то отличаться от adminPanel */
+.admin-control-btn:hover {
+    background: #5a6268;
 }
