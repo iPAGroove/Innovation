@@ -50,8 +50,8 @@
         <div class="menu-content">
             <div class="auth-container">
                 <div class="auth-tabs">
-                    <button id="loginTab" class="auth-tab-btn active" data-form="login">Sign In</button>
-                    <button id="registerTab" class="auth-tab-btn" data-form="register">Sign Up</button>
+                    <button id="loginTab" class="auth-tab active" data-form="login">Sign In</button>
+                    <button id="registerTab" class="auth-tab" data-form="register">Sign Up</button>
                 </div>
 
                 <form id="loginForm" class="auth-form active">
@@ -78,8 +78,8 @@
                             <div class="profile-details">
                                 <span id="profileNicknameDisplay" class="profile-title">Loading...</span>
                                 <div class="profile-buttons">
-                                    <button class="profile-btn free-access-btn">Free Access</button>
-                                    <button class="profile-btn upgrade-vip-btn">⚡ Upgrade to VIP</button>
+                                    <button class="profile-btn free-access-btn" id="freeAccessBtn">Free Access</button>
+                                    <button class="profile-btn upgrade-vip-btn" id="upgradeVipBtn">⚡ Upgrade to VIP</button>
                                 </div>
                             </div>
                         </div>
@@ -99,6 +99,8 @@
                                     <path d="M7 10L12 15L17 10H7Z" fill="currentColor"/>
                                 </svg>
                             </a>
+                            <input type="text" id="editProfileNickname" placeholder="New Nickname" style="display: none; margin-top: 10px;">
+                            <button id="saveProfileBtn" class="profile-btn free-access-btn" style="display: none; margin-top: 5px;">Save Profile</button>
                             <button id="logoutBtn" class="profile-btn free-access-btn" style="margin-top: 15px; width: 100%; display: none;">Sign Out</button>
                         </div>
                     </div>
@@ -333,14 +335,14 @@
 
             return `
                 <div class="icon-card${blockedClass}"
-                     data-name="${data.name}"
-                     data-iconurl="${data.iconUrl}"
-                     data-downloadlink="${data.downloadLink || ''}"
-                     data-size="${data.size || 'N/A'}"
-                     data-minimalios="${data.minimaliOS || 'N/A'}"
-                     data-hackfeatures="${data.hackFeatures || 'N/A'}"
-                     data-type="${JSON.stringify(typesArray)}"
-                     data-is-vip-content="${isVipContent}">
+                    data-name="${data.name}"
+                    data-iconurl="${data.iconUrl}"
+                    data-downloadlink="${data.downloadLink || ''}"
+                    data-size="${data.size || 'N/A'}"
+                    data-minimalios="${data.minimaliOS || 'N/A'}"
+                    data-hackfeatures="${data.hackFeatures || 'N/A'}"
+                    data-type="${JSON.stringify(typesArray)}"
+                    data-is-vip-content="${isVipContent}">
                     <img src="${data.iconUrl}" alt="${data.name}">
                     <span>${data.name}</span>
                     ${vipTag}
