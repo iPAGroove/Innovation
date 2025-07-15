@@ -3,17 +3,17 @@
 /* Стили для всего контейнера профиля (внутри menu-panel) */
 .profile-info-container {
     width: 100%;
-    display: flex;
+    display: flex; /* Для расположения profile-card и кнопок админа */
     flex-direction: column;
     align-items: center;
-    margin-bottom: 20px; /* Отступ снизу, чтобы отделить от кнопки "Добавить" */
+    gap: 15px; /* Промежуток между profile-card и кнопками админа */
 }
 
 /* Основная карточка профиля, которая будет расширяться/сжиматься */
 .profile-card {
     background: rgba(40, 40, 40, 0.8); /* Темный фон для карточки */
     border-radius: 10px;
-    padding: 15px; /* УМЕНЬШЕНО: с 20px */
+    padding: 20px;
     width: 100%; /* Занимает всю доступную ширину */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     color: white;
@@ -23,27 +23,22 @@
     max-height: 200px; /* Начальная высота, чтобы скрыть элементы ниже "Account Settings" */
     overflow: hidden; /* Скрывает содержимое, которое выходит за пределы max-height */
     transition: max-height 0.3s ease-out; /* Плавный переход для max-height */
-
-    /* Добавлено для лучшего контроля внутренних элементов */
-    display: flex;
-    flex-direction: column;
-    gap: 10px; /* Промежутки между основными секциями profile-card */
 }
 
 .profile-card.expanded {
-    max-height: 800px; /* Увеличено, чтобы наверняка всё поместилось */
+    max-height: 700px; /* УВЕЛИЧЕНА! Если этого недостаточно, попробуйте больше. */
 }
 
 .profile-header {
     display: flex;
     align-items: center;
-    gap: 10px; /* УМЕНЬШЕНО: с 15px */
-    margin-bottom: 15px; /* УМЕНЬШЕНО: с 20px */
+    gap: 15px;
+    margin-bottom: 20px;
 }
 
 .profile-avatar-wrapper {
-    width: 60px; /* УМЕНЬШЕНО: с 80px */
-    height: 60px; /* УМЕНЬШЕНО: с 80px */
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     overflow: hidden;
     border: 3px solid #007bff; /* Граница аватара */
@@ -60,28 +55,28 @@
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    gap: 3px; /* УМЕНЬШЕНО: с 5px */
+    gap: 5px;
 }
 
 .profile-title {
-    font-size: 20px; /* УМЕНЬШЕНО: с 24px */
+    font-size: 24px;
     font-weight: bold;
     color: #fff;
-    margin-bottom: 3px; /* УМЕНЬШЕНО: с 5px */
+    margin-bottom: 5px;
     word-break: break-word; /* Для длинных никнеймов */
 }
 
 .profile-buttons {
     display: flex;
-    gap: 8px; /* УМЕНЬШЕНО: с 10px */
+    gap: 10px;
     flex-wrap: wrap; /* Перенос кнопок на новую строку, если не хватает места */
 }
 
 .profile-btn {
-    padding: 6px 12px; /* УМЕНЬШЕНО: с 8px 15px */
+    padding: 8px 15px;
     border: none;
     border-radius: 5px;
-    font-size: 13px; /* УМЕНЬШЕНО: с 14px */
+    font-size: 14px;
     font-weight: bold;
     cursor: pointer;
     transition: background 0.3s ease;
@@ -109,15 +104,15 @@
 .community-stats {
     background: rgba(255, 255, 255, 0.05);
     border-radius: 8px;
-    padding: 10px; /* УМЕНЬШЕНО: с 15px */
-    margin-bottom: 0; /* Убираем margin-bottom, так как родительский gap будет управлять отступами */
+    padding: 15px;
+    margin-bottom: 20px;
     text-align: center;
 }
 
 .stats-title {
-    font-size: 14px; /* УМЕНЬШЕНО: с 16px */
+    font-size: 16px;
     color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 8px; /* УМЕНЬШЕНО: с 10px */
+    margin-bottom: 10px;
     text-transform: uppercase;
 }
 
@@ -128,16 +123,16 @@
 }
 
 .stat-number {
-    font-size: 30px; /* УМЕНЬШЕНО: с 36px */
+    font-size: 36px;
     font-weight: bold;
     color: #007bff; /* Синий для числа */
     line-height: 1; /* Убираем лишний интервал */
 }
 
 .stat-text {
-    font-size: 12px; /* УМЕНЬШЕНО: с 14px */
+    font-size: 14px;
     color: rgba(255, 255, 255, 0.8);
-    margin-top: 3px; /* УМЕНЬШЕНО: с 5px */
+    margin-top: 5px;
 }
 
 /* Стили для ссылки Account Settings и ее содержимого */
@@ -145,7 +140,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px; /* Промежуток между элементами внутри wrapper */
     margin-top: 10px; /* Отступ от предыдущего блока */
 }
 
@@ -154,15 +149,14 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    padding: 10px 12px;
+    padding: 12px 15px;
     background: #007bff; /* Синяя кнопка */
     color: white;
     text-decoration: none;
     border-radius: 8px;
     font-weight: bold;
     transition: background 0.3s ease;
-    box-sizing: border-box;
-    font-size: 15px;
+    box-sizing: border-box; /* Важно для padding */
 }
 
 .account-settings-link:hover {
@@ -170,9 +164,9 @@
 }
 
 .account-settings-link svg {
-    width: 20px;
-    height: 20px;
-    fill: currentColor;
+    width: 24px;
+    height: 24px;
+    fill: currentColor; /* Цвет SVG будет как у текста */
 }
 
 .account-settings-link .arrow-down {
@@ -183,23 +177,15 @@
     transform: rotate(180deg);
 }
 
-/* Контейнер для скрываемого содержимого настроек */
-.account-settings-content {
-    display: none; /* Изначально скрыт, управляется JS */
-    flex-direction: column;
-    gap: 10px; /* Отступы между полями ввода и кнопками */
-    width: 100%;
-}
-
-/* Кнопки сохранения/выхода и поле никнейма находятся внутри account-settings-content */
+/* Стили для полей ввода никнейма и кнопок сохранения/выхода */
 #editProfileNickname {
     width: 100%;
-    padding: 8px;
+    padding: 10px;
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 5px;
     background: rgba(255, 255, 255, 0.05);
     color: #fff;
-    font-size: 15px;
+    font-size: 16px;
     outline: none;
     box-sizing: border-box;
 }
@@ -211,14 +197,14 @@
 #saveProfileBtn,
 #logoutBtn {
     width: 100%;
-    padding: 8px 12px;
-    font-size: 15px;
-    margin-top: 0;
+    /* Используем основные стили .profile-btn, добавляем специфичные */
+    padding: 10px 15px;
+    margin-top: 0; /* Убираем стандартный margin-top, так как gap в wrapper */
     box-sizing: border-box;
 }
 
 #saveProfileBtn {
-    background: #28a745;
+    background: #28a745; /* Зеленый */
 }
 
 #saveProfileBtn:hover {
@@ -226,59 +212,29 @@
 }
 
 #logoutBtn {
-    background: #dc3545;
+    background: #dc3545; /* Красный */
 }
 
 #logoutBtn:hover {
     background: #c82333;
 }
 
-/* Стили для новой кнопки "Добавить" в профиле обычного пользователя */
-.add-button {
+/* Стили для кнопок админа */
+#openAdminPanel,
+#openUsersPanel {
     width: 100%;
-    padding: 10px 12px;
-    font-size: 15px;
-    background: #28a745; /* Зеленый цвет */
+    padding: 12px 15px;
+    font-size: 16px;
+    background: #6c757d; /* Серый */
     color: white;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     transition: background 0.3s ease;
     box-sizing: border-box;
-    margin-top: 20px; /* Отступ от блока профиля */
-    display: flex; /* Чтобы иконка и текст были в ряд */
-    align-items: center;
-    justify-content: center;
-    gap: 8px; /* Отступ между иконкой и текстом */
 }
 
-.add-button:hover {
-    background: #218838;
-}
-
-.add-button svg {
-    width: 24px; /* Размер иконки */
-    height: 24px;
-    fill: currentColor; /* Цвет иконки как у текста кнопки */
-}
-
-/* Стили для кнопок админа - теперь они внутри admin-panel */
-.admin-control-btn {
-    width: 100%; /* Занимают всю ширину */
-    padding: 10px 12px;
-    font-size: 15px;
-    background: #6c757d;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    box-sizing: border-box;
-    margin-top: 10px; /* Отступ между кнопками админа */
-}
-
-.admin-control-btn:hover {
+#openAdminPanel:hover,
+#openUsersPanel:hover {
     background: #5a6268;
 }
-
-/* Убедимся, что в admin.css тоже есть эти стили для .admin-control-btn */
