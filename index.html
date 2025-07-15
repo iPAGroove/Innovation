@@ -291,21 +291,20 @@
         import { getAuth, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-analytics.js";
 
-        // *** ЗАМЕНИТЕ ЭТО СВОИМИ ДАННЫМИ Firebase! ***
         const firebaseConfig = {
-            apiKey: "ВАШ_API_КЛЮЧ",
-            authDomain: "ВАШ_AUTH_ДОМЕН",
-            projectId: "ВАШ_PROJECT_ID",
-            storageBucket: "ВАШ_STORAGE_BUCKET",
-            messagingSenderId: "ВАШ_MESSAGING_SENDER_ID",
-            appId: "ВАШ_APP_ID",
-            measurementId: "ВАШ_MEASUREMENT_ID"
+            apiKey: "AIzaSyB2In0cOmuiYB6zNj0dQrdJ8bwPkINKdzA",
+            authDomain: "updaterepoipa.firebaseapp.com",
+            projectId: "updaterepoipa",
+            storageBucket: "updaterepoipa.appspot.com",
+            messagingSenderId: "621595788422",
+            appId: "1:621595788422:web:180163c46b349232243d07",
+            measurementId: "G-T42CG13QPR"
         };
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
-        const analytics = getAnalytics(app); // Добавлено
+        const analytics = getAnalytics(app);
 
         window.firebaseApp = app;
         window.db = db;
