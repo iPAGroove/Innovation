@@ -13,7 +13,8 @@
     <link rel="stylesheet" href="menu.css">
     <link rel="stylesheet" href="chat.css">
     <link rel="stylesheet" href="auth.css">
-    <link rel="stylesheet" href="profile.css"> <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="profile.css">
+    <link rel="stylesheet" href="admin.css">
     <link rel="stylesheet" href="modal.css">
 </head>
 <body>
@@ -98,14 +99,16 @@
                                     <path d="M7 10L12 15L17 10H7Z" fill="currentColor"/>
                                 </svg>
                             </a>
-                            <input type="text" id="editProfileNickname" placeholder="New Nickname" style="display: none;">
-                            <button id="saveProfileBtn" class="profile-btn free-access-btn" style="display: none;">Save Profile</button>
-                            <button id="logoutBtn" class="profile-btn free-access-btn" style="display: none;">Sign Out</button>
+                            <div class="account-settings-content">
+                                <input type="text" id="editProfileNickname" placeholder="New Nickname" style="display: none;">
+                                <button id="saveProfileBtn" class="profile-btn free-access-btn" style="display: none;">Save Profile</button>
+                                <button id="logoutBtn" class="profile-btn free-access-btn" style="display: none;">Sign Out</button>
+                            </div>
                         </div>
                     </div>
-                    <button id="openAdminPanel" class="profile-btn free-access-btn" style="margin-top: 15px; width: 100%; display: none;">ADD G/A</button>
-                    <button id="openUsersPanel" class="profile-btn free-access-btn" style="margin-top: 5px; width: 100%; display: none;">STATUS USERS</button>
                 </div>
+                <button id="openAdminPanel" class="profile-btn free-access-btn" style="display: none;">ADD G/A</button>
+                <button id="openUsersPanel" class="profile-btn free-access-btn" style="display: none;">STATUS USERS</button>
             </div>
             <h2></h2>
             <ul class="menu-links">
