@@ -11,6 +11,8 @@ import { addDoc, collection, doc, setDoc, getDoc } from "https://www.gstatic.com
 
 
 // Импорт функции обновления профиля из profile.js
+// Убедитесь, что profile.js экспортирует эту функцию, например:
+// export function updateProfileDisplay(user, isAdmin, isUserVip, vipEndDate) { ... }
 import { updateProfileDisplay } from './profile.js';
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -47,10 +49,16 @@ document.addEventListener("DOMContentLoaded", () => {
         loginTab, registerTab, loginForm, registerForm, authContainer,
         profileInfoContainer, logoutBtn, loginEmailInput, loginPasswordInput,
         loginError, registerEmailInput, registerNicknameInput, registerPasswordInput,
-        registerError, openAdminPanelBtn, openUsersPanelBtn // Добавлено
+        registerError, openAdminPanelBtn, openUsersPanelBtn
     ];
 
     if (requiredElements.some(el => !el)) {
+        // Добавлено более детальное логирование отсутствующих элементов
+        requiredElements.forEach(el => {
+            if (!el) {
+                console.error(`❗ Отсутствует DOM элемент с ID: ${el ? el.id : 'undefined'}`);
+            }
+        });
         console.error("❗ Отсутствуют обязательные DOM элементы для auth.js");
         return;
     }
@@ -64,8 +72,11 @@ document.addEventListener("DOMContentLoaded", () => {
         authContainer.classList.remove('transparent-bg');
         loginError.textContent = '';
         registerError.textContent = '';
-        openAdminPanelBtn.style.display = 'none';
-        openUsersPanelBtn.style.display = 'none'; // Скрываем новую кнопку
+
+        // Убедимся, что кнопки скрыты при показе формы авторизации/регистрации
+        // Проверяем на null перед изменением стиля
+        if (openAdminPanelBtn) openAdminPanelBtn.style.display = 'none';
+        if (openUsersPanelBtn) openUsersPanelBtn.style.display = 'none';
     }
 
     loginTab.addEventListener('click', () => showAuthForm(false));
@@ -112,7 +123,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 isVip: false, // По дефолту Free
                 vipEndDate: null, // Нет даты окончания VIP
                 createdAt: new Date(),
-                lastLogin: new Date()
+                lastLogin: new Date(),
+                isAdmin: false // По дефолту не админ
             });
 
             console.log('🎉 Пользователь зарегистрирован и добавлен в коллекцию users');
@@ -144,10 +156,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (user) {
             console.log('👤 Пользователь авторизован:', user.email);
-            // Проверяем, является ли пользователь администратором по email
+            // Проверяем, является ли пользователь администратором по email (как запасной вариант)
             const adminEmails = ["ipagroove@gmail.com"]; // Ваши админские email-ы
-            
-            // NEW: Получаем VIP-статус и статус админа из коллекции 'users'
+
+            // Получаем VIP-статус и статус админа из коллекции 'users'
             try {
                 const userDocRef = doc(db, "users", user.uid);
                 const userDocSnap = await getDoc(userDocRef);
@@ -155,7 +167,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     const userData = userDocSnap.data();
                     isUserVip = userData.isVip || false;
                     vipEndDate = userData.vipEndDate ? userData.vipEndDate.toDate() : null;
-                    isAdmin = userData.isAdmin || adminEmails.includes(user.email); // Теперь isAdmin может быть из Firestore ИЛИ по email
+                    // isAdmin теперь берется из Firestore в первую очередь, затем из списка email
+                    isAdmin = userData.isAdmin || adminEmails.includes(user.email);
 
                     // Проверяем, не истек ли VIP
                     if (isUserVip && vipEndDate && vipEndDate < new Date()) {
@@ -167,8 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 } else {
                     // Если пользователя нет в коллекции users, создаем его
                     console.warn(`Пользователь ${user.email} не найден в коллекции 'users'. Создаем запись.`);
-                    // Инициализируем isAdmin на основе email, пока не будет явного поля в Firestore
-                    isAdmin = adminEmails.includes(user.email);
+                    isAdmin = adminEmails.includes(user.email); // Инициализируем isAdmin на основе email
                     await setDoc(doc(db, "users", user.uid), {
                         email: user.email,
                         nickname: user.displayName || 'Пользователь',
