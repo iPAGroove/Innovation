@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 // После выхода, DOM-элементы будут обновлены через onAuthStateChanged в auth.js
                 // Дополнительно сбросим состояние меню, если оно было открыто
                 const menuPanel = document.getElementById('menuPanel');
-                if (menuPanel) menuPanel.classList.remove('open');
+                if (menuPanel) menuPanel.classList.remove('show');
             } catch (error) {
                 console.error('Ошибка выхода:', error.message);
                 alert('Не удалось выйти. Попробуйте снова.');
