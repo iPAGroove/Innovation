@@ -58,3 +58,48 @@
 .menu-links a:hover {
     color: #87CEFA;
 }
+
+/* Стили для расширяющегося блока профиля */
+.profile-card {
+    /* Убедитесь, что у вашего .profile-card есть начальная высота/max-height */
+    max-height: 200px; /* Начальная высота, чтобы скрыть лишние элементы */
+    overflow: hidden; /* Скрывает содержимое, которое выходит за пределы */
+    transition: max-height 0.3s ease-out; /* Плавный переход */
+    /* Остальные стили .profile-card остаются на месте */
+}
+
+.profile-card.expanded {
+    max-height: 400px; /* Увеличьте, чтобы показать скрытые элементы */
+    /* Возможно, понадобится установить высоту auto, если содержимое сильно меняется */
+    /* height: auto; */
+}
+
+.account-settings-link .arrow-down {
+    transition: transform 0.3s ease;
+}
+
+.account-settings-link .arrow-down.rotate {
+    transform: rotate(180deg);
+}
+
+/* Стили для новых полей редактирования */
+#editProfileNickname {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 8px;
+    border: 1px solid #555;
+    background-color: #333;
+    color: white;
+    box-sizing: border-box;
+}
+
+#saveProfileBtn {
+    margin-top: 5px !important; /* Важно: если у вас есть другие стили, которые переопределяют margin-top */
+    width: 100%;
+}
+
+#logoutBtn {
+    margin-top: 15px !important; /* Выравнивание с другими кнопками внизу */
+    width: 100%;
+}
