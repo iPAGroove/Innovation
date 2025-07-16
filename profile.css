@@ -3,44 +3,196 @@
   top: 0;
   left: 0;
   width: 100%;
+  height: 100%; /* Занимает всю высоту меню */
   background: rgba(30, 30, 30, 0.85);
-  border-radius: 18px;
-  padding: 16px;
+  border-radius: 24px 24px 0 0; /* Соответствует меню */
+  padding: 24px 20px; /* Соответствует меню */
   z-index: 10;
   backdrop-filter: blur(8px);
-  display: none;
+  display: flex; /* Используем flexbox для центрирования содержимого */
   justify-content: center;
-  align-items: center;
+  align-items: flex-start; /* Выравниваем содержимое по верху */
   transition: all 0.3s ease;
+  overflow-y: auto; /* Для скролла, если контента много */
+  -webkit-overflow-scrolling: touch; /* Плавный скролл на iOS */
+}
+
+.profile-panel.hidden {
+    display: none;
 }
 
 .profile-panel.show {
   display: flex;
 }
 
-.profile-box {
+.profile-content {
   background: rgba(40, 40, 40, 0.95);
-  padding: 14px 18px;
+  padding: 20px;
   border-radius: 12px;
   color: white;
   text-align: center;
-  max-width: 380px;
+  max-width: 400px; /* Увеличим максимальную ширину */
   width: 100%;
   box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Отступы между секциями */
 }
 
+/* Header Section */
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  text-align: left;
+}
+
+.profile-avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #5a5a5a;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.profile-username {
+  font-size: 24px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.profile-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 5px;
+}
+
+.profile-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.profile-btn:active {
+    transform: translateY(1px);
+}
+
+.free-access-btn {
+  background: #28a745; /* Зеленый */
+  color: white;
+}
+
+.free-access-btn:hover {
+  background: #218838;
+}
+
+.upgrade-btn {
+  background: linear-gradient(to right, #ff8c00, #ffc107); /* Оранжевый градиент */
+  color: white;
+}
+
+.upgrade-btn:hover {
+  background: linear-gradient(to right, #e07b00, #e0ad00);
+}
+
+/* Community Statistics Section */
+.community-stats {
+  background: rgba(25, 25, 25, 0.9);
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 15px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.community-stats h3 {
+  font-size: 18px;
+  color: #bbb;
+  margin-bottom: 10px;
+  font-weight: normal;
+}
+
+.downloads-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.downloads-number {
+  font-size: 60px; /* Очень крупный шрифт */
+  font-weight: bold;
+  color: #007bff; /* Синий цвет */
+  line-height: 1; /* Убрать лишний пробел */
+  text-shadow: 0 0 15px rgba(0, 123, 255, 0.5); /* Небольшое свечение */
+}
+
+.downloads-text {
+  font-size: 18px;
+  color: #aaa;
+  margin-top: 5px;
+  letter-spacing: 2px; /* Расстояние между буквами */
+}
+
+/* Account Settings Section */
+.account-settings {
+  background: rgba(25, 25, 25, 0.9);
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 15px;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.account-settings h3 {
+  font-size: 18px;
+  color: #bbb;
+  margin: 0;
+  font-weight: normal;
+}
+
+.arrow-down {
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 8px solid #bbb;
+  transition: transform 0.3s ease;
+}
+
+/* Кнопка выхода */
 .logout-btn {
-  margin-top: 14px;
-  padding: 10px 18px;
+  margin-top: 25px; /* Увеличим отступ сверху */
+  padding: 12px 20px; /* Увеличим padding */
   background: #ff4d4d;
   border: none;
   color: white;
-  border-radius: 6px;
-  font-size: 15px;
+  border-radius: 8px; /* Немного скруглим */
+  font-size: 16px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, transform 0.2s ease;
+  width: 100%; /* Растянуть на всю ширину */
+  box-shadow: 0 4px 10px rgba(255, 77, 77, 0.3);
 }
 
 .logout-btn:hover {
   background: #e60000;
+  transform: translateY(-1px);
+}
+
+.logout-btn:active {
+  transform: translateY(0);
 }
