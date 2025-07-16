@@ -11,24 +11,20 @@
 </head>
 <body>
 
-  <!-- Чистая меню-панель -->
   <div id="menuPanel" class="menu-panel hidden">
     <div class="auth-container">
-      <!-- Информация о пользователе (скрыта по умолчанию) -->
       <div id="userInfo" class="user-info hidden">
         <h3>Добро пожаловать, <span id="displayUsername"></span>!</h3>
         <p>Ваш ID: <span id="displayUserId"></span></p>
         <button id="logoutBtn" class="auth-submit-btn">Выйти</button>
       </div>
 
-      <!-- Кнопки и формы входа/регистрации (скрыты по умолчанию) -->
       <div id="authFormsContainer">
         <div class="auth-buttons">
           <button id="showLoginBtn" class="auth-toggle-btn active">Вход</button>
           <button id="showRegisterBtn" class="auth-toggle-btn">Регистрация</button>
         </div>
 
-        <!-- Форма входа -->
         <form id="loginForm" class="auth-form active">
           <h2>Вход</h2>
           <div class="input-group">
@@ -42,7 +38,6 @@
           <button type="submit" class="auth-submit-btn">Войти</button>
         </form>
 
-        <!-- Форма регистрации -->
         <form id="registerForm" class="auth-form hidden">
           <h2>Регистрация</h2>
           <div class="input-group">
@@ -67,7 +62,6 @@
     </div>
   </div>
 
-  <!-- Нижняя панель навигации -->
   <nav class="bottom-nav">
     <button class="nav-btn" id="navGames" title="Games">
       <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -91,12 +85,11 @@
     </button>
   </nav>
 
-  <!-- Custom Message Box -->
   <div id="messageBox" class="message-box hidden">
     <p id="messageText"></p>
     <button id="closeMessageBox" class="message-box-close-btn">OK</button>
   </div>
 
-  <script src="menu.js"></script>
+  <script type="module" src="menu.js"></script>
 </body>
 </html>
