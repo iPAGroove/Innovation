@@ -1,0 +1,101 @@
+/* auth.css */
+
+.auth-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto; /* Center the auth container in the menu panel */
+    padding: 20px;
+    background: rgba(30, 30, 30, 0.95);
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    color: white;
+    text-align: center;
+}
+
+.auth-buttons {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.auth-toggle-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.auth-toggle-btn.active {
+    background: #007bff; /* Highlight active button */
+}
+
+.auth-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.auth-form.hidden {
+    display: none;
+}
+
+.auth-form h2 {
+    margin-bottom: 20px;
+    color: #007bff;
+}
+
+.input-group {
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #ccc;
+}
+
+.input-group input {
+    width: calc(100% - 20px);
+    padding: 12px;
+    border: 1px solid #555;
+    border-radius: 8px;
+    background: #333;
+    color: white;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.input-group input:focus {
+    border-color: #007bff;
+}
+
+.auth-submit-btn {
+    background: #007bff;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    margin-top: 15px;
+}
+
+.auth-submit-btn:hover {
+    background: #0056b3;
+}
+
+.auth-submit-btn:active {
+    transform: scale(0.98);
+}
