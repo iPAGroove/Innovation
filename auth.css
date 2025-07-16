@@ -2,8 +2,8 @@
 
 .auth-container {
     width: 100%;
-    max-width: 400px;
-    margin: 0 auto; /* Center the auth container in the menu panel */
+    max-width: 400px; /* Max width for better readability on larger screens */
+    margin: auto; /* Center the auth container within the menu panel */
     padding: 20px;
     background: rgba(30, 30, 30, 0.95);
     border-radius: 15px;
@@ -16,7 +16,7 @@
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
-    gap: 10px;
+    gap: 10px; /* Space between buttons */
 }
 
 .auth-toggle-btn {
@@ -32,6 +32,7 @@
 
 .auth-toggle-btn.active {
     background: #007bff; /* Highlight active button */
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
 }
 
 .auth-toggle-btn:hover {
@@ -41,7 +42,7 @@
 .auth-form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 15px; /* Space between form elements */
 }
 
 .auth-form.hidden {
@@ -65,7 +66,7 @@
 }
 
 .input-group input {
-    width: calc(100% - 20px);
+    width: calc(100% - 24px); /* Account for padding */
     padding: 12px;
     border: 1px solid #555;
     border-radius: 8px;
@@ -73,11 +74,12 @@
     color: white;
     font-size: 16px;
     outline: none;
-    transition: border-color 0.3s ease;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .input-group input:focus {
     border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
 }
 
 .auth-submit-btn {
@@ -88,12 +90,13 @@
     border-radius: 8px;
     font-size: 18px;
     cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
     margin-top: 15px;
 }
 
 .auth-submit-btn:hover {
     background: #0056b3;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
 }
 
 .auth-submit-btn:active {
