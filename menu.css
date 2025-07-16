@@ -1,0 +1,36 @@
+.menu-panel {
+  position: fixed;
+  bottom: 56px;
+  left: 10px;
+  right: 10px;
+  background: rgba(20, 20, 20, 0.9);
+  border-radius: 16px;
+  padding: 16px;
+  z-index: 999;
+  backdrop-filter: blur(12px);
+  transform: translateY(20px);
+  opacity: 1;
+  transition: all 0.25s ease;
+}
+
+.menu-panel ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu-panel li {
+  margin: 10px 0;
+}
+
+.menu-panel a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(50px);
+}
