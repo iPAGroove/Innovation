@@ -8,10 +8,11 @@
   <link rel="stylesheet" href="navigation.css" />
   <link rel="stylesheet" href="menu.css" />
   <link rel="stylesheet" href="auth.css" />
+  <link rel="stylesheet" href="profile.css" />
 </head>
 <body>
 
-  <!-- Панель меню с формами -->
+  <!-- Панель меню с формами входа/регистрации -->
   <div id="menuPanel" class="menu-panel hidden">
     <div class="auth-container">
       <div class="auth-buttons">
@@ -55,6 +56,15 @@
     </div>
   </div>
 
+  <!-- ✅ Панель профиля -->
+  <div id="profilePanel" class="profile-panel hidden">
+    <div class="profile-box">
+      <h2>👤 Профиль</h2>
+      <p><strong>Email:</strong> <span id="profileEmail"></span></p>
+      <button id="logoutBtn" class="logout-btn">Выйти</button>
+    </div>
+  </div>
+
   <!-- Нижняя навигационная панель -->
   <nav class="bottom-nav">
     <button class="nav-btn" id="navGames" title="Games">
@@ -83,5 +93,6 @@
   <script src="menu.js"></script>
   <script type="module" src="firebase-init.js"></script>
   <script type="module" src="auth-handler.js"></script>
+  <script type="module" src="profile.js"></script>
 </body>
 </html>
