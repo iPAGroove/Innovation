@@ -1,10 +1,9 @@
-/* Панель меню */
 .menu-panel {
   position: fixed;
   top: 0;
   left: 2.5%;
   width: 95%;
-  height: calc(100% - 56px); /* не перекрываем нижнюю панель */
+  height: calc(100% - 56px); /* до нижней панели */
   background: rgba(20, 20, 20, 0.9);
   border-radius: 24px 24px 0 0;
   padding: 24px 20px;
@@ -18,14 +17,13 @@
   overflow-y: auto;
 }
 
-/* Активное состояние панели */
 .menu-panel.show {
   transform: translateY(0);
   opacity: 1;
   pointer-events: auto;
 }
 
-/* Таб-переключатели */
+/* Аутентификация */
 .auth-container {
   margin-bottom: 20px;
 }
@@ -52,7 +50,6 @@
   border-bottom: 2px solid white;
 }
 
-/* Формы */
 .auth-form {
   display: flex;
   flex-direction: column;
@@ -88,7 +85,6 @@
   background: #397de0;
 }
 
-/* Авторизованный блок */
 .user-status {
   text-align: center;
   color: white;
@@ -112,7 +108,7 @@
   background: #b73737;
 }
 
-/* Скрытые элементы */
+/* Класс для скрытия */
 .hidden {
   display: none;
 }
