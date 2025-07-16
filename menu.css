@@ -1,16 +1,19 @@
 .menu-panel {
   position: fixed;
-  bottom: 56px;
-  left: 10px;
-  right: 10px;
+  top: 0;
+  left: 2.5%;
+  width: 95%;
+  height: calc(100% - 56px); /* Высота до нижней навигации */
   background: rgba(20, 20, 20, 0.9);
-  border-radius: 16px;
-  padding: 16px;
+  border-radius: 24px 24px 0 0;
+  padding: 24px 20px;
   z-index: 999;
   backdrop-filter: blur(12px);
-  transform: translateY(20px);
-  opacity: 1;
-  transition: all 0.25s ease;
+  transform: translateY(100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
 }
 
 .menu-panel ul {
@@ -20,17 +23,17 @@
 }
 
 .menu-panel li {
-  margin: 10px 0;
+  margin: 16px 0;
 }
 
 .menu-panel a {
   color: white;
   text-decoration: none;
-  font-size: 16px;
+  font-size: 18px;
 }
 
-.hidden {
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(50px);
+.menu-panel.show {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
 }
