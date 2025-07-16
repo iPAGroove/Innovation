@@ -19,8 +19,7 @@
             <div class="profile-header">
                 <img src="https://via.placeholder.com/150/0000FF/808080?text=Avatar" alt="Profile Avatar" class="profile-avatar" id="profileAvatar">
                 <div class="profile-info">
-                    <span class="profile-username" id="profileUsername">vibedrift</span>
-                    <div class="profile-buttons">
+                    <span class="profile-username" id="profileUsername"></span> <div class="profile-buttons">
                         <button class="profile-btn free-access-btn">Free Access</button>
                         <button class="profile-btn upgrade-btn">⚡ Upgrade to VIP</button>
                     </div>
@@ -35,11 +34,12 @@
                 </div>
             </div>
 
-            <div class="account-settings">
-                <h3>Account Settings <span class="arrow-down"></span></h3>
+            <div class="account-settings" id="accountSettingsSection">
+                <h3>Account Settings <span class="arrow-down" id="accountSettingsArrow"></span></h3>
+                <div class="account-settings-content hidden" id="accountSettingsContent">
+                    <button id="logoutBtn" class="logout-btn">Выйти</button>
                 </div>
-
-            <button id="logoutBtn" class="logout-btn">Выйти</button>
+            </div>
         </div>
     </div>
 
