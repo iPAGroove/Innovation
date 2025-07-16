@@ -1,94 +1,79 @@
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+document.addEventListener("DOMContentLoaded", () => {
+  const menuBtn = document.getElementById('navMenu');
+  const menuPanel = document.getElementById('menuPanel');
 
-const auth = window.firebaseAuth;
+  // New elements for login/registration
+  const showLoginBtn = document.getElementById('showLoginBtn');
+  const showRegisterBtn = document.getElementById('showRegisterBtn');
+  const loginForm = document.getElementById('loginForm');
+  const registerForm = document.getElementById('registerForm');
 
-const menuBtn = document.getElementById('navMenu');
-const menuPanel = document.getElementById('menuPanel');
+  // Event listener for opening/closing the main menu panel
+  menuBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    menuPanel.classList.toggle('show');
+  });
 
-// Открытие / закрытие панели
-menuBtn.addEventListener('click', (e) => {
-  e.stopPropagation();
-  menuPanel.classList.toggle('show');
-});
+  // Event listener for closing the main menu panel when clicking outside
+  document.addEventListener('click', (e) => {
+    if (
+      !menuPanel.contains(e.target) &&
+      !menuBtn.contains(e.target)
+    ) {
+      menuPanel.classList.remove('show');
+    }
+  });
 
-document.addEventListener('click', (e) => {
-  if (!menuPanel.contains(e.target) && !menuBtn.contains(e.target)) {
-    menuPanel.classList.remove('show');
-  }
-});
+  // Event listeners for switching between login and registration forms
+  showLoginBtn.addEventListener('click', () => {
+    loginForm.classList.remove('hidden');
+    registerForm.classList.add('hidden');
+    showLoginBtn.classList.add('active');
+    showRegisterBtn.classList.remove('active');
+  });
 
-// Элементы интерфейса
-const loginTab = document.getElementById("loginTab");
-const registerTab = document.getElementById("registerTab");
-const loginForm = document.getElementById("loginForm");
-const registerForm = document.getElementById("registerForm");
-const userStatus = document.getElementById("userStatus");
-const loggedInUser = document.getElementById("loggedInUser");
-const logoutBtn = document.getElementById("logoutBtn");
+  showRegisterBtn.addEventListener('click', () => {
+    registerForm.classList.remove('hidden');
+    loginForm.classList.add('hidden');
+    showRegisterBtn.classList.add('active');
+    showLoginBtn.classList.remove('active');
+  });
 
-// Переключение вкладок
-loginTab.addEventListener("click", () => {
-  loginTab.classList.add("active");
-  registerTab.classList.remove("active");
-  loginForm.classList.remove("hidden");
-  registerForm.classList.add("hidden");
-});
+  // Prevent closing the menu panel when clicking inside the auth forms
+  loginForm.addEventListener('click', (e) => {
+    e.stopPropagation();
+  });
 
-registerTab.addEventListener("click", () => {
-  loginTab.classList.remove("active");
-  registerTab.classList.add("active");
-  loginForm.classList.add("hidden");
-  registerForm.classList.remove("hidden");
-});
+  registerForm.addEventListener('click', (e) => {
+    e.stopPropagation();
+  });
 
-// Вход
-loginForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const email = document.getElementById("loginEmail").value;
-  const password = document.getElementById("loginPassword").value;
+  // Optional: Handle form submissions (for demonstration, just log to console)
+  loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    console.log('Login form submitted!');
+    console.log('Email:', document.getElementById('loginEmail').value);
+    console.log('Password:', document.getElementById('loginPassword').value);
+    // Here you would typically send data to a server
+    alert('Вход выполнен (для демонстрации)');
+    menuPanel.classList.remove('show'); // Close menu after submission
+  });
 
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-  } catch (err) {
-    alert("Ошибка входа: " + err.message);
-  }
-});
+  registerForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const password = document.getElementById('registerPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
 
-// Регистрация
-registerForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const email = document.getElementById("registerEmail").value;
-  const password = document.getElementById("registerPassword").value;
-
-  try {
-    await createUserWithEmailAndPassword(auth, email, password);
-  } catch (err) {
-    alert("Ошибка регистрации: " + err.message);
-  }
-});
-
-// Выход
-logoutBtn.addEventListener("click", () => {
-  signOut(auth);
-});
-
-// Проверка авторизации
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    userStatus.classList.remove("hidden");
-    loginForm.classList.add("hidden");
-    registerForm.classList.add("hidden");
-    loggedInUser.textContent = user.email;
-  } else {
-    userStatus.classList.add("hidden");
-    loginForm.classList.remove("hidden");
-    registerForm.classList.add("hidden");
-    loginTab.classList.add("active");
-    registerTab.classList.remove("active");
-  }
+    if (password !== confirmPassword) {
+      alert('Пароли не совпадают!');
+      return;
+    }
+    console.log('Registration form submitted!');
+    console.log('Username:', document.getElementById('registerUsername').value);
+    console.log('Email:', document.getElementById('registerEmail').value);
+    console.log('Password:', password);
+    // Here you would typically send data to a server
+    alert('Регистрация успешна (для демонстрации)');
+    menuPanel.classList.remove('show'); // Close menu after submission
+  });
 });
