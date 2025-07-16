@@ -2,26 +2,20 @@ import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/fi
 
 document.addEventListener("DOMContentLoaded", () => {
   const auth = getAuth();
+  const menuPanel = document.getElementById("menuPanel");
   const profilePanel = document.getElementById("profilePanel");
-  const authContainer = document.querySelector(".auth-container");
   const profileEmail = document.getElementById("profileEmail");
-  const profileUsername = document.getElementById("profileUsername");
-  const profileAvatar = document.getElementById("profileAvatar");
-  const downloadCount = document.getElementById("downloadCount");
   const logoutBtn = document.getElementById("logoutBtn");
+  const authContainer = document.querySelector(".auth-container");
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
       profilePanel.classList.remove("hidden");
-      authContainer.classList.add("hidden");
-
       profileEmail.textContent = user.email;
-      profileUsername.textContent = user.displayName || user.email.split("@")[0];
-      profileAvatar.src = "https://i.ibb.co/r4H3rqD/avatar.jpg";
-      downloadCount.textContent = "0";
+      authContainer.style.display = "none";
     } else {
       profilePanel.classList.add("hidden");
-      authContainer.classList.remove("hidden");
+      authContainer.style.display = "block";
     }
   });
 
@@ -29,8 +23,9 @@ document.addEventListener("DOMContentLoaded", () => {
     signOut(auth)
       .then(() => {
         alert("Вы вышли из аккаунта");
+        profilePanel.classList.remove("show");
         profilePanel.classList.add("hidden");
-        authContainer.classList.remove("hidden");
+        authContainer.style.display = "block";
       })
       .catch((error) => {
         console.error("Ошибка выхода:", error);
