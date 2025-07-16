@@ -1,8 +1,8 @@
-import { 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword, 
-  onAuthStateChanged, 
-  signOut 
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
 import { auth } from "./firebase-init.js";
@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const profilePanel = document.getElementById("profilePanel");
   const profileEmail = document.getElementById("profileEmail");
   const logoutBtn = document.getElementById("logoutBtn");
+  const authContainer = document.querySelector(".auth-container");
 
   // Переключение вкладок
   showLoginBtn.addEventListener("click", () => {
@@ -76,17 +77,14 @@ document.addEventListener("DOMContentLoaded", () => {
       profilePanel.classList.remove("hidden");
       profilePanel.classList.add("show");
 
+      authContainer.classList.add("hidden");
       menuPanel.classList.remove("show");
-
-      // Скрыть формы входа/регистрации
-      loginForm.classList.add("hidden");
-      registerForm.classList.add("hidden");
     } else {
       // Пользователь вышел
       profilePanel.classList.remove("show");
       profilePanel.classList.add("hidden");
 
-      // Показать формы
+      authContainer.classList.remove("hidden");
       loginForm.classList.remove("hidden");
       registerForm.classList.add("hidden");
       showLoginBtn.classList.add("active");
@@ -94,3 +92,4 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
