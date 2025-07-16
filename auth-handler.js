@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const logoutBtn = document.getElementById("logoutBtn");
   const authContainer = document.querySelector(".auth-container");
 
-  // Переключение вкладок
+  // Вкладки
   showLoginBtn.addEventListener("click", () => {
     loginForm.classList.remove("hidden");
     registerForm.classList.add("hidden");
@@ -40,7 +40,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const password = document.getElementById("loginPassword").value;
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      authContainer.style.display = "none"; // <-- скрываем весь блок
+      authContainer.classList.add("hidden");
+      profilePanel.classList.remove("hidden");
     } catch (err) {
       alert("Ошибка входа: " + err.message);
     }
@@ -60,7 +61,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      authContainer.style.display = "none"; // <-- скрываем весь блок
+      authContainer.classList.add("hidden");
+      profilePanel.classList.remove("hidden");
     } catch (err) {
       alert("Ошибка регистрации: " + err.message);
     }
@@ -71,20 +73,16 @@ document.addEventListener("DOMContentLoaded", () => {
     await signOut(auth);
   });
 
-  // Отслеживание авторизации
+  // Слежение за авторизацией
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      // Авторизован
       profileEmail.textContent = user.email;
       profilePanel.classList.remove("hidden");
-      profilePanel.classList.add("show");
-      authContainer.style.display = "none";
+      authContainer.classList.add("hidden");
       menuPanel.classList.remove("show");
     } else {
-      // Не авторизован
-      profilePanel.classList.remove("show");
       profilePanel.classList.add("hidden");
-      authContainer.style.display = "block";
+      authContainer.classList.remove("hidden");
       loginForm.classList.remove("hidden");
       registerForm.classList.add("hidden");
       showLoginBtn.classList.add("active");
