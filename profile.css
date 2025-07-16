@@ -3,22 +3,18 @@
   top: 0;
   left: 0;
   width: 100%;
-  /* Уберем min-height: 100% чтобы панель не занимала всю высоту,
-     а ее высота определялась содержимым. */
-  /* background, border-radius, padding, z-index, backdrop-filter, transition остаются как были */
   background: rgba(30, 30, 30, 0.85);
   border-radius: 24px 24px 0 0; /* Соответствует меню */
-  padding: 24px 20px; /* Соответствует меню */
+  padding: 20px 15px; /* Немного уменьшен padding */
   z-index: 10;
   backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* Выравниваем содержимое по верху */
+  align-items: flex-start;
   transition: all 0.3s ease;
-  overflow-y: auto; /* Для скролла, если контента много */
-  -webkit-overflow-scrolling: touch; /* Плавный скролл на iOS */
-  /* Добавим max-height, чтобы ограничить размер и оставить место для нижней панели, если меню открыто */
-  max-height: calc(100% - 56px); /* Высота до нижней навигации, как у menu-panel */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  max-height: calc(100% - 56px); /* Высота до нижней навигации */
 }
 
 .profile-panel.hidden {
@@ -31,29 +27,29 @@
 
 .profile-content {
   background: rgba(40, 40, 40, 0.95);
-  padding: 15px; /* Уменьшаем padding */
+  padding: 10px; /* Еще уменьшаем padding */
   border-radius: 12px;
   color: white;
   text-align: center;
-  max-width: 380px; /* Слегка уменьшим max-width */
+  max-width: 360px; /* Немного уменьшим max-width для более компактного вида */
   width: 100%;
   box-shadow: 0 0 10px rgba(0,0,0,0.3);
   display: flex;
   flex-direction: column;
-  gap: 15px; /* Уменьшаем отступы между секциями */
+  gap: 12px; /* Уменьшаем отступы между секциями */
 }
 
 /* Header Section */
 .profile-header {
   display: flex;
   align-items: center;
-  gap: 10px; /* Уменьшаем отступ */
+  gap: 8px; /* Уменьшаем отступ */
   text-align: left;
 }
 
 .profile-avatar {
-  width: 60px; /* Уменьшаем размер аватара */
-  height: 60px; /* Уменьшаем размер аватара */
+  width: 55px; /* Еще уменьшаем размер аватара */
+  height: 55px; /* Еще уменьшаем размер аватара */
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #5a5a5a;
@@ -63,26 +59,26 @@
 .profile-info {
   display: flex;
   flex-direction: column;
-  gap: 3px; /* Уменьшаем отступ */
+  gap: 2px; /* Уменьшаем отступ */
 }
 
 .profile-username {
-  font-size: 22px; /* Слегка уменьшаем размер шрифта */
+  font-size: 20px; /* Еще уменьшаем размер шрифта */
   font-weight: bold;
   color: #ffffff;
 }
 
 .profile-buttons {
   display: flex;
-  gap: 6px; /* Уменьшаем отступ */
-  margin-top: 3px; /* Уменьшаем отступ */
+  gap: 5px; /* Уменьшаем отступ */
+  margin-top: 2px; /* Уменьшаем отступ */
 }
 
 .profile-btn {
-  padding: 5px 10px; /* Уменьшаем padding */
+  padding: 4px 8px; /* Еще уменьшаем padding */
   border: none;
-  border-radius: 18px; /* Слегка уменьшаем border-radius */
-  font-size: 12px; /* Уменьшаем размер шрифта */
+  border-radius: 16px; /* Немного уменьшаем border-radius */
+  font-size: 11px; /* Еще уменьшаем размер шрифта */
   font-weight: 600;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -93,7 +89,7 @@
 }
 
 .free-access-btn {
-  background: #28a745; /* Зеленый */
+  background: #28a745;
   color: white;
 }
 
@@ -102,7 +98,7 @@
 }
 
 .upgrade-btn {
-  background: linear-gradient(to right, #ff8c00, #ffc107); /* Оранжевый градиент */
+  background: linear-gradient(to right, #ff8c00, #ffc107);
   color: white;
 }
 
@@ -113,17 +109,17 @@
 /* Community Statistics Section */
 .community-stats {
   background: rgba(25, 25, 25, 0.9);
-  padding: 12px; /* Уменьшаем padding */
+  padding: 10px; /* Еще уменьшаем padding */
   border-radius: 10px;
-  margin-top: 12px; /* Уменьшаем отступ */
+  margin-top: 10px; /* Уменьшаем отступ */
   text-align: center;
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .community-stats h3 {
-  font-size: 16px; /* Уменьшаем размер шрифта */
+  font-size: 15px; /* Еще уменьшаем размер шрифта */
   color: #bbb;
-  margin-bottom: 8px; /* Уменьшаем отступ */
+  margin-bottom: 6px; /* Уменьшаем отступ */
   font-weight: normal;
 }
 
@@ -134,33 +130,33 @@
 }
 
 .downloads-number {
-  font-size: 50px; /* Уменьшаем размер шрифта */
+  font-size: 45px; /* Еще уменьшаем размер шрифта */
   font-weight: bold;
-  color: #007bff; /* Синий цвет */
-  line-height: 1; /* Убрать лишний пробел */
-  text-shadow: 0 0 15px rgba(0, 123, 255, 0.5); /* Небольшое свечение */
+  color: #007bff;
+  line-height: 1;
+  text-shadow: 0 0 15px rgba(0, 123, 255, 0.5);
 }
 
 .downloads-text {
-  font-size: 16px; /* Уменьшаем размер шрифта */
+  font-size: 15px; /* Еще уменьшаем размер шрифта */
   color: #aaa;
-  margin-top: 3px; /* Уменьшаем отступ */
-  letter-spacing: 1.5px; /* Слегка уменьшаем расстояние между буквами */
+  margin-top: 2px; /* Уменьшаем отступ */
+  letter-spacing: 1px; /* Слегка уменьшаем расстояние между буквами */
 }
 
 /* Account Settings Section */
 .account-settings {
   background: rgba(25, 25, 25, 0.9);
-  padding: 12px; /* Уменьшаем padding */
+  padding: 10px; /* Еще уменьшаем padding */
   border-radius: 10px;
-  margin-top: 12px; /* Уменьшаем отступ */
+  margin-top: 10px; /* Уменьшаем отступ */
   text-align: left;
-  cursor: pointer; /* Делаем кликабельным */
+  cursor: pointer;
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .account-settings h3 {
-  font-size: 16px; /* Уменьшаем размер шрифта */
+  font-size: 15px; /* Еще уменьшаем размер шрифта */
   color: #bbb;
   margin: 0;
   font-weight: normal;
@@ -172,9 +168,9 @@
 .arrow-down {
   width: 0;
   height: 0;
-  border-left: 5px solid transparent; /* Уменьшаем размер стрелки */
-  border-right: 5px solid transparent; /* Уменьшаем размер стрелки */
-  border-top: 7px solid #bbb; /* Уменьшаем размер стрелки */
+  border-left: 4px solid transparent; /* Еще уменьшаем размер стрелки */
+  border-right: 4px solid transparent; /* Еще уменьшаем размер стрелки */
+  border-top: 6px solid #bbb; /* Еще уменьшаем размер стрелки */
   transition: transform 0.3s ease;
 }
 
@@ -189,23 +185,23 @@
 }
 
 .account-settings-content.show {
-    max-height: 80px; /* Уменьшим максимальную высоту для скрытого контента */
-    padding-top: 10px; /* Уменьшаем отступ сверху */
+    max-height: 70px; /* Еще уменьшим максимальную высоту для скрытого контента */
+    padding-top: 8px; /* Уменьшаем отступ сверху */
 }
 
 /* Кнопка выхода */
 .logout-btn {
-  padding: 10px 18px; /* Уменьшаем padding */
+  padding: 8px 15px; /* Еще уменьшаем padding */
   background: #ff4d4d;
   border: none;
   color: white;
-  border-radius: 6px; /* Слегка уменьшаем border-radius */
-  font-size: 15px; /* Уменьшаем размер шрифта */
+  border-radius: 5px; /* Немного уменьшаем border-radius */
+  font-size: 14px; /* Еще уменьшаем размер шрифта */
   cursor: pointer;
   transition: background 0.3s ease, transform 0.2s ease;
   width: 100%;
   box-shadow: 0 4px 10px rgba(255, 77, 77, 0.3);
-  margin-top: 10px; /* Уменьшаем отступ сверху */
+  margin-top: 8px; /* Уменьшаем отступ сверху */
 }
 
 .logout-btn:hover {
