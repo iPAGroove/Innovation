@@ -11,49 +11,63 @@
 </head>
 <body>
 
+  <!-- Чистая меню-панель -->
   <div id="menuPanel" class="menu-panel hidden">
     <div class="auth-container">
-      <div class="auth-buttons">
-        <button id="showLoginBtn" class="auth-toggle-btn active">Вход</button>
-        <button id="showRegisterBtn" class="auth-toggle-btn">Регистрация</button>
+      <!-- Информация о пользователе (скрыта по умолчанию) -->
+      <div id="userInfo" class="user-info hidden">
+        <h3>Добро пожаловать, <span id="displayUsername"></span>!</h3>
+        <p>Ваш ID: <span id="displayUserId"></span></p>
+        <button id="logoutBtn" class="auth-submit-btn">Выйти</button>
       </div>
 
-      <form id="loginForm" class="auth-form active">
-        <h2>Вход</h2>
-        <div class="input-group">
-          <label for="loginEmail">Email:</label>
-          <input type="email" id="loginEmail" name="email" required>
+      <!-- Кнопки и формы входа/регистрации (скрыты по умолчанию) -->
+      <div id="authFormsContainer">
+        <div class="auth-buttons">
+          <button id="showLoginBtn" class="auth-toggle-btn active">Вход</button>
+          <button id="showRegisterBtn" class="auth-toggle-btn">Регистрация</button>
         </div>
-        <div class="input-group">
-          <label for="loginPassword">Пароль:</label>
-          <input type="password" id="loginPassword" name="password" required>
-        </div>
-        <button type="submit" class="auth-submit-btn">Войти</button>
-      </form>
 
-      <form id="registerForm" class="auth-form hidden">
-        <h2>Регистрация</h2>
-        <div class="input-group">
-          <label for="registerUsername">Имя пользователя:</label>
-          <input type="text" id="registerUsername" name="username" required>
-        </div>
-        <div class="input-group">
-          <label for="registerEmail">Email:</label>
-          <input type="email" id="registerEmail" name="email" required>
-        </div>
-        <div class="input-group">
-          <label for="registerPassword">Пароль:</label>
-          <input type="password" id="registerPassword" name="password" required>
-        </div>
-        <div class="input-group">
-          <label for="confirmPassword">Подтвердите пароль:</label>
-          <input type="password" id="confirmPassword" name="confirmPassword" required>
-        </div>
-        <button type="submit" class="auth-submit-btn">Зарегистрироваться</button>
-      </form>
+        <!-- Форма входа -->
+        <form id="loginForm" class="auth-form active">
+          <h2>Вход</h2>
+          <div class="input-group">
+            <label for="loginEmail">Email:</label>
+            <input type="email" id="loginEmail" name="email" required>
+          </div>
+          <div class="input-group">
+            <label for="loginPassword">Пароль:</label>
+            <input type="password" id="loginPassword" name="password" required>
+          </div>
+          <button type="submit" class="auth-submit-btn">Войти</button>
+        </form>
+
+        <!-- Форма регистрации -->
+        <form id="registerForm" class="auth-form hidden">
+          <h2>Регистрация</h2>
+          <div class="input-group">
+            <label for="registerUsername">Имя пользователя:</label>
+            <input type="text" id="registerUsername" name="username" required>
+          </div>
+          <div class="input-group">
+            <label for="registerEmail">Email:</label>
+            <input type="email" id="registerEmail" name="email" required>
+          </div>
+          <div class="input-group">
+            <label for="registerPassword">Пароль:</label>
+            <input type="password" id="registerPassword" name="password" required>
+          </div>
+          <div class="input-group">
+            <label for="confirmPassword">Подтвердите пароль:</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required>
+          </div>
+          <button type="submit" class="auth-submit-btn">Зарегистрироваться</button>
+        </form>
+      </div>
     </div>
   </div>
 
+  <!-- Нижняя панель навигации -->
   <nav class="bottom-nav">
     <button class="nav-btn" id="navGames" title="Games">
       <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -76,6 +90,12 @@
       </svg>
     </button>
   </nav>
+
+  <!-- Custom Message Box -->
+  <div id="messageBox" class="message-box hidden">
+    <p id="messageText"></p>
+    <button id="closeMessageBox" class="message-box-close-btn">OK</button>
+  </div>
 
   <script src="menu.js"></script>
 </body>
