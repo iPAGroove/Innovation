@@ -8,6 +8,22 @@ import {
 document.addEventListener("DOMContentLoaded", () => {
   const auth = window.firebaseAuth;
 
+  const menuBtn = document.getElementById('navMenu');
+  const menuPanel = document.getElementById('menuPanel');
+
+  // Открытие панели
+  menuBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    menuPanel.classList.toggle('show');
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!menuPanel.contains(e.target) && !menuBtn.contains(e.target)) {
+      menuPanel.classList.remove('show');
+    }
+  });
+
+  // Auth UI
   const loginTab = document.getElementById("loginTab");
   const registerTab = document.getElementById("registerTab");
   const loginForm = document.getElementById("loginForm");
