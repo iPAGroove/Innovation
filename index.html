@@ -12,8 +12,19 @@
 </head>
 <body>
 
-  <!-- Панель меню с формами входа/регистрации -->
+  <!-- Панель меню -->
   <div id="menuPanel" class="menu-panel hidden">
+
+    <!-- ✅ Панель профиля внутри меню -->
+    <div id="profilePanel" class="profile-panel hidden">
+      <div class="profile-box">
+        <h2>👤 Профиль</h2>
+        <p><strong>Email:</strong> <span id="profileEmail"></span></p>
+        <button id="logoutBtn" class="logout-btn">Выйти</button>
+      </div>
+    </div>
+
+    <!-- ✅ Форма входа и регистрации -->
     <div class="auth-container">
       <div class="auth-buttons">
         <button id="showLoginBtn" class="auth-toggle-btn active">Вход</button>
@@ -56,36 +67,19 @@
     </div>
   </div>
 
-  <!-- ✅ Панель профиля -->
-  <div id="profilePanel" class="profile-panel hidden">
-    <div class="profile-box">
-      <h2>👤 Профиль</h2>
-      <p><strong>Email:</strong> <span id="profileEmail"></span></p>
-      <button id="logoutBtn" class="logout-btn">Выйти</button>
-    </div>
-  </div>
-
   <!-- Нижняя навигационная панель -->
   <nav class="bottom-nav">
     <button class="nav-btn" id="navGames" title="Games">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M2 12c0-5.5 4.5-10 10-10s10 4.5 10 10-4.5 10-10 10S2 17.5 2 12Zm7-1H7v2h2v2h2v-2h2v-2h-2V9H9v2Zm6.5 1.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Zm2 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/>
-      </svg>
+      <svg viewBox="0 0 24 24"><path d="M2 12c0-5.5 4.5-10 10-10s10 4.5 10 10-4.5 10-10 10S2 17.5 2 12Zm7-1H7v2h2v2h2v-2h2v-2h-2V9H9v2Zm6.5 1.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Zm2 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/></svg>
     </button>
     <button class="nav-btn" id="navApps" title="Apps">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M4 4h7v7H4V4Zm9 0h7v7h-7V4ZM4 13h7v7H4v-7Zm9 0h7v7h-7v-7Z"/>
-      </svg>
+      <svg viewBox="0 0 24 24"><path d="M4 4h7v7H4V4Zm9 0h7v7h-7V4ZM4 13h7v7H4v-7Zm9 0h7v7h-7v-7Z"/></svg>
     </button>
     <button class="nav-btn" id="navChat" title="Chat">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M4 4h16v12H5.17L4 17.17V4Zm0-2a2 2 0 0 0-2 2v20l4-4h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H4Z"/>
-      </svg>
+      <svg viewBox="0 0 24 24"><path d="M4 4h16v12H5.17L4 17.17V4Zm0-2a2 2 0 0 0-2 2v20l4-4h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H4Z"/></svg>
     </button>
     <button class="nav-btn" id="navMenu" title="Menu">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/>
-      </svg>
+      <svg viewBox="0 0 24 24"><path d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg>
     </button>
   </nav>
 
