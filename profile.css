@@ -1,130 +1,65 @@
 .profile-panel {
-  position: fixed;
-  top: 0;
-  left: 2.5%;
-  width: 95%;
-  height: calc(100% - 56px);
-  background: rgba(25, 25, 25, 0.95);
-  border-radius: 24px 24px 0 0;
-  padding: 24px 20px;
-  z-index: 999;
-  backdrop-filter: blur(12px);
-  transform: translateY(100%);
-  opacity: 0;
-  pointer-events: none;
-  transition: all 0.3s ease;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  height: 100%;
   overflow-y: auto;
 }
 
-.profile-panel.show {
-  transform: translateY(0);
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.profile-card {
-  background: linear-gradient(to right, #1e1e2e, #2e2e3e);
-  border-radius: 24px;
-  padding: 20px;
+.profile-box {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 20px 25px;
+  width: 100%;
+  max-width: 320px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   color: #fff;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  text-align: center;
+  animation: fadeInUp 0.4s ease-out;
 }
 
-.profile-header {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 20px;
-}
-
-.profile-avatar {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid #ccc;
-}
-
-.profile-info h3 {
-  margin: 0;
+.profile-box h2 {
   font-size: 20px;
-  font-weight: 700;
-}
-
-.profile-tags {
-  margin-top: 6px;
-  display: flex;
-  gap: 8px;
-}
-
-.tag {
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 12px;
+  margin-bottom: 12px;
+  color: #ffffff;
   font-weight: 600;
-  display: inline-block;
 }
 
-.tag.free {
-  background: #34c759;
-  color: white;
-}
-
-.tag.vip {
-  background: linear-gradient(to right, #ff9900, #ff5e3a);
-  color: white;
-}
-
-.profile-stats {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.stats-title {
-  font-size: 16px;
-  color: #ccc;
-  margin-bottom: 8px;
-}
-
-.downloads {
-  font-family: 'Orbitron', sans-serif;
-}
-
-.downloads-count {
-  font-size: 40px;
-  color: #88baff;
-  display: block;
-}
-
-.downloads-label {
-  font-size: 18px;
-  color: #80cfff;
-  letter-spacing: 1px;
-}
-
-.profile-actions {
-  text-align: center;
-  margin-top: 24px;
+.profile-box p {
+  margin-bottom: 20px;
+  font-size: 14px;
+  word-break: break-all;
 }
 
 .logout-btn {
-  padding: 10px 24px;
-  font-size: 16px;
-  background: #ff4d4d;
-  border: none;
-  border-radius: 10px;
+  background: linear-gradient(135deg, #ff4d4d, #e60073);
   color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: transform 0.2s, box-shadow 0.2s;
+  width: 100%;
 }
 
 .logout-btn:hover {
-  background: #e60000;
+  transform: scale(1.03);
+  box-shadow: 0 4px 12px rgba(255, 77, 77, 0.5);
 }
 
-.profile-footer {
-  margin-top: 20px;
-  text-align: center;
-  color: #aaa;
-  font-size: 15px;
+/* Анимация */
+@keyframes fadeInUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
 }
