@@ -2,17 +2,28 @@ import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/fi
 
 document.addEventListener("DOMContentLoaded", () => {
   const auth = getAuth();
-  const menuPanel = document.getElementById("menuPanel");
   const profilePanel = document.getElementById("profilePanel");
-  const profileEmail = document.getElementById("profileEmail");
-  const logoutBtn = document.getElementById("logoutBtn");
   const authContainer = document.querySelector(".auth-container");
+  const profileEmail = document.getElementById("profileEmail");
+  const profileUsername = document.getElementById("profileUsername");
+  const profileAvatar = document.getElementById("profileAvatar");
+  const downloadCount = document.getElementById("downloadCount");
+  const logoutBtn = document.getElementById("logoutBtn");
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
       profilePanel.classList.remove("hidden");
-      profileEmail.textContent = user.email;
       authContainer.style.display = "none";
+
+      // Пример: email и имя
+      profileEmail.textContent = user.email;
+      profileUsername.textContent = user.displayName || user.email.split("@")[0];
+
+      // Аватар заглушка — можно подключить из Firebase позже
+      profileAvatar.src = "https://i.ibb.co/r4H3rqD/avatar.jpg";
+
+      // Загрузка количества загрузок (можно подключить Firebase Database)
+      downloadCount.textContent = "0";
     } else {
       profilePanel.classList.add("hidden");
       authContainer.style.display = "block";
@@ -23,7 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
     signOut(auth)
       .then(() => {
         alert("Вы вышли из аккаунта");
-        profilePanel.classList.remove("show");
         profilePanel.classList.add("hidden");
         authContainer.style.display = "block";
       })
