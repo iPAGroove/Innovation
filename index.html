@@ -12,19 +12,37 @@
 </head>
 <body>
 
-  <!-- ✅ Панель меню -->
   <div id="menuPanel" class="menu-panel hidden">
 
-    <!-- ✅ Профиль пользователя (по умолчанию скрыт) -->
     <div id="profilePanel" class="profile-panel hidden">
-      <div class="profile-box">
-        <h2>👤 Профиль</h2>
-        <p><strong>Email:</strong> <span id="profileEmail"></span></p>
-        <button id="logoutBtn" class="logout-btn">Выйти</button>
-      </div>
+        <div class="profile-content">
+            <div class="profile-header">
+                <img src="https://via.placeholder.com/150/0000FF/808080?text=Avatar" alt="Profile Avatar" class="profile-avatar" id="profileAvatar">
+                <div class="profile-info">
+                    <span class="profile-username" id="profileUsername">vibedrift</span>
+                    <div class="profile-buttons">
+                        <button class="profile-btn free-access-btn">Free Access</button>
+                        <button class="profile-btn upgrade-btn">⚡ Upgrade to VIP</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="community-stats">
+                <h3>Community Statistics</h3>
+                <div class="downloads-info">
+                    <span class="downloads-number">0</span>
+                    <span class="downloads-text">DOWNLOADS</span>
+                </div>
+            </div>
+
+            <div class="account-settings">
+                <h3>Account Settings <span class="arrow-down"></span></h3>
+                </div>
+
+            <button id="logoutBtn" class="logout-btn">Выйти</button>
+        </div>
     </div>
 
-    <!-- ✅ Аутентификация -->
     <div class="auth-container">
       <div class="auth-buttons">
         <button id="showLoginBtn" class="auth-toggle-btn active">Вход</button>
@@ -67,7 +85,6 @@
     </div>
   </div>
 
-  <!-- ✅ Нижняя навигация -->
   <nav class="bottom-nav">
     <button class="nav-btn" id="navGames" title="Games">
       <svg viewBox="0 0 24 24"><path d="M2 12c0-5.5 4.5-10 10-10s10 4.5 10 10-4.5 10-10 10S2 17.5 2 12Zm7-1H7v2h2v2h2v-2h2v-2h-2V9H9v2Zm6.5 1.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Zm2 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/></svg>
@@ -83,7 +100,6 @@
     </button>
   </nav>
 
-  <!-- ✅ Скрипты -->
   <script src="menu.js"></script>
   <script type="module" src="firebase-init.js"></script>
   <script type="module" src="auth-handler.js"></script>
