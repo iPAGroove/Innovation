@@ -40,6 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const password = document.getElementById("loginPassword").value;
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      authContainer.style.display = "none"; // <-- скрываем весь блок
     } catch (err) {
       alert("Ошибка входа: " + err.message);
     }
@@ -59,6 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       await createUserWithEmailAndPassword(auth, email, password);
+      authContainer.style.display = "none"; // <-- скрываем весь блок
     } catch (err) {
       alert("Ошибка регистрации: " + err.message);
     }
@@ -72,19 +74,17 @@ document.addEventListener("DOMContentLoaded", () => {
   // Отслеживание авторизации
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      // Пользователь авторизован
+      // Авторизован
       profileEmail.textContent = user.email;
       profilePanel.classList.remove("hidden");
       profilePanel.classList.add("show");
-
-      authContainer.classList.add("hidden");
+      authContainer.style.display = "none";
       menuPanel.classList.remove("show");
     } else {
-      // Пользователь вышел
+      // Не авторизован
       profilePanel.classList.remove("show");
       profilePanel.classList.add("hidden");
-
-      authContainer.classList.remove("hidden");
+      authContainer.style.display = "block";
       loginForm.classList.remove("hidden");
       registerForm.classList.add("hidden");
       showLoginBtn.classList.add("active");
@@ -92,4 +92,3 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
-
