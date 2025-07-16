@@ -1,4 +1,3 @@
-// auth-handler.js
 import { 
   createUserWithEmailAndPassword, 
   signInWithEmailAndPassword, 
@@ -14,6 +13,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const showLoginBtn = document.getElementById("showLoginBtn");
   const showRegisterBtn = document.getElementById("showRegisterBtn");
   const menuPanel = document.getElementById("menuPanel");
+  const profilePanel = document.getElementById("profilePanel");
+  const profileEmail = document.getElementById("profileEmail");
+  const logoutBtn = document.getElementById("logoutBtn");
 
   // Переключение вкладок
   showLoginBtn.addEventListener("click", () => {
@@ -37,8 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const password = document.getElementById("loginPassword").value;
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      alert("Вход выполнен");
-      menuPanel.classList.remove("show");
     } catch (err) {
       alert("Ошибка входа: " + err.message);
     }
@@ -58,19 +58,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      alert("Регистрация успешна");
-      menuPanel.classList.remove("show");
     } catch (err) {
       alert("Ошибка регистрации: " + err.message);
     }
   });
 
-  // Состояние пользователя
+  // Выход
+  logoutBtn.addEventListener("click", async () => {
+    await signOut(auth);
+  });
+
+  // Отслеживание авторизации
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      console.log("Пользователь вошёл:", user.email);
+      // Пользователь авторизован
+      profileEmail.textContent = user.email;
+      profilePanel.classList.remove("hidden");
+      profilePanel.classList.add("show");
+
+      menuPanel.classList.remove("show");
+
+      // Скрыть формы входа/регистрации
+      loginForm.classList.add("hidden");
+      registerForm.classList.add("hidden");
     } else {
-      console.log("Пользователь вышел");
+      // Пользователь вышел
+      profilePanel.classList.remove("show");
+      profilePanel.classList.add("hidden");
+
+      // Показать формы
+      loginForm.classList.remove("hidden");
+      registerForm.classList.add("hidden");
+      showLoginBtn.classList.add("active");
+      showRegisterBtn.classList.remove("active");
     }
   });
 });
