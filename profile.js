@@ -13,20 +13,15 @@ document.addEventListener("DOMContentLoaded", () => {
   onAuthStateChanged(auth, (user) => {
     if (user) {
       profilePanel.classList.remove("hidden");
-      authContainer.style.display = "none";
+      authContainer.classList.add("hidden");
 
-      // Пример: email и имя
       profileEmail.textContent = user.email;
       profileUsername.textContent = user.displayName || user.email.split("@")[0];
-
-      // Аватар заглушка — можно подключить из Firebase позже
       profileAvatar.src = "https://i.ibb.co/r4H3rqD/avatar.jpg";
-
-      // Загрузка количества загрузок (можно подключить Firebase Database)
       downloadCount.textContent = "0";
     } else {
       profilePanel.classList.add("hidden");
-      authContainer.style.display = "block";
+      authContainer.classList.remove("hidden");
     }
   });
 
@@ -35,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .then(() => {
         alert("Вы вышли из аккаунта");
         profilePanel.classList.add("hidden");
-        authContainer.style.display = "block";
+        authContainer.classList.remove("hidden");
       })
       .catch((error) => {
         console.error("Ошибка выхода:", error);
