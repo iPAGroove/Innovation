@@ -1,54 +1,42 @@
 .profile-panel {
-  position: fixed;
+  position: absolute;
   top: 0;
-  left: 2.5%;
-  width: 95%;
-  height: calc(100% - 56px); /* учитываем нижнюю панель */
-  background: rgba(25, 25, 25, 0.9);
-  border-radius: 24px 24px 0 0;
-  padding: 24px 20px;
-  z-index: 999;
-  backdrop-filter: blur(12px);
-  transform: translateY(100%);
-  opacity: 0;
-  pointer-events: none;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Показываем панель */
-.profile-panel.show {
-  transform: translateY(0);
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* Прячем (если используешь classList.add('hidden')) */
-.profile-panel.hidden {
+  left: 0;
+  width: 100%;
+  background: rgba(30, 30, 30, 0.85);
+  border-radius: 18px;
+  padding: 16px;
+  z-index: 10;
+  backdrop-filter: blur(8px);
   display: none;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.profile-panel.show {
+  display: flex;
 }
 
 .profile-box {
   background: rgba(40, 40, 40, 0.95);
-  padding: 20px;
-  border-radius: 14px;
+  padding: 14px 18px;
+  border-radius: 12px;
   color: white;
   text-align: center;
-  max-width: 400px;
+  max-width: 380px;
   width: 100%;
-  box-shadow: 0 0 15px rgba(0,0,0,0.4);
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
 }
 
 .logout-btn {
-  margin-top: 20px;
-  padding: 10px 20px;
+  margin-top: 14px;
+  padding: 10px 18px;
   background: #ff4d4d;
   border: none;
   color: white;
-  border-radius: 8px;
-  font-size: 16px;
+  border-radius: 6px;
+  font-size: 15px;
   cursor: pointer;
   transition: background 0.3s ease;
 }
