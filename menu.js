@@ -3,17 +3,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const menuPanel = document.getElementById('menuPanel');
 
   menuBtn.addEventListener('click', (e) => {
-    e.stopPropagation(); // чтобы не закрыло сразу
-    menuPanel.classList.toggle('hidden');
+    e.stopPropagation();
+    menuPanel.classList.toggle('show');
   });
 
-  // Закрытие по клику вне панели
   document.addEventListener('click', (e) => {
     if (
       !menuPanel.contains(e.target) &&
       !menuBtn.contains(e.target)
     ) {
-      menuPanel.classList.add('hidden');
+      menuPanel.classList.remove('show');
     }
   });
 });
