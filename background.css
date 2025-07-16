@@ -8,6 +8,7 @@ html, body {
   height: 100%;
   width: 100%;
   font-family: sans-serif;
+  overflow: hidden; /* Prevent scrolling when menu is open */
 }
 
 body {
