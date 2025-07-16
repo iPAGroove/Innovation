@@ -2,16 +2,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const menuBtn = document.getElementById("navMenu");
   const menuPanel = document.getElementById("menuPanel");
   const profilePanel = document.getElementById("profilePanel");
+  const authContainer = document.querySelector(".auth-container");
 
   menuBtn.addEventListener("click", (e) => {
     e.stopPropagation();
     menuPanel.classList.toggle("show");
 
-    // Показываем или скрываем только если пользователь авторизован
     const isAuthenticated = !profilePanel.classList.contains("hidden");
 
-    if (menuPanel.classList.contains("show") && isAuthenticated) {
-      profilePanel.classList.add("show");
+    if (menuPanel.classList.contains("show")) {
+      // Если авторизован — показать профиль
+      if (isAuthenticated) {
+        profilePanel.classList.add("show");
+        authContainer.style.display = "none";
+      } else {
+        authContainer.style.display = "block";
+      }
     } else {
       profilePanel.classList.remove("show");
     }
