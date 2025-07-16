@@ -3,18 +3,29 @@
   top: 0;
   left: 2.5%;
   width: 95%;
-  height: calc(100% - 56px);
+  height: calc(100% - 56px); /* учитываем нижнюю панель */
   background: rgba(25, 25, 25, 0.9);
   border-radius: 24px 24px 0 0;
   padding: 24px 20px;
   z-index: 999;
   backdrop-filter: blur(12px);
+  transform: translateY(100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
 }
 
+/* Показываем панель */
+.profile-panel.show {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Прячем (если используешь classList.add('hidden')) */
 .profile-panel.hidden {
   display: none;
 }
