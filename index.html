@@ -10,8 +10,32 @@
 </head>
 <body>
 
-  <!-- Чистая меню-панель -->
-  <div id="menuPanel" class="menu-panel hidden"></div>
+  <!-- Панель меню с входом/регистрацией -->
+  <div id="menuPanel" class="menu-panel hidden">
+    <div class="auth-container">
+      <div class="tabs">
+        <button id="loginTab" class="active">Вход</button>
+        <button id="registerTab">Регистрация</button>
+      </div>
+
+      <form id="loginForm" class="auth-form">
+        <input type="email" id="loginEmail" placeholder="Email" required />
+        <input type="password" id="loginPassword" placeholder="Пароль" required />
+        <button type="submit">Войти</button>
+      </form>
+
+      <form id="registerForm" class="auth-form hidden">
+        <input type="email" id="registerEmail" placeholder="Email" required />
+        <input type="password" id="registerPassword" placeholder="Пароль" required />
+        <button type="submit">Зарегистрироваться</button>
+      </form>
+
+      <div id="userStatus" class="user-status hidden">
+        Добро пожаловать, <span id="loggedInUser"></span>!
+        <button id="logoutBtn">Выйти</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Нижняя панель навигации -->
   <nav class="bottom-nav">
