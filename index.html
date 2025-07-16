@@ -7,36 +7,61 @@
   <link rel="stylesheet" href="background.css" />
   <link rel="stylesheet" href="navigation.css" />
   <link rel="stylesheet" href="menu.css" />
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import { getAuth } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyB2In0cOmuiYB6zNj0dQrdJ8bwPkINKdzA",
+      authDomain: "updaterepoipa.firebaseapp.com",
+      databaseURL: "https://updaterepoipa-default-rtdb.firebaseio.com",
+      projectId: "updaterepoipa",
+      storageBucket: "updaterepoipa.firebasestorage.app",
+      messagingSenderId: "621595788422",
+      appId: "1:621595788422:web:9d99e1ca31188235243d07",
+      measurementId: "G-2CYBC93R03"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    window.firebaseAuth = getAuth(app);
+  </script>
 </head>
 <body>
 
-  <!-- Чистая меню-панель -->
-  <div id="menuPanel" class="menu-panel hidden"></div>
+  <!-- Панель меню с формами входа и регистрации -->
+  <div id="menuPanel" class="menu-panel hidden">
+    <div class="auth-container">
+      <div class="tabs">
+        <button id="loginTab" class="active">Вход</button>
+        <button id="registerTab">Регистрация</button>
+      </div>
+
+      <form id="loginForm" class="auth-form">
+        <input type="email" id="loginEmail" placeholder="Email" required />
+        <input type="password" id="loginPassword" placeholder="Пароль" required />
+        <button type="submit">Войти</button>
+      </form>
+
+      <form id="registerForm" class="auth-form hidden">
+        <input type="email" id="registerEmail" placeholder="Email" required />
+        <input type="password" id="registerPassword" placeholder="Пароль" required />
+        <button type="submit">Зарегистрироваться</button>
+      </form>
+
+      <div id="userStatus" class="user-status hidden">
+        Добро пожаловать, <span id="loggedInUser"></span>!
+        <button id="logoutBtn">Выйти</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Нижняя панель навигации -->
   <nav class="bottom-nav">
-    <button class="nav-btn" id="navGames" title="Games">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M2 12c0-5.5 4.5-10 10-10s10 4.5 10 10-4.5 10-10 10S2 17.5 2 12Zm7-1H7v2h2v2h2v-2h2v-2h-2V9H9v2Zm6.5 1.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Zm2 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/>
-      </svg>
-    </button>
-    <button class="nav-btn" id="navApps" title="Apps">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M4 4h7v7H4V4Zm9 0h7v7h-7V4ZM4 13h7v7H4v-7Zm9 0h7v7h-7v-7Z"/>
-      </svg>
-    </button>
-    <button class="nav-btn" id="navChat" title="Chat">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M4 4h16v12H5.17L4 17.17V4Zm0-2a2 2 0 0 0-2 2v20l4-4h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H4Z"/>
-      </svg>
-    </button>
-    <button class="nav-btn" id="navMenu" title="Menu">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/>
-      </svg>
-    </button>
+    <!-- твои кнопки... -->
   </nav>
 
-  <script src="menu.js"></script>
+  <script type="module" src="menu.js"></script>
 </body>
 </html>
