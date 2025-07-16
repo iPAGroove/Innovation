@@ -7,8 +7,10 @@ document.addEventListener("DOMContentLoaded", () => {
     e.stopPropagation();
     menuPanel.classList.toggle("show");
 
-    // Синхронно показываем или скрываем панель профиля
-    if (menuPanel.classList.contains("show")) {
+    // Показываем или скрываем только если пользователь авторизован
+    const isAuthenticated = !profilePanel.classList.contains("hidden");
+
+    if (menuPanel.classList.contains("show") && isAuthenticated) {
       profilePanel.classList.add("show");
     } else {
       profilePanel.classList.remove("show");
@@ -16,7 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.addEventListener("click", (e) => {
-    // НЕ закрываем, если клик внутри панели меню или профиля
     if (
       menuPanel.contains(e.target) ||
       menuBtn.contains(e.target) ||
@@ -25,7 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Закрытие
     menuPanel.classList.remove("show");
     profilePanel.classList.remove("show");
   });
